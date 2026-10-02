@@ -1,0 +1,12 @@
+# Original full-size photos (web-sized copies live in images/)
+Recipe images/
+
+# Secrets — Gemini API key etc. Never commit.
+.dev.vars
+.env
+
+# Editor safety backups
+data/backups/
+*.tmp
+
+node_modules/

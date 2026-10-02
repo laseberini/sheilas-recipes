@@ -1,0 +1,192 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>B · Nonna's Table</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,400;1,9..144,600&family=Work+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="shared.js"></script>
+<style>
+  :root {
+    --eng-accent: #1d3f7a; --eng-bg: #ffffff;
+    --cobalt: #1d3f7a;
+    --cobalt-2: #2c5aa8;
+    --terracotta: #c25a2c;
+    --lemon: #f1c64b;
+    --olive: #6c7a3b;
+    --cream: #fbf6ee;
+    --sand: #f2e8d8;
+    --ink: #22262e;
+    --muted: #6b6a66;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--cream); color: var(--ink); font: 17px/1.65 "Work Sans", system-ui, sans-serif; }
+  a { color: inherit; }
+  h1, h2, h3 { font-family: Fraunces, Georgia, serif; font-weight: 600; margin: 0; }
+  .wrap { max-width: 1160px; margin: 0 auto; padding: 0 24px; }
+
+  .topbar { display: flex; align-items: center; justify-content: space-between; padding: 18px 24px; max-width: 1160px; margin: 0 auto; }
+  .logo { font: italic 600 28px Fraunces, serif; text-decoration: none; color: var(--cobalt); }
+  .logo i { display: inline-block; width: 10px; height: 10px; background: var(--lemon); border-radius: 50%; margin-left: 3px; }
+  .topbar nav a { margin-left: 22px; text-decoration: none; font-weight: 500; color: var(--muted); }
+
+  /* Majolica tile strip */
+  .tiles {
+    height: 44px;
+    background-color: var(--cobalt);
+    background-image:
+      radial-gradient(circle at 50% 50%, var(--lemon) 0 4px, transparent 5px),
+      radial-gradient(circle at 50% 50%, transparent 0 12px, #fff 13px 15px, transparent 16px),
+      conic-gradient(from 45deg, #fff 0 25%, transparent 0 50%, #fff 0 75%, transparent 0);
+    background-size: 44px 44px, 44px 44px, 22px 22px;
+    background-position: 0 0, 0 0, 0 0;
+    opacity: .95;
+  }
+
+  .hero { background: var(--cobalt); color: var(--cream); }
+  .hero .wrap { display: grid; grid-template-columns: 1.1fr 1fr; gap: 56px; align-items: center; padding: 64px 24px 72px; }
+  .kicker { text-transform: uppercase; letter-spacing: .16em; font-size: 13px; font-weight: 600; color: var(--lemon); }
+  .hero h1 { font-size: clamp(46px, 6.4vw, 82px); line-height: 1; margin: 14px 0 22px; letter-spacing: -.015em; }
+  .hero h1 em { font-weight: 400; color: var(--lemon); }
+  .hero p { font-size: 19px; max-width: 30em; opacity: .9; margin: 0; }
+  .hero .btn { display: inline-block; margin-top: 28px; background: var(--lemon); color: var(--cobalt); padding: 14px 24px; border-radius: 99px; text-decoration: none; font-weight: 600; }
+  .arch { border-radius: 999px 999px 18px 18px; overflow: hidden; aspect-ratio: 4/5; border: 8px solid var(--cream); box-shadow: 0 30px 60px rgba(0,0,0,.25); max-width: 440px; justify-self: center; width: 100%; }
+  .arch img { width: 100%; height: 100%; object-fit: cover; object-position: center 22%; display: block; }
+
+  .intro { text-align: center; padding: 80px 0 72px; }
+  .intro blockquote { margin: 0 auto; max-width: 760px; font: italic 400 clamp(22px, 2.6vw, 30px)/1.45 Fraunces, serif; color: var(--cobalt); position: relative; }
+  .intro blockquote::before { content: "“"; display: block; font-size: 110px; line-height: .6; color: var(--terracotta); margin-bottom: 10px; }
+  .intro cite { display: block; margin-top: 18px; font: 600 14px "Work Sans"; letter-spacing: .14em; text-transform: uppercase; color: var(--terracotta); font-style: normal; }
+  .ph { display: inline-block; font: 600 11px system-ui; letter-spacing: .08em; text-transform: uppercase; background: var(--sand); color: var(--muted); padding: 4px 8px; border-radius: 4px; margin-bottom: 18px; }
+
+  .menu-head { display: flex; justify-content: space-between; align-items: end; gap: 20px; margin-bottom: 28px; flex-wrap: wrap; }
+  .menu-head h2 { font-size: 46px; color: var(--cobalt); }
+  .search { flex: 0 1 340px; padding: 13px 18px; border-radius: 99px; border: 2px solid var(--sand); background: #fff; font: inherit; }
+
+  .cats { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 22px; padding-bottom: 80px; }
+  .cat { background: #fff; border-radius: 18px; overflow: hidden; box-shadow: 0 1px 0 var(--sand), 0 12px 30px rgba(29,63,122,.07); }
+  .cat-name { font-size: 25px; padding: 20px 24px 16px; color: #fff; background: var(--terracotta); display: flex; justify-content: space-between; align-items: center; }
+  .cat:nth-child(4n+2) .cat-name { background: var(--olive); }
+  .cat:nth-child(4n+3) .cat-name { background: var(--cobalt-2); }
+  .cat:nth-child(4n+4) .cat-name { background: var(--lemon); color: var(--cobalt); }
+  .cat-count { font: 600 14px "Work Sans"; background: rgba(255,255,255,.25); border-radius: 99px; padding: 3px 10px; }
+  .cat-list { list-style: none; margin: 0; padding: 10px 24px 18px; }
+  .cat-list li { border-bottom: 1px solid var(--sand); }
+  .cat-list li:last-child { border: 0; }
+  .cat-list a { display: flex; justify-content: space-between; padding: 10px 0; text-decoration: none; }
+  .cat-list a::after { content: "→"; color: var(--terracotta); opacity: 0; transition: .15s; }
+  .cat-list a:hover::after { opacity: 1; transform: translateX(3px); }
+
+  /* Recipe */
+  .r-hero { background: var(--sand); }
+  .r-hero .wrap { display: grid; grid-template-columns: 1.2fr 1fr; gap: 48px; align-items: center; padding: 40px 24px 56px; }
+  .back { color: var(--terracotta); text-decoration: none; font-weight: 600; }
+  .r-hero h1 { font-size: clamp(54px, 8vw, 96px); line-height: .95; color: var(--cobalt); margin: 18px 0 18px; }
+  .meta { display: flex; gap: 10px; flex-wrap: wrap; }
+  .meta span { background: #fff; border-radius: 99px; padding: 6px 14px; font-size: 14px; font-weight: 500; }
+  .dish-ph {
+    border-radius: 999px 999px 18px 18px; aspect-ratio: 1/1; width: 100%; max-width: 380px; justify-self: center;
+    background: radial-gradient(circle at 50% 40%, #fff 0 35%, #f6ead6 36%); border: 8px solid #fff;
+    display: grid; place-items: center; color: var(--muted); font: italic 18px Fraunces, serif; text-align: center;
+  }
+
+  .switch { position: relative; display: grid; grid-template-columns: repeat(3, 1fr); background: #fff; border-radius: 99px; padding: 5px; max-width: 560px; margin: -28px auto 40px; box-shadow: 0 10px 30px rgba(29,63,122,.12); }
+  .switch::before { content: ""; position: absolute; top: 5px; bottom: 5px; left: 5px; width: calc((100% - 10px) / 3); border-radius: 99px; background: var(--cobalt); transform: translateX(calc(var(--pos, 1) * 100%)); transition: transform .25s; }
+  .switch button { position: relative; border: 0; background: none; font: 600 15px "Work Sans"; padding: 12px 8px; color: var(--cobalt); cursor: pointer; }
+  .switch button.on { color: #fff; }
+
+  .recipe-body { display: grid; grid-template-columns: 1fr 1.6fr; gap: 48px; padding-bottom: 80px; }
+  .ing-box { background: #fff; border-radius: 18px; padding: 28px; border-top: 6px solid var(--terracotta); align-self: start; position: sticky; top: 20px; }
+  .ing-box h3, .method-box h3 { font-size: 28px; color: var(--cobalt); margin-bottom: 14px; }
+  .ing { list-style: none; padding: 0; margin: 0; }
+  .ing li { display: flex; gap: 12px; padding: 9px 0; border-bottom: 1px solid var(--sand); }
+  .ing li::before { content: ""; flex: none; width: 18px; height: 18px; border: 2px solid var(--terracotta); border-radius: 50%; margin-top: 4px; }
+  .method { list-style: none; padding: 0; margin: 0; counter-reset: s; }
+  .method li { counter-increment: s; display: grid; grid-template-columns: 52px 1fr; gap: 14px; padding: 0 0 22px; font-size: 18px; }
+  .method li::before { content: counter(s); width: 44px; height: 44px; border-radius: 50%; background: var(--lemon); color: var(--cobalt); display: grid; place-items: center; font: 600 20px Fraunces; }
+  .notes { background: var(--cobalt); color: var(--cream); padding: 20px 24px; border-radius: 18px; font: italic 20px Fraunces, serif; }
+  .notes p { margin: 0; }
+  .page-pane { text-align: center; padding-bottom: 80px; }
+  .page-pane img { max-width: 680px; width: 100%; border-radius: 6px; border: 10px solid #fff; box-shadow: 0 20px 50px rgba(0,0,0,.15); }
+
+  .eng-pane { padding-bottom: 80px; }
+  .eng-wrap { overflow-x: auto; background: #fff; border-radius: 18px; padding: 20px; }
+  .eng { border-collapse: collapse; width: 100%; min-width: 640px; font-size: 15px; }
+  .eng td { border: 2px solid var(--cobalt); padding: 9px 11px; }
+  .eng-setup, .eng-finish { text-align: center; background: var(--cobalt); color: #fff; font-weight: 500; }
+  .eng-op { text-align: center; font-weight: 600; background: #eef3fb; }
+  .eng .est { color: var(--terracotta); font-style: italic; }
+  .eng-note { color: var(--muted); font-size: 14px; }
+  .est-key::before { content: "Terracotta italic"; color: var(--terracotta); font-style: italic; font-weight: 600; }
+
+  footer { background: var(--cobalt); color: var(--cream); text-align: center; padding: 30px; font: italic 18px Fraunces; }
+
+  @media (max-width: 800px) {
+    .hero .wrap, .r-hero .wrap, .recipe-body { grid-template-columns: 1fr; gap: 32px; }
+    .hero .wrap { padding: 40px 20px 52px; }
+    .arch { max-width: 320px; }
+    .ing-box { position: static; }
+    .topbar nav { display: none; }
+    .switch button { font-size: 13px; }
+    .dish-ph { max-width: 260px; }
+  }
+</style>
+</head>
+<body>
+<div class="topbar"><a class="logo" href="#">Sheila's<i></i></a><nav><a href="#">Recipes</a><a href="#">About</a></nav></div>
+
+<div data-screen="home">
+  <section class="hero">
+    <div class="wrap">
+      <div>
+        <div class="kicker">Family recipes · since forever</div>
+        <h1>A table set by <em>Sheila</em></h1>
+        <p>Nonna's sauces, Bronwyn's tarts, Mom's minestrone. The recipes that fed our family, in her own hand.</p>
+        <a class="btn" href="#recipes">Open the recipes</a>
+      </div>
+      <div class="arch"><img src="../images/sheila.jpg" alt="Sheila in her kitchen holding a dish of artichokes and potatoes"></div>
+    </div>
+  </section>
+  <div class="tiles"></div>
+  <section class="intro wrap">
+    <span class="ph">Placeholder: intro to be scanned</span>
+    <blockquote><span data-fill="intro"></span><cite>Sheila</cite></blockquote>
+  </section>
+  <section class="wrap" id="recipes">
+    <div class="menu-head"><h2>The recipes</h2><input class="search" placeholder="Search: brinjal, cake, Nonna…"></div>
+    <div class="cats" data-fill="categories"></div>
+  </section>
+  <div class="tiles"></div>
+  <footer>Made with love for Sheila's family</footer>
+</div>
+
+<div data-screen="recipe" data-recipe hidden>
+  <section class="r-hero">
+    <div class="wrap">
+      <div>
+        <a class="back" href="#">← All recipes</a>
+        <h1 data-fill="title"></h1>
+        <div class="meta"><span data-fill="cat"></span><span data-fill="from" data-prefix="From "></span><span data-fill="date" data-prefix="Written "></span></div>
+      </div>
+      <div class="dish-ph">Dish illustration<br>to be generated</div>
+    </div>
+  </section>
+  <div class="wrap">
+    <div class="switch" data-views>
+      <button data-view="page">Her page</button>
+      <button data-view="recipe">The recipe</button>
+      <button data-view="engineer">Recipe Table</button>
+    </div>
+    <div data-pane="page" class="page-pane"><img data-fill="page" alt="The original handwritten recipe page"></div>
+    <div data-pane="recipe" class="recipe-body">
+      <div class="ing-box"><h3>Ingredients</h3><ul class="ing" data-fill="ingredients"></ul></div>
+      <div class="method-box"><h3>Method</h3><ol class="method" data-fill="method"></ol><div class="notes" data-fill="notes"></div></div>
+    </div>
+    <div data-pane="engineer" class="eng-pane" data-fill="engineer"></div>
+  </div>
+  <div class="tiles"></div>
+  <footer>Made with love for Sheila's family</footer>
+</div>
+</body>
+</html>
