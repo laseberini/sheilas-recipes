@@ -12,6 +12,7 @@ const RECIPES = {
     date: "4/09",
     category: "Fish",
     page: "../images/pages/p170308.jpg",
+    photo: "../images/dishes/fish-cakes.jpg",
     ingredients: [
       "250g mince Hake with carrot & onion (chopped)",
       "1 small egg",
@@ -52,6 +53,7 @@ const RECIPES = {
     date: null,
     category: "Desserts",
     page: "../images/pages/p170706.jpg",
+    photo: "../images/dishes/lemon-meringue.jpg",
     ingredients: [
       "2 Big tins condenced milk",
       "1-1½ packets marie biscuits",
@@ -306,7 +308,7 @@ function openLightbox(src, alt) {
 }
 
 document.addEventListener("click", (e) => {
-  const page = e.target.closest("img[data-fill=page]");
+  const page = e.target.closest("img[data-fill=page], [data-fill=dish] img");
   if (page) openLightbox(page.src, page.alt);
 });
 document.fonts?.ready.then(enhanceTables);
@@ -339,6 +341,10 @@ function renderRecipe(R) {
   });
   set("engineer", (el) => (el.innerHTML = recipeTable(R.table)));
   set("page", (el) => (el.src = R.page));
+  set("dish", (el) => {
+    el.classList.toggle("has-photo", !!R.photo);
+    el.innerHTML = R.photo ? `<img src="${R.photo}" alt="${esc(R.title)}, as it might look on the table (AI-generated picture)">` : "";
+  });
 }
 
 function fillMockup() {
@@ -451,7 +457,10 @@ function fillMockup() {
     .pane-from-left { animation: paneFromLeft .28s ease-out; }
 
     /* Original page: tap to open full screen, pinch / double-tap / scroll-wheel to zoom. */
-    [data-fill=page] { cursor: zoom-in; }
+    [data-fill=page], [data-fill=dish] img { cursor: zoom-in; }
+    /* Dish photo fills whatever frame each design gives it. */
+    .has-photo { position: relative; overflow: hidden; background: none !important; }
+    .has-photo > img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; }
     .lb { position: fixed; inset: 0; z-index: 2000; display: flex; align-items: center; justify-content: center;
       background: rgba(18,15,12,.94); touch-action: none; animation: lbIn .2s ease-out; overflow: hidden; }
     @keyframes lbIn { from { opacity: 0; } }
