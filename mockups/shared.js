@@ -1,6 +1,29 @@
 // Shared content + behaviour for the look-and-feel mockups.
 // Each mockup supplies its own layout and CSS; this fills in the same real content everywhere.
 
+// Version (set on <html data-version> by tools/bump-version.mjs). Asset URLs carry it so a new
+// release never mixes with files a phone has kept from an older one.
+const VERSION = document.documentElement.dataset.version || "dev";
+const withV = (url) => `${url}${url.includes("?") ? "&" : "?"}v=${VERSION}`;
+
+// Cache buster: GitHub Pages lets browsers keep a page for ~10 minutes. Ask the server which
+// version is live (bypassing the cache); if this page is older, reload once with the live version
+// in the address, which the browser has never seen and so must fetch fresh.
+(async () => {
+  if (location.protocol === "file:") return;
+  try {
+    const res = await fetch(`${new URL("../version.json", location.href)}?t=${Date.now()}`, { cache: "no-store" });
+    const live = (await res.json()).version;
+    const url = new URL(location.href);
+    if (live && live !== VERSION && url.searchParams.get("v") !== live) {
+      url.searchParams.set("v", live);
+      location.replace(url);
+    }
+  } catch {
+    // Offline or no version.json: keep the page as it is.
+  }
+})();
+
 // Recipe Table model: one table per recipe, so the whole recipe is visible at once.
 // Ingredient rows down the left; step columns left to right. A column holds one or more
 // steps, each spanning a range of rows (from..to), so side-by-side jobs share a column.
@@ -340,10 +363,10 @@ function renderRecipe(R) {
     el.innerHTML = R.notes.map((m) => `<p>${esc(m)}</p>`).join("");
   });
   set("engineer", (el) => (el.innerHTML = recipeTable(R.table)));
-  set("page", (el) => (el.src = R.page));
+  set("page", (el) => (el.src = withV(R.page)));
   set("dish", (el) => {
     el.classList.toggle("has-photo", !!R.photo);
-    el.innerHTML = R.photo ? `<img src="${R.photo}" alt="${esc(R.title)}, as it might look on the table (AI-generated picture)">` : "";
+    el.innerHTML = R.photo ? `<img src="${withV(R.photo)}" alt="${esc(R.title)}, as it might look on the table (AI-generated picture)">` : "";
   });
 }
 
@@ -422,7 +445,8 @@ function fillMockup() {
     const onRecipe = !!recipeKey();
     bar.innerHTML = [["a-heirloom.html", "A · Heirloom"], ["b-mediterranean.html", "B · Nonna's Table"], ["c-clean.html", "C · Clean Kitchen"], ["d-magazine.html", "D · Magazine"]]
       .map(([f, l]) => `<a href="${f}${location.hash}" class="${f === here ? "on" : ""}">${l}</a>`).join("") +
-      (onRecipe ? `<a href="#" class="flip">← Home</a>` : `<a href="#recipe-fish" class="flip">Fish Cakes →</a><a href="#recipe-lemon" class="flip">Lemon Meringue →</a>`);
+      (onRecipe ? `<a href="#" class="flip">← Home</a>` : `<a href="#recipe-fish" class="flip">Fish Cakes →</a><a href="#recipe-lemon" class="flip">Lemon Meringue →</a>`) +
+      `<span class="ver" title="Built ${document.documentElement.dataset.built || ""}">v${VERSION}</span>`;
   };
   drawBar();
   document.body.appendChild(bar);
@@ -436,6 +460,7 @@ function fillMockup() {
     .mock-switch a { color: #ddd; text-decoration: none; padding: 8px 12px; border-radius: 99px; white-space: nowrap; }
     .mock-switch a.on { background: #fff; color: #111; }
     .mock-switch a.flip { color: #ffd479; }
+    .mock-switch .ver { color: #9a9a9a; padding: 8px 10px 8px 4px; white-space: nowrap; font-variant-numeric: tabular-nums; }
     body { padding-bottom: 80px; }
     [hidden] { display: none !important; }
 
