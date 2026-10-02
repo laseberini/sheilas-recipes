@@ -153,7 +153,7 @@ function recipeTable(t) {
   }
   if (t.finish) rows.push(wide("eng-finish", t.finish));
   return `<div class="eng-scroller">
-      <div class="eng-wrap"><table class="eng"><colgroup><col class="eng-col-ing"><col span="${t.columns.length}"></colgroup>${rows.join("")}</table></div>
+      <div class="eng-wrap"><table class="eng"><colgroup><col class="eng-col-ing">${t.columns.map(() => `<col class="eng-col-step" style="width:${(70 / t.columns.length).toFixed(2)}%">`).join("")}</colgroup>${rows.join("")}</table></div>
       <div class="eng-map" aria-label="Jump to a step"></div>
     </div>
     <p class="eng-note"><span class="est-key"></span> Estimated amounts and times. Sheila still needs to confirm these.</p>`;
@@ -177,6 +177,7 @@ function enhanceTables() {
     box.classList.toggle("own-borders", collapsed);
 
     const pin = wrap.querySelector(".eng-ing").offsetWidth;
+    wrap.style.setProperty("--pin", pin + "px");
     const starts = [...new Set([...wrap.querySelectorAll(".eng-op, .eng-gap")].map((c) => c.offsetLeft + table.offsetLeft))].sort((a, b) => a - b);
     map.innerHTML = starts.map((x, i) => `<button type="button" aria-label="Step ${i + 1}"></button>`).join("");
     const buttons = [...map.children];
@@ -205,6 +206,109 @@ function enhanceTables() {
   });
 }
 window.addEventListener("resize", enhanceTables);
+
+// Full-screen viewer for the original page. Close with ×, Esc, or a tap outside the photo.
+// Zoom with pinch, double-tap / double-click, or the scroll wheel; drag to move around.
+function openLightbox(src, alt) {
+  const box = document.createElement("div");
+  box.className = "lb";
+  box.innerHTML = `<img class="lb-img" src="${esc(src)}" alt="${esc(alt || "")}" draggable="false">
+    <button class="lb-close" type="button" aria-label="Close">×</button>
+    <p class="lb-hint">Pinch or double-tap to zoom · tap outside to close</p>`;
+  document.body.appendChild(box);
+  const prevOverflow = document.body.style.overflow;
+  document.body.style.overflow = "hidden";
+  const img = box.querySelector(".lb-img");
+  const hint = box.querySelector(".lb-hint");
+  setTimeout(() => (hint.style.opacity = "0"), 2600);
+
+  let s = 1, x = 0, y = 0;
+  const apply = (animate) => {
+    // Keep the photo from being dragged off screen.
+    const maxX = Math.max(0, (img.offsetWidth * s - innerWidth) / 2);
+    const maxY = Math.max(0, (img.offsetHeight * s - innerHeight) / 2);
+    if (s <= 1) { s = 1; x = 0; y = 0; }
+    x = Math.min(maxX, Math.max(-maxX, x));
+    y = Math.min(maxY, Math.max(-maxY, y));
+    img.style.transition = animate ? "transform .25s ease-out" : "none";
+    img.style.transform = `translate(${x}px, ${y}px) scale(${s})`;
+    box.classList.toggle("zoomed", s > 1.01);
+  };
+  // Zoom by k while keeping the point (px, py) under the finger/cursor still.
+  const zoomAt = (k, px, py, animate) => {
+    const ns = Math.min(5, Math.max(1, s * k));
+    k = ns / s;
+    x = px - innerWidth / 2 - (px - innerWidth / 2 - x) * k;
+    y = py - innerHeight / 2 - (py - innerHeight / 2 - y) * k;
+    s = ns;
+    apply(animate);
+  };
+
+  const close = () => {
+    box.remove();
+    document.body.style.overflow = prevOverflow;
+    document.removeEventListener("keydown", onKey);
+  };
+  const onKey = (e) => { if (e.key === "Escape") close(); };
+  document.addEventListener("keydown", onKey);
+  box.querySelector(".lb-close").onclick = close;
+
+  const pts = new Map();
+  let prev = null, moved = false, lastTap = 0;
+  const two = () => {
+    const [a, b] = [...pts.values()];
+    return { d: Math.hypot(a.x - b.x, a.y - b.y), mx: (a.x + b.x) / 2, my: (a.y + b.y) / 2 };
+  };
+  box.addEventListener("pointerdown", (e) => {
+    if (e.target.closest(".lb-close")) return;
+    try { box.setPointerCapture(e.pointerId); } catch {} // keep tracking if the finger leaves the photo
+    pts.set(e.pointerId, { x: e.clientX, y: e.clientY });
+    if (pts.size === 1) moved = false;
+    prev = pts.size === 2 ? two() : { x: e.clientX, y: e.clientY };
+  });
+  box.addEventListener("pointermove", (e) => {
+    if (!pts.has(e.pointerId)) return;
+    const p = pts.get(e.pointerId);
+    if (Math.hypot(e.clientX - p.x, e.clientY - p.y) > 6) moved = true;
+    pts.set(e.pointerId, { x: e.clientX, y: e.clientY });
+    if (pts.size === 2) {
+      const now = two();
+      x += now.mx - prev.mx;
+      y += now.my - prev.my;
+      zoomAt(now.d / prev.d, now.mx, now.my);
+      prev = now;
+    } else if (pts.size === 1 && s > 1) {
+      x += e.clientX - prev.x;
+      y += e.clientY - prev.y;
+      prev = { x: e.clientX, y: e.clientY };
+      apply();
+    }
+  });
+  const end = (e) => {
+    if (!pts.has(e.pointerId)) return;
+    pts.delete(e.pointerId);
+    if (pts.size === 1) prev = [...pts.values()][0];
+    if (pts.size || moved) return;
+    // A tap: outside the photo closes; a double-tap on it toggles zoom.
+    if (e.target !== img) { if (s === 1) close(); return; }
+    const now = Date.now();
+    if (now - lastTap < 320) {
+      if (s > 1) { s = 1; apply(true); } else zoomAt(2.5, e.clientX, e.clientY, true);
+      lastTap = 0;
+    } else lastTap = now;
+  };
+  box.addEventListener("pointerup", end);
+  box.addEventListener("pointercancel", end);
+  box.addEventListener("wheel", (e) => {
+    e.preventDefault();
+    zoomAt(e.deltaY < 0 ? 1.15 : 1 / 1.15, e.clientX, e.clientY);
+  }, { passive: false });
+}
+
+document.addEventListener("click", (e) => {
+  const page = e.target.closest("img[data-fill=page]");
+  if (page) openLightbox(page.src, page.alt);
+});
 document.fonts?.ready.then(enhanceTables);
 
 function methodItems(lines) {
@@ -248,17 +352,46 @@ function fillMockup() {
   });
 
   // Three-way switch: her page / the recipe / recipe table.
+  const ORDER = ["page", "recipe", "engineer"];
   const views = [];
   document.querySelectorAll("[data-views]").forEach((group) => {
     const scope = group.closest("[data-recipe]") || document;
-    const show = (v) => {
+    let current = null;
+    const show = (v, animate) => {
+      const dir = current === null ? 0 : Math.sign(ORDER.indexOf(v) - ORDER.indexOf(current));
+      current = v;
       group.querySelectorAll("[data-view]").forEach((b) => b.classList.toggle("on", b.dataset.view === v));
-      group.style.setProperty("--pos", ["page", "recipe", "engineer"].indexOf(v));
-      scope.querySelectorAll("[data-pane]").forEach((p) => (p.hidden = p.dataset.pane !== v));
+      group.style.setProperty("--pos", ORDER.indexOf(v));
+      scope.querySelectorAll("[data-pane]").forEach((p) => {
+        p.hidden = p.dataset.pane !== v;
+        p.classList.remove("pane-from-right", "pane-from-left");
+        if (!p.hidden && animate && dir) {
+          void p.offsetWidth; // restart the animation
+          p.classList.add(dir > 0 ? "pane-from-right" : "pane-from-left");
+        }
+      });
       enhanceTables();
     };
-    group.querySelectorAll("[data-view]").forEach((b) => (b.onclick = () => show(b.dataset.view)));
+    group.querySelectorAll("[data-view]").forEach((b) => (b.onclick = () => show(b.dataset.view, true)));
     views.push(show);
+
+    // Swipe left/right anywhere on the recipe to move between the three views. A swipe that
+    // starts on a table that scrolls sideways is left to the table.
+    let t0 = null;
+    scope.addEventListener("touchstart", (e) => {
+      const onTable = e.target.closest(".eng-scroller.scrolls");
+      t0 = e.touches.length === 1 && !onTable ? { x: e.touches[0].clientX, y: e.touches[0].clientY, t: Date.now() } : null;
+    }, { passive: true });
+    scope.addEventListener("touchend", (e) => {
+      if (!t0) return;
+      const dx = e.changedTouches[0].clientX - t0.x;
+      const dy = e.changedTouches[0].clientY - t0.y;
+      const quick = Date.now() - t0.t < 700;
+      t0 = null;
+      if (!quick || Math.abs(dx) < 60 || Math.abs(dx) < Math.abs(dy) * 1.5) return;
+      const next = ORDER[ORDER.indexOf(current) + (dx < 0 ? 1 : -1)];
+      if (next) show(next, true);
+    }, { passive: true });
   });
 
   // Home ↔ recipe "pages". #recipe-fish, #recipe-lemon (plain #recipe = Fish Cakes).
@@ -303,9 +436,33 @@ function fillMockup() {
     .method li.sub { counter-increment: none !important; display: block !important; padding: 8px 0 6px !important; font-weight: 700; }
     .method li.sub::before { content: none !important; }
 
-    .eng { table-layout: fixed; }
+    /* Auto layout: a step column is never narrower than its longest word, so text can't cross
+       a line. If that makes the table too wide for the screen, it switches to the sideways glide. */
+    .eng { table-layout: auto; }
     .eng-col-ing { width: 30%; }
+    .eng-op { overflow-wrap: normal; word-break: normal; hyphens: manual; }
     .eng-wrap { position: relative; }
+
+    /* Swiping between Her page / The recipe / Recipe Table slides the new view in. */
+    @keyframes paneFromRight { from { opacity: 0; transform: translateX(36px); } to { opacity: 1; transform: none; } }
+    @keyframes paneFromLeft { from { opacity: 0; transform: translateX(-36px); } to { opacity: 1; transform: none; } }
+    [data-recipe] { overflow-x: clip; }
+    .pane-from-right { animation: paneFromRight .28s ease-out; }
+    .pane-from-left { animation: paneFromLeft .28s ease-out; }
+
+    /* Original page: tap to open full screen, pinch / double-tap / scroll-wheel to zoom. */
+    [data-fill=page] { cursor: zoom-in; }
+    .lb { position: fixed; inset: 0; z-index: 2000; display: flex; align-items: center; justify-content: center;
+      background: rgba(18,15,12,.94); touch-action: none; animation: lbIn .2s ease-out; overflow: hidden; }
+    @keyframes lbIn { from { opacity: 0; } }
+    .lb-img { max-width: 94vw; max-height: 90vh; user-select: none; -webkit-user-drag: none; transform-origin: center;
+      will-change: transform; box-shadow: 0 20px 60px rgba(0,0,0,.5); cursor: zoom-in; }
+    .lb.zoomed .lb-img { cursor: grab; }
+    .lb-close { position: absolute; top: 14px; right: 14px; width: 46px; height: 46px; border-radius: 50%; border: 0;
+      background: rgba(255,255,255,.16); color: #fff; font: 300 30px/46px system-ui, sans-serif; cursor: pointer; z-index: 1; }
+    .lb-close:hover { background: rgba(255,255,255,.28); }
+    .lb-hint { position: absolute; left: 0; right: 0; bottom: 22px; margin: 0; text-align: center; color: #e8e2da;
+      font: 14px system-ui, sans-serif; pointer-events: none; transition: opacity .6s; }
 
     /* Sideways glide (only kicks in when the table is wider than the screen). */
     .eng-scroller.scrolls .eng-wrap {
@@ -340,6 +497,7 @@ function fillMockup() {
       .eng { table-layout: auto !important; width: max-content !important; min-width: 100% !important; font-size: 14px !important; line-height: 1.35 !important; }
       .eng td { padding: 8px 8px !important; }
       .eng-col-ing { width: 136px; }
+      .eng-col-step { width: auto !important; }
       .eng-ing { width: 136px !important; min-width: 136px !important; max-width: 136px !important; }
       .eng-op, .eng-gap { width: 96px !important; min-width: 96px !important; max-width: 96px !important; }
     }`;
