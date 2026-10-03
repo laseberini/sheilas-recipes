@@ -1,10 +1,10 @@
 <!doctype html>
-<html lang="en" data-version="0.39" data-built="2026-10-03 22:14">
+<html lang="en" data-version="0.40" data-built="2026-10-03 22:20">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Sheila's Recipes</title>
-<link rel="manifest" href="manifest.webmanifest?v=0.39">
+<link rel="manifest" href="manifest.webmanifest?v=0.40">
 <link rel="icon" type="image/png" sizes="32x32" href="images/icons/sheila-32.png">
 <link rel="apple-touch-icon" href="images/icons/sheila-180.png">
 <meta name="apple-mobile-web-app-title" content="Sheila's Recipes">
@@ -13,8 +13,8 @@
 <meta name="theme-color" content="#1d3f7a">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,400;1,9..144,600&family=Work+Sans:wght@400;500;600&display=swap" rel="stylesheet">
-<script src="recipes-data.js?v=0.39"></script>
-<script src="shared.js?v=0.39"></script>
+<script src="recipes-data.js?v=0.40"></script>
+<script src="shared.js?v=0.40"></script>
 <style>
   :root {
     --link-accent: #1d3f7a;
@@ -138,9 +138,10 @@
   .cat-list { list-style: none; margin: 0; padding: 10px 24px 18px; }
   .cat-list li { border-bottom: 1px solid var(--sand); }
   .cat-list li:last-child { border: 0; }
-  .cat-list a { display: flex; justify-content: space-between; padding: 10px 0; text-decoration: none; }
-  .cat-list a::after { content: "→"; color: var(--terracotta); opacity: 0; transition: .15s; }
-  .cat-list a:hover::after { opacity: 1; transform: translateX(3px); }
+  /* Each recipe: dish photo, name, who it's from, and an arrow (same rows as the category sheet). */
+  .cat-list a { padding: 10px 0; }
+  .cat-list a:hover b { transform: translateX(3px); }
+  .cat-list a b { transition: transform .15s; }
 
   /* Recipe */
   .r-hero { background: var(--sand); }

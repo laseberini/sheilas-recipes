@@ -258,7 +258,7 @@ function fillMockup() {
     el.innerHTML = MOCK.categories.map((c) => `
       <section class="cat">
         <h3 class="cat-name">${esc(c.name)} <span class="cat-count">${c.ids.length}</span></h3>
-        <ul class="cat-list">${c.ids.map((id) => `<li data-id="${id}"><a href="#recipe-${id}">${esc(RECIPES[id].title)}</a></li>`).join("")}</ul>
+        <ul class="cat-list person-recipes">${c.ids.map((id) => `<li data-id="${id}">${recipeLinks([[id, RECIPES[id]]])}</li>`).join("")}</ul>
       </section>`).join("") + '<p class="no-results" hidden>No recipes match that search.</p>';
   });
   document.querySelectorAll("[data-search]").forEach((input) => {
@@ -435,7 +435,7 @@ function fillMockup() {
 const recipeLinks = (entries, currentKey, showWho = true) => entries.map(([rid, r]) => {
   const here = rid === currentKey;
   const who = showWho && r.person && MOCK.people?.[r.person];
-  return `<a href="#recipe-${rid}"${here ? ' aria-current="page"' : ""}>${r.photo ? `<img src="${withV(r.photo)}" alt="">` : ""}` +
+  return `<a href="#recipe-${rid}"${here ? ' aria-current="page"' : ""}>${r.photo ? `<img src="${withV(r.photo)}" alt="" loading="lazy">` : ""}` +
     `<span>${esc(r.title)}${who ? `<small>From ${esc(who.name)}</small>` : ""}</span><b aria-hidden="true">${here ? "You're here" : "→"}</b></a>`;
 }).join("");
 const byTitle = ([, a], [, b]) => a.title.localeCompare(b.title);
