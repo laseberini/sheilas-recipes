@@ -384,7 +384,7 @@ function fillMockup() {
 // (tools/memories-apps-script.gs) and shows here once the "Approved" box is ticked there.
 // Until MEMORIES_URL is set, nothing about memories shows on the site.
 const MEMORIES_URL = "https://script.google.com/macros/s/AKfycbwj917FYZgfLXmiZN49o85NAws-T97fkIzzqK5tIB7utVhj7MEiJ6uYPYHEa764KFdQ/exec";
-let memories = [];
+let memories = []; // newest first
 
 const memWhen = (at) => (at ? new Date(at).toLocaleDateString("en-ZA", { month: "long", year: "numeric" }) : "");
 const memCard = (m, about = "") => `<div class="mem-card"><blockquote>${esc(m.text)}</blockquote>
@@ -402,7 +402,7 @@ function drawMemories() {
     a.textContent = mine.length ? `${mine.length} ${mine.length === 1 ? "memory" : "memories"} ↓` : "Share a memory ↓";
   });
   // Home page: the newest ten as a carousel (swipe, or tap a dot), each linking to its dish.
-  const recent = memories.filter((m) => RECIPES[m.recipe]).sort((a, b) => (b.at || "").localeCompare(a.at || "")).slice(0, 10);
+  const recent = memories.filter((m) => RECIPES[m.recipe]).slice(0, 10);
   document.querySelectorAll("[data-mem-home]").forEach((s) => (s.hidden = !recent.length));
   document.querySelectorAll("[data-fill=home-memories]").forEach((el) => {
     el.innerHTML = recent.map((m) => memCard(m, `about <a href="#recipe-${m.recipe}">${esc(RECIPES[m.recipe].title)}</a>`)).join("");
@@ -433,7 +433,7 @@ function setupMemories() {
   drawMemories();
   fetch(MEMORIES_URL)
     .then((r) => r.json())
-    .then((d) => { memories = d.memories || []; drawMemories(); })
+    .then((d) => { memories = (d.memories || []).sort((a, b) => (b.at || "").localeCompare(a.at || "")); drawMemories(); })
     .catch(() => {}); // can't reach the sheet: the form still works, the list just stays empty
 
   document.querySelectorAll("[data-mem-form]").forEach((form) => form.addEventListener("submit", async (e) => {
