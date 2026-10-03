@@ -377,7 +377,7 @@ function fillMockup() {
   const style = document.createElement("style");
   style.textContent = `
     [hidden] { display: none !important; }
-    .ver-top { position: fixed; bottom: 8px; left: 8px; z-index: 998; font: 600 11px/1 system-ui, sans-serif; letter-spacing: .04em;
+    .ver-top { position: fixed; top: 8px; right: 8px; z-index: 998; font: 600 11px/1 system-ui, sans-serif; letter-spacing: .04em;
       color: #fff; background: rgba(20,20,20,.62); padding: 5px 8px; border-radius: 99px; pointer-events: none; }
     .no-results { grid-column: 1 / -1; text-align: center; color: var(--muted, #777); padding: 30px 0; }
     .rel { display: flex; flex-wrap: wrap; gap: 8px 18px; align-items: center; margin: 0 0 22px; font-size: 15px; }
@@ -522,19 +522,7 @@ async function updateWake() {
   } catch { wakeLock = null; } // e.g. battery saver: the phone just sleeps as normal
   wakeBusy = false;
 }
-// A+ : extra-large text on recipes, remembered on this phone.
-function applyTextSize() {
-  const big = store.get("bigText", false);
-  document.documentElement.classList.toggle("big-text", big);
-  document.querySelectorAll("[data-text-size]").forEach((b) => {
-    b.textContent = big ? "A" : "A+";
-    b.setAttribute("aria-pressed", String(big));
-    b.setAttribute("aria-label", big ? "Normal text size" : "Bigger text");
-  });
-}
 function setupCooking() {
-  document.querySelectorAll("[data-text-size]").forEach((b) => (b.onclick = () => { store.set("bigText", !store.get("bigText", false)); applyTextSize(); }));
-  applyTextSize();
   document.querySelectorAll("[data-clear-ticks]").forEach((b) => (b.onclick = () => { store.set(ticksKey(), null); applyTicks(); }));
   window.addEventListener("hashchange", updateWake);
   document.addEventListener("visibilitychange", updateWake); // the lock lapses when the phone locks or you switch apps
