@@ -239,7 +239,7 @@ const RECIPES = {
     "pages": [
       "../images/pages/p170520.jpg"
     ],
-    "photo": null,
+    "photo": "../images/dishes/minestroni-soup.jpg",
     "photoReal": false,
     "uses": [],
     "ingredients": [
