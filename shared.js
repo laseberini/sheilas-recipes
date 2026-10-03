@@ -185,6 +185,16 @@ function renderRecipe(R, key) {
       el.textContent = R[key] ? (el.dataset.prefix || "") + R[key] : "";
     });
   }
+  // "From Nonna" opens who Nonna is, when we know.
+  const person = R.person && MOCK.people?.[R.person];
+  set("from", (el) => {
+    if (person) el.textContent = (el.dataset.prefix || "") + person.name;
+    el.classList.toggle("tap", !!person);
+    person ? el.setAttribute("role", "button") : el.removeAttribute("role");
+    el.tabIndex = person ? 0 : -1;
+    el.onclick = person ? () => openPerson(R.person) : null;
+    el.onkeydown = person ? (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); openPerson(R.person); } } : null;
+  });
   set("ingredients", (el) => (el.innerHTML = R.ingredients
     .map((i) => (i.trim().endsWith(":") ? `<li class="sub">${esc(i)}</li>` : `<li>${linkify(i, R)}</li>`)).join("")));
   document.querySelectorAll("[data-views]").forEach((group) => {
@@ -397,6 +407,46 @@ function fillMockup() {
   document.head.appendChild(style);
 }
 
+// Whose recipe: photo, who they are to Sheila, a few lines, and all their recipes on the site.
+// Opening adds a history step (same address), so the phone's back button closes it.
+const personInitials = (name) => name.split(/\s+/).filter((w) => !/^the$/i.test(w)).map((w) => w[0]).join("").slice(0, 2).toUpperCase();
+function openPerson(id) {
+  const p = MOCK.people?.[id];
+  const panel = document.querySelector("[data-person]");
+  if (!p || !panel) return;
+  const fill = (name, html) => panel.querySelectorAll(`[data-fill=${name}]`).forEach((el) => (el.innerHTML = html));
+  fill("person-photo", p.photo ? `<img src="${withV(p.photo)}" alt="${esc(p.name)}">` : `<div class="initials">${esc(personInitials(p.name))}</div>`);
+  fill("person-relation", esc(p.relation || ""));
+  fill("person-name", esc(p.name));
+  fill("person-bio", (p.bio || "").split(/\n+/).filter(Boolean).map((t) => `<p>${esc(t)}</p>`).join(""));
+  const theirs = Object.entries(RECIPES).filter(([, r]) => r.person === id).sort(([, a], [, b]) => a.title.localeCompare(b.title));
+  fill("person-rh", `${theirs.length === 1 ? "Recipe" : "Recipes"} from ${esc(p.name)}`);
+  fill("person-recipes", theirs.map(([rid, r]) =>
+    `<a href="#recipe-${rid}">${r.photo ? `<img src="${withV(r.photo)}" alt="">` : ""}<span>${esc(r.title)}</span><b aria-hidden="true">→</b></a>`).join(""));
+  const img = panel.querySelector(".person-photo img");
+  if (img) img.onclick = () => openLightbox(img.src, p.name);
+  panel.hidden = false;
+  panel.querySelector(".story-panel").scrollTo(0, 0);
+  document.documentElement.style.overflow = "hidden";
+  if (!history.state?.person) history.pushState({ person: id }, "", location.href);
+}
+function hidePerson() {
+  const panel = document.querySelector("[data-person]");
+  if (!panel || panel.hidden) return;
+  panel.hidden = true;
+  document.documentElement.style.overflow = "";
+}
+const closePerson = () => (history.state?.person ? history.back() : hidePerson());
+function setupPerson() {
+  const panel = document.querySelector("[data-person]");
+  if (!panel) return;
+  panel.querySelector("[data-person-close]").onclick = (e) => { e.preventDefault(); closePerson(); };
+  panel.addEventListener("click", (e) => { if (e.target === panel) closePerson(); });
+  document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !panel.hidden && !document.querySelector(".lb")) closePerson(); });
+  window.addEventListener("popstate", () => { if (!history.state?.person) hidePerson(); });
+  window.addEventListener("hashchange", hidePerson); // tapped one of their recipes
+}
+
 // Memories: anyone can share a memory of a dish. It lands in the family's Google Sheet
 // (tools/memories-apps-script.gs) and shows here once the "Approved" box is ticked there.
 // Until MEMORIES_URL is set, nothing about memories shows on the site.
@@ -526,3 +576,4 @@ function setupMemories() {
 
 document.addEventListener("DOMContentLoaded", fillMockup);
 document.addEventListener("DOMContentLoaded", setupMemories);
+document.addEventListener("DOMContentLoaded", setupPerson);

@@ -39,6 +39,7 @@ for (const r of live) {
   recipes[r.id] = {
     title: clean(r.title), from: clean(r.from || "") || null, date: clean(r.date || "") || null, serves: serves || null,
     category: r.category,
+    person: r.personId || null,
     pages: pages.map((p) => `images/pages/${p}.jpg`),
     photo: hasPhoto ? photoFile : null,
     photoReal: hasPhoto && ph.source === "real",
@@ -52,8 +53,19 @@ for (const r of live) {
   };
 }
 
+// Only the people behind live recipes are published (with their photo, if they have one).
+const people = {};
+for (const p of data.people || []) {
+  if (!Object.values(recipes).some((r) => r.person === p.id)) continue;
+  const photo = p.photo && exists(p.photo) ? p.photo : null;
+  if (photo) files.add(photo);
+  people[p.id] = { name: clean(p.name), relation: clean(p.relation || "") || null, bio: clean(p.bio || "") || null, photo };
+}
+for (const r of Object.values(recipes)) if (r.person && !people[r.person]) r.person = null;
+
 const byTitle = (a, b) => recipes[a].title.localeCompare(recipes[b].title);
 const MOCK = {
+  people,
   categories: data.categories
     .map((name) => ({ name, ids: Object.keys(recipes).filter((id) => recipes[id].category === name).sort(byTitle) }))
     .filter((c) => c.ids.length),

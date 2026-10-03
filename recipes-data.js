@@ -7,6 +7,7 @@ const RECIPES = {
     "date": "4/09",
     "serves": null,
     "category": "Meat, Chicken & Fish",
+    "person": "simy",
     "pages": [
       "images/pages/p170308.jpg"
     ],
@@ -33,10 +34,11 @@ const RECIPES = {
   },
   "caponata": {
     "title": "Aletta's Wonderful Sicilian Caponata",
-    "from": "Aletta's",
+    "from": "Aletta Taranto",
     "date": null,
     "serves": null,
     "category": "Soups & Starters",
+    "person": "aletta",
     "pages": [
       "images/pages/p170345.jpg"
     ],
@@ -71,6 +73,7 @@ const RECIPES = {
     "date": null,
     "serves": null,
     "category": "Soups & Starters",
+    "person": "nonna",
     "pages": [
       "images/pages/p170443.jpg"
     ],
@@ -101,6 +104,7 @@ const RECIPES = {
     "date": null,
     "serves": null,
     "category": "Meat, Chicken & Fish",
+    "person": "nonna",
     "pages": [
       "images/pages/p170451.jpg"
     ],
@@ -131,10 +135,11 @@ const RECIPES = {
   },
   "cape-bobotie": {
     "title": "Cape Bobotie",
-    "from": null,
+    "from": "Sheila",
     "date": null,
     "serves": "6-8",
     "category": "Meat, Chicken & Fish",
+    "person": "sheila",
     "pages": [
       "images/pages/p170458.jpg"
     ],
@@ -177,6 +182,7 @@ const RECIPES = {
     "date": null,
     "serves": null,
     "category": "Meat, Chicken & Fish",
+    "person": "granny-naomi",
     "pages": [
       "images/pages/p170505.jpg"
     ],
@@ -204,6 +210,7 @@ const RECIPES = {
     "date": null,
     "serves": null,
     "category": "Meat, Chicken & Fish",
+    "person": "nonna",
     "pages": [
       "images/pages/p170513.jpg"
     ],
@@ -232,10 +239,11 @@ const RECIPES = {
   },
   "minestroni-soup": {
     "title": "Minestrone Soup",
-    "from": "Mom's",
+    "from": "Sheila",
     "date": null,
     "serves": "6-8",
     "category": "Soups & Starters",
+    "person": "sheila",
     "pages": [
       "images/pages/p170520.jpg"
     ],
@@ -280,6 +288,7 @@ const RECIPES = {
     "date": null,
     "serves": null,
     "category": "Pasta & Rice",
+    "person": "sheila",
     "pages": [
       "images/pages/p170556.jpg"
     ],
@@ -320,10 +329,11 @@ const RECIPES = {
   },
   "gnocchi": {
     "title": "Gnocchi",
-    "from": null,
+    "from": "Sheila",
     "date": null,
     "serves": null,
     "category": "Pasta & Rice",
+    "person": "sheila",
     "pages": [
       "images/pages/p170604.jpg"
     ],
@@ -353,10 +363,11 @@ const RECIPES = {
   },
   "chicken-ala-familia": {
     "title": "Chicken à la Familia",
-    "from": "Goldberg girls",
+    "from": "The Goldberg girls",
     "date": null,
     "serves": null,
     "category": "Meat, Chicken & Fish",
+    "person": "goldberg-girls",
     "pages": [
       "images/pages/p-chicken-ala-familia.jpg"
     ],
@@ -395,6 +406,44 @@ const RECIPES = {
 };
 
 const MOCK = {
+  "people": {
+    "nonna": {
+      "name": "Nonna",
+      "relation": "Sheila's mother-in-law",
+      "bio": "She was Italian but born in Turkey, raised on the Island Rhodes, married an Italian Slav & called herself 'oriental' Italian. She was just the most wonderful cook. She brought Italian cooking into the Seberini family and many more family members. Her Italian recipes are unmatched.",
+      "photo": "images/people/nonna.jpg"
+    },
+    "aletta": {
+      "name": "Aletta Taranto",
+      "relation": "Sheila's friend from their Swaziland days",
+      "bio": "Also married to an Italian, she helped Sheila begin her 'like' of cooking. (From Sheila's introduction)",
+      "photo": "images/people/aletta.jpg"
+    },
+    "sheila": {
+      "name": "Sheila",
+      "relation": "Sheila Seberini, the publisher of this Recipe App",
+      "bio": null,
+      "photo": "images/people/sheila.jpg"
+    },
+    "granny-naomi": {
+      "name": "Granny Naomi",
+      "relation": "Sheila's late mother",
+      "bio": "Her parents came from Riga & she had wonderful recipes to share as well as her 'own' wonderful food. The ultra host who could with ease handle a 20 person Shabbat dinner followed by an eqally impressive Sunday lunch. She fed us all and was the matriarch of the family. Definitely set the standard for family meals.",
+      "photo": "images/people/granny-naomi.jpg"
+    },
+    "simy": {
+      "name": "Simy",
+      "relation": "Sheila's late daughter in law",
+      "bio": "Simy will always be remembered for her lovely smile and friendly nature. Her Fish cakes and Mac and cheese were famous.",
+      "photo": "images/people/simy.jpg"
+    },
+    "goldberg-girls": {
+      "name": "The Goldberg girls",
+      "relation": "Sheila, Rosy, Lorraine and Naomi.",
+      "bio": "The females of the Goldberg clan, all excellent cooks in their own right. Lorraine famous for her cheese-cake and Rosy for her butternut roast vegetables.",
+      "photo": null
+    }
+  },
   "categories": [
     {
       "name": "Soups & Starters",
