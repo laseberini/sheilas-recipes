@@ -8,9 +8,9 @@ const RECIPES = {
     "serves": null,
     "category": "Meat, Chicken & Fish",
     "pages": [
-      "../images/pages/p170308.jpg"
+      "images/pages/p170308.jpg"
     ],
-    "photo": "../images/dishes/fish-cakes.jpg",
+    "photo": "images/dishes/fish-cakes.jpg",
     "photoReal": false,
     "uses": [],
     "ingredients": [
@@ -38,9 +38,9 @@ const RECIPES = {
     "serves": null,
     "category": "Soups & Starters",
     "pages": [
-      "../images/pages/p170345.jpg"
+      "images/pages/p170345.jpg"
     ],
-    "photo": "../images/dishes/caponata.jpg",
+    "photo": "images/dishes/caponata.jpg",
     "photoReal": false,
     "uses": [],
     "ingredients": [
@@ -72,9 +72,9 @@ const RECIPES = {
     "serves": null,
     "category": "Soups & Starters",
     "pages": [
-      "../images/pages/p170443.jpg"
+      "images/pages/p170443.jpg"
     ],
-    "photo": "../images/dishes/nonna-s-butter-bean-potato-salad.jpg",
+    "photo": "images/dishes/nonna-s-butter-bean-potato-salad.jpg",
     "photoReal": false,
     "uses": [],
     "ingredients": [
@@ -102,9 +102,9 @@ const RECIPES = {
     "serves": null,
     "category": "Meat, Chicken & Fish",
     "pages": [
-      "../images/pages/p170451.jpg"
+      "images/pages/p170451.jpg"
     ],
-    "photo": "../images/dishes/nonna-s-artichoke-chicken.jpg",
+    "photo": "images/dishes/nonna-s-artichoke-chicken.jpg",
     "photoReal": true,
     "uses": [],
     "ingredients": [
@@ -136,9 +136,9 @@ const RECIPES = {
     "serves": "6-8",
     "category": "Meat, Chicken & Fish",
     "pages": [
-      "../images/pages/p170458.jpg"
+      "images/pages/p170458.jpg"
     ],
-    "photo": "../images/dishes/cape-bobotie.jpg",
+    "photo": "images/dishes/cape-bobotie.jpg",
     "photoReal": false,
     "uses": [],
     "ingredients": [
@@ -178,9 +178,9 @@ const RECIPES = {
     "serves": null,
     "category": "Meat, Chicken & Fish",
     "pages": [
-      "../images/pages/p170505.jpg"
+      "images/pages/p170505.jpg"
     ],
-    "photo": "../images/dishes/brisket-in-coke.jpg",
+    "photo": "images/dishes/brisket-in-coke.jpg",
     "photoReal": false,
     "uses": [],
     "ingredients": [
@@ -205,9 +205,9 @@ const RECIPES = {
     "serves": null,
     "category": "Meat, Chicken & Fish",
     "pages": [
-      "../images/pages/p170513.jpg"
+      "images/pages/p170513.jpg"
     ],
-    "photo": "../images/dishes/pulpetti.jpg",
+    "photo": "images/dishes/pulpetti.jpg",
     "photoReal": false,
     "uses": [],
     "ingredients": [
@@ -237,9 +237,9 @@ const RECIPES = {
     "serves": "6-8",
     "category": "Soups & Starters",
     "pages": [
-      "../images/pages/p170520.jpg"
+      "images/pages/p170520.jpg"
     ],
-    "photo": "../images/dishes/minestroni-soup.jpg",
+    "photo": "images/dishes/minestroni-soup.jpg",
     "photoReal": false,
     "uses": [],
     "ingredients": [
@@ -281,9 +281,9 @@ const RECIPES = {
     "serves": null,
     "category": "Pasta & Rice",
     "pages": [
-      "../images/pages/p170556.jpg"
+      "images/pages/p170556.jpg"
     ],
-    "photo": "../images/dishes/easy-no-meat-lasagne-quite-a-big-dish.jpg",
+    "photo": "images/dishes/easy-no-meat-lasagne-quite-a-big-dish.jpg",
     "photoReal": false,
     "uses": [],
     "ingredients": [
@@ -325,9 +325,9 @@ const RECIPES = {
     "serves": null,
     "category": "Pasta & Rice",
     "pages": [
-      "../images/pages/p170604.jpg"
+      "images/pages/p170604.jpg"
     ],
-    "photo": "../images/dishes/gnocchi.jpg",
+    "photo": "images/dishes/gnocchi.jpg",
     "photoReal": false,
     "uses": [],
     "ingredients": [
@@ -358,9 +358,9 @@ const RECIPES = {
     "serves": null,
     "category": "Meat, Chicken & Fish",
     "pages": [
-      "../images/pages/p-chicken-ala-familia.jpg"
+      "images/pages/p-chicken-ala-familia.jpg"
     ],
-    "photo": "../images/dishes/chicken-ala-familia.jpg",
+    "photo": "images/dishes/chicken-ala-familia.jpg",
     "photoReal": false,
     "uses": [],
     "ingredients": [
@@ -431,5 +431,5 @@ const MOCK = {
     "Its really been fun & is a 'Pot Pourrie' of all these mixed & scrumptious recipes so kindly given to me.",
     "Thanks all of you for your generosity & willingness to part with your treasures!!"
   ],
-  "introPage": "../images/pages/p-intro.jpg"
+  "introPage": "images/pages/p-intro.jpg"
 };

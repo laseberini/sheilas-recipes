@@ -1,6 +1,6 @@
 <!doctype html>
 <meta charset="utf-8">
 <title>Sheila's Recipes</title>
-<!-- This design was retired; old links land on the site. -->
-<script>location.replace("b-mediterranean.html" + location.hash);</script>
-<meta http-equiv="refresh" content="0; url=b-mediterranean.html">
+<!-- The site lives at the root now; old links land there. -->
+<script>location.replace((location.protocol === "file:" ? "../index.html" : "../") + location.hash);</script>
+<meta http-equiv="refresh" content="0; url=../">

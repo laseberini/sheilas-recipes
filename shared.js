@@ -12,7 +12,7 @@ const withV = (url) => `${url}${url.includes("?") ? "&" : "?"}v=${VERSION}`;
 (async () => {
   if (location.protocol === "file:") return;
   try {
-    const res = await fetch(`${new URL("../version.json", location.href)}?t=${Date.now()}`, { cache: "no-store" });
+    const res = await fetch(`${new URL("version.json", location.href)}?t=${Date.now()}`, { cache: "no-store" });
     const live = (await res.json()).version;
     const url = new URL(location.href);
     if (live && live !== VERSION && url.searchParams.get("v") !== live) {
