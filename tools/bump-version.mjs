@@ -24,7 +24,8 @@ for (const f of pages) {
   const file = path.join(ROOT, f);
   const html = fs.readFileSync(file, "utf8")
     .replace(/<html lang="en"[^>]*>/, `<html lang="en" data-version="${version}" data-built="${built}">`)
-    .replace(/(shared|recipes-data)\.js(\?v=[^"]*)?"/g, (_, name) => `${name}.js?v=${version}"`);
+    .replace(/(shared|recipes-data)\.js(\?v=[^"]*)?"/g, (_, name) => `${name}.js?v=${version}"`)
+    .replace(/manifest\.webmanifest(\?v=[^"]*)?"/, `manifest.webmanifest?v=${version}"`); // phones re-read the app settings each release
   fs.writeFileSync(file, html);
 }
 console.log(`v${current} → v${version} (${built}); updated version.json and ${pages.length} pages`);
