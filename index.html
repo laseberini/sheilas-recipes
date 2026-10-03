@@ -1,10 +1,10 @@
 <!doctype html>
-<html lang="en" data-version="0.24" data-built="2026-10-03 19:38">
+<html lang="en" data-version="0.25" data-built="2026-10-03 19:56">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Sheila's Recipes</title>
-<link rel="manifest" href="manifest.webmanifest?v=0.24">
+<link rel="manifest" href="manifest.webmanifest?v=0.25">
 <link rel="icon" type="image/png" sizes="32x32" href="images/icons/sheila-32.png">
 <link rel="apple-touch-icon" href="images/icons/sheila-180.png">
 <meta name="apple-mobile-web-app-title" content="Sheila's Recipes">
@@ -13,8 +13,8 @@
 <meta name="theme-color" content="#1d3f7a">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,400;1,9..144,600&family=Work+Sans:wght@400;500;600&display=swap" rel="stylesheet">
-<script src="recipes-data.js?v=0.24"></script>
-<script src="shared.js?v=0.24"></script>
+<script src="recipes-data.js?v=0.25"></script>
+<script src="shared.js?v=0.25"></script>
 <style>
   :root {
     --link-accent: #1d3f7a;
@@ -151,6 +151,15 @@
   .home-mem .mem-list::-webkit-scrollbar { display: none; }
   .home-mem .mem-card { flex: 0 0 min(88%, 620px); scroll-snap-align: center; }
   .home-mem .mem-card blockquote { display: -webkit-box; -webkit-line-clamp: 6; -webkit-box-orient: vertical; overflow: hidden; }
+  /* The dish leads each home card; the opening quote mark moves inline beneath it. */
+  .mem-home-card::before { content: none; }
+  .mem-home-card blockquote { margin-top: 14px; }
+  .mem-home-card blockquote::before { content: "“"; font: 600 46px/0 Fraunces, serif; color: var(--lemon); vertical-align: -.38em; margin-right: 4px; }
+  .mem-dish { display: flex; align-items: center; gap: 12px; padding-bottom: 14px; border-bottom: 1px solid var(--sand); text-decoration: none; color: var(--cobalt); }
+  .mem-dish img { flex: none; width: 52px; height: 52px; border-radius: 50%; object-fit: cover; border: 3px solid var(--sand); }
+  .mem-dish span { flex: 1; font: 600 clamp(17px, 4.6vw, 21px)/1.2 Fraunces, serif; }
+  .mem-dish b { flex: none; color: var(--terracotta); font-size: 20px; transition: transform .15s; }
+  .mem-dish:hover b { transform: translateX(3px); }
   .mem-dots { display: flex; justify-content: center; gap: 8px; margin-top: 4px; }
   .mem-dots button { width: 9px; height: 9px; padding: 0; border: 0; border-radius: 99px; background: rgba(29,63,122,.25); cursor: pointer; transition: width .2s, background .2s; }
   .mem-dots button.on { width: 24px; background: var(--cobalt); }

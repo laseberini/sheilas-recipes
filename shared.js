@@ -389,6 +389,14 @@ let memories = []; // newest first
 const memWhen = (at) => (at ? new Date(at).toLocaleDateString("en-ZA", { month: "long", year: "numeric" }) : "");
 const memCard = (m, about = "") => `<div class="mem-card"><blockquote>${esc(m.text)}</blockquote>
   <div class="mem-who">${esc(m.name)}<small>${[esc(memWhen(m.at)), about].filter(Boolean).join(" · ")}</small></div></div>`;
+// Home carousel card: the dish leads (photo + name, tapping it opens the recipe), then the memory.
+const memHomeCard = (m) => {
+  const R = RECIPES[m.recipe];
+  return `<div class="mem-card mem-home-card">
+  <a class="mem-dish" href="#recipe-${m.recipe}">${R.photo ? `<img src="${withV(R.photo)}" alt="">` : ""}<span>${esc(R.title)}</span><b aria-hidden="true">→</b></a>
+  <blockquote>${esc(m.text)}</blockquote>
+  <div class="mem-who">${esc(m.name)}<small>${esc(memWhen(m.at))}</small></div></div>`;
+};
 const memRecipeId = () => (location.hash.match(/^#recipe-([\w-]+)$/) || [])[1];
 
 function drawMemories() {
@@ -405,7 +413,7 @@ function drawMemories() {
   const recent = memories.filter((m) => RECIPES[m.recipe]).slice(0, 10);
   document.querySelectorAll("[data-mem-home]").forEach((s) => (s.hidden = !recent.length));
   document.querySelectorAll("[data-fill=home-memories]").forEach((el) => {
-    el.innerHTML = recent.map((m) => memCard(m, `about <a href="#recipe-${m.recipe}">${esc(RECIPES[m.recipe].title)}</a>`)).join("");
+    el.innerHTML = recent.map(memHomeCard).join("");
     const dots = el.parentElement.querySelector("[data-fill=mem-dots]");
     dots.hidden = recent.length < 2;
     dots.innerHTML = recent.map((_, i) => `<button type="button" aria-label="Memory ${i + 1} of ${recent.length}"></button>`).join("");
