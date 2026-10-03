@@ -221,6 +221,8 @@ function renderRecipe(R, key) {
     el.innerHTML = R.pages.map((p, i) => `<img src="${withV(p)}" alt="The handwritten recipe page${R.pages.length > 1 ? ` (${i + 1} of ${R.pages.length})` : ""}">`).join("") +
       `<figcaption>${R.pages.length > 1 ? "The handwritten pages" : "The handwritten page"} · tap to see</figcaption>`;
   });
+  cookKey = key;
+  applyTicks();
   // With a photo, the header shows it full width with the title on top; without one, the plain header.
   document.querySelectorAll(".r-hero").forEach((h) => h.classList.toggle("has-hero", !!R.photo));
   // Only photos Sheila approved; no photo, no frame.
@@ -468,6 +470,69 @@ function setupSheet() {
   window.addEventListener("hashchange", hideSheet); // picked a recipe, or "See all the recipes"
 }
 
+// Cooking help. Saved on this phone only (localStorage), so it never needs the internet.
+const store = {
+  get(k, fallback) { try { const v = localStorage.getItem(k); return v === null ? fallback : JSON.parse(v); } catch { return fallback; } },
+  set(k, v) { try { v === null ? localStorage.removeItem(k) : localStorage.setItem(k, JSON.stringify(v)); } catch {} },
+};
+
+// Tick off ingredients and steps as you go (remembered per recipe); the next step to do is highlighted.
+let cookKey = null;
+const ticksKey = () => `ticks:${cookKey}`;
+function applyTicks() {
+  const t = store.get(ticksKey(), { i: [], m: [] });
+  document.querySelectorAll("[data-fill=ingredients] li").forEach((li, n) => li.classList.toggle("done", t.i.includes(n)));
+  const steps = [...document.querySelectorAll("[data-fill=method] li")];
+  steps.forEach((li, n) => li.classList.toggle("done", t.m.includes(n)));
+  const next = t.m.length ? steps.find((li) => !li.classList.contains("sub") && !li.classList.contains("done")) : null;
+  steps.forEach((li) => li.classList.toggle("next", li === next));
+  document.querySelectorAll("[data-clear-ticks]").forEach((b) => (b.hidden = !t.i.length && !t.m.length));
+}
+document.addEventListener("click", (e) => {
+  const li = e.target.closest("[data-fill=ingredients] li, [data-fill=method] li");
+  if (!li || li.classList.contains("sub") || e.target.closest("a")) return; // links inside a step still work
+  const kind = li.parentElement.dataset.fill === "ingredients" ? "i" : "m";
+  const n = [...li.parentElement.children].indexOf(li);
+  const t = store.get(ticksKey(), { i: [], m: [] });
+  t[kind] = t[kind].includes(n) ? t[kind].filter((x) => x !== n) : [...t[kind], n];
+  store.set(ticksKey(), t.i.length || t.m.length ? t : null);
+  applyTicks();
+});
+
+// Keep the screen on while a recipe is open (on by default; the switch turns it off for good).
+const wakeSupported = "wakeLock" in navigator;
+const wakeWanted = () => store.get("keepScreenOn", true);
+let wakeLock = null, wakeBusy = false;
+async function updateWake() {
+  document.querySelectorAll("[data-wake]").forEach((b) => {
+    b.hidden = !wakeSupported;
+    b.setAttribute("aria-pressed", String(wakeWanted()));
+    b.querySelector(".cook-label").textContent = wakeWanted() ? "Screen stays on" : "Screen may go dark";
+  });
+  if (!wakeSupported || wakeBusy) return;
+  const onRecipe = document.querySelector("[data-screen=recipe]")?.hidden === false;
+  const want = wakeWanted() && onRecipe && document.visibilityState === "visible";
+  wakeBusy = true;
+  try {
+    if (want && !wakeLock) {
+      wakeLock = await navigator.wakeLock.request("screen");
+      wakeLock.addEventListener("release", () => (wakeLock = null));
+    } else if (!want && wakeLock) {
+      const lock = wakeLock;
+      wakeLock = null;
+      await lock.release();
+    }
+  } catch { wakeLock = null; } // e.g. battery saver: the phone just sleeps as normal
+  wakeBusy = false;
+}
+function setupCooking() {
+  document.querySelectorAll("[data-wake]").forEach((b) => (b.onclick = () => { store.set("keepScreenOn", !wakeWanted()); updateWake(); }));
+  document.querySelectorAll("[data-clear-ticks]").forEach((b) => (b.onclick = () => { store.set(ticksKey(), null); applyTicks(); }));
+  window.addEventListener("hashchange", updateWake);
+  document.addEventListener("visibilitychange", updateWake); // the lock lapses when the phone locks or you switch apps
+  updateWake();
+}
+
 // Memories: anyone can share a memory of a dish. It lands in the family's Google Sheet
 // (tools/memories-apps-script.gs) and shows here once the "Approved" box is ticked there.
 // Until MEMORIES_URL is set, nothing about memories shows on the site.
@@ -599,3 +664,4 @@ function setupMemories() {
 document.addEventListener("DOMContentLoaded", fillMockup);
 document.addEventListener("DOMContentLoaded", setupMemories);
 document.addEventListener("DOMContentLoaded", setupSheet);
+document.addEventListener("DOMContentLoaded", setupCooking);
