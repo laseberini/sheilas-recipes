@@ -409,12 +409,15 @@ function drawMemories() {
   document.querySelectorAll("[data-fill=mem-chip]").forEach((a) => {
     a.textContent = mine.length ? `${mine.length} ${mine.length === 1 ? "memory" : "memories"} ↓` : "Share a memory ↓";
   });
-  // Home page: the newest ten as a carousel (swipe, or tap a dot), each linking to its dish.
+  // Home page: the newest ten as a carousel (swipe, tap a dot; on a computer also ‹ ›, drag or ← →).
   const recent = memories.filter((m) => RECIPES[m.recipe]).slice(0, 10);
   document.querySelectorAll("[data-mem-home]").forEach((s) => (s.hidden = !recent.length));
   document.querySelectorAll("[data-fill=home-memories]").forEach((el) => {
     el.innerHTML = recent.map(memHomeCard).join("");
-    const dots = el.parentElement.querySelector("[data-fill=mem-dots]");
+    const section = el.closest("[data-mem-home]");
+    const dots = section.querySelector("[data-fill=mem-dots]");
+    const prev = section.querySelector("[data-mem-prev]");
+    const next = section.querySelector("[data-mem-next]");
     dots.hidden = recent.length < 2;
     dots.innerHTML = recent.map((_, i) => `<button type="button" aria-label="Memory ${i + 1} of ${recent.length}"></button>`).join("");
     const cards = [...el.children];
@@ -422,8 +425,44 @@ function drawMemories() {
       const mid = el.scrollLeft + el.clientWidth / 2;
       return cards.reduce((best, c, i) => (Math.abs(c.offsetLeft + c.offsetWidth / 2 - mid) < Math.abs(cards[best].offsetLeft + cards[best].offsetWidth / 2 - mid) ? i : best), 0);
     };
-    const mark = () => [...dots.children].forEach((d, i) => d.classList.toggle("on", i === current()));
-    [...dots.children].forEach((d, i) => (d.onclick = () => el.scrollTo({ left: cards[i].offsetLeft + cards[i].offsetWidth / 2 - el.clientWidth / 2, behavior: "smooth" })));
+    const go = (i) => {
+      i = Math.max(0, Math.min(cards.length - 1, i));
+      el.scrollTo({ left: cards[i].offsetLeft + cards[i].offsetWidth / 2 - el.clientWidth / 2, behavior: "smooth" });
+    };
+    const mark = () => {
+      const at = current();
+      [...dots.children].forEach((d, i) => d.classList.toggle("on", i === at));
+      prev.disabled = at === 0;
+      next.disabled = at === cards.length - 1;
+    };
+    [...dots.children].forEach((d, i) => (d.onclick = () => go(i)));
+    prev.onclick = () => go(current() - 1);
+    next.onclick = () => go(current() + 1);
+    el.onkeydown = (e) => {
+      if (e.key === "ArrowLeft" || e.key === "ArrowRight") { e.preventDefault(); go(current() + (e.key === "ArrowRight" ? 1 : -1)); }
+    };
+    // Mouse: drag the cards sideways; a real drag doesn't count as a click on the dish link.
+    let drag = null;
+    el.onpointerdown = (e) => {
+      if (e.pointerType !== "mouse" || e.button !== 0) return;
+      drag = { x: e.clientX, left: el.scrollLeft, start: current(), moved: false };
+    };
+    el.onpointermove = (e) => {
+      if (!drag) return;
+      const dx = e.clientX - drag.x;
+      if (!drag.moved && Math.abs(dx) > 5) { drag.moved = true; el.classList.add("dragging"); try { el.setPointerCapture(e.pointerId); } catch {} }
+      if (drag.moved) el.scrollLeft = drag.left - dx;
+    };
+    el.onpointerup = el.onpointercancel = (e) => {
+      if (!drag) return;
+      const { moved, x, start } = drag;
+      drag = null;
+      if (!moved) return;
+      el.classList.remove("dragging");
+      const dx = e.clientX - x;
+      go(Math.abs(dx) > 40 ? start + (dx < 0 ? 1 : -1) : start); // a short flick moves one card
+    };
+    el.ondragstart = (e) => e.preventDefault(); // images and links would otherwise start a browser drag
     el.onscroll = () => requestAnimationFrame(mark);
     mark();
   });
