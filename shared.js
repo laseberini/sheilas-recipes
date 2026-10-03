@@ -559,8 +559,18 @@ function drawMemories() {
     a.textContent = mine.length ? `${mine.length} ${mine.length === 1 ? "memory" : "memories"} ↓` : "Share a memory ↓";
   });
   // Home page: the newest ten as a carousel (swipe, tap a dot; on a computer also ‹ ›, drag or ← →).
+  // The memories arrive a moment after the page, and their section sits above the recipe list. If
+  // the reader has already jumped down to the list ("Open the recipes"), keep it where it is on
+  // screen instead of letting the new section push it down.
+  const list = document.getElementById("recipes");
+  const listTop = list && !list.closest("[hidden]") ? list.getBoundingClientRect().top : null;
   const recent = memories.filter((m) => RECIPES[m.recipe]).slice(0, 10);
   document.querySelectorAll("[data-mem-home]").forEach((s) => (s.hidden = !recent.length));
+  const holdPlace = () => {
+    if (listTop === null || listTop > innerHeight || window.scrollY === 0) return;
+    const moved = list.getBoundingClientRect().top - listTop;
+    if (Math.abs(moved) > 1) window.scrollBy(0, moved);
+  };
   document.querySelectorAll("[data-fill=home-memories]").forEach((el) => {
     el.innerHTML = recent.map(memHomeCard).join("");
     const section = el.closest("[data-mem-home]");
@@ -615,6 +625,7 @@ function drawMemories() {
     el.onscroll = () => requestAnimationFrame(mark);
     mark();
   });
+  holdPlace();
 }
 
 function setupMemories() {
