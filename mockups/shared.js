@@ -164,7 +164,7 @@ const MOCK = {
   // Which mock recipe each title opens; everything else opens Fish Cakes.
   links: { "Fish Cakes": "fish", "Lemon Meringue": "lemon", "Linguine Pesto": "linguine", "Aletta's Pesto Sauce": "pesto" },
   intro: [
-    "When I first got married 32 years ago to my 'Italian' hubby we settled in Swaziland for 7 years. I had NO clue how to cook but with a little help from my friends, especially my friend Aletta also married to an Italian & I sort of began my 'like' of cooking.",
+    "When I first got married 60 years ago to my 'Italian' hubby we settled in Swaziland for 7 years. I had NO clue how to cook but with a little help from my friends, especially my friend Aletta also married to an Italian & I sort of began my 'like' of cooking.",
     "However when we moved back to Jhb I started asking my mother-in-law (who I refer to as 'Nonna - granny') how to make her food.",
     "Now... she was Italian but born in Turkey, raised on the Island Rhodes, married an Italian Slav & called herself 'oriental' Italian. She was just the most wonderful cook & the few recipes I got from her I have kept hidden & only cooked by me for years. By now I had developed a love of cooking & decided to share her few but stunning recipes with you.",
     "Now I decided to pick my mothers brain as well as her parents came from Riga & she had wonderful recipes to share as well as her 'own' wonderful food & thats when I decided to create this book & gather more recipes from family & friends.",
