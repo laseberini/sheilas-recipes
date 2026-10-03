@@ -223,6 +223,17 @@ function renderRecipe(R, key) {
   });
   cookKey = key;
   applyTicks();
+  // Where to next: the rest of this category, and the next recipe in it.
+  set("recipe-end", (el) => {
+    const inCat = Object.entries(RECIPES).filter(([, r]) => r.category === R.category).sort(byTitle);
+    const i = inCat.findIndex(([rid]) => rid === key);
+    const [nextKey, nextR] = inCat.length > 1 ? inCat[(i + 1) % inCat.length] : [];
+    el.innerHTML = (inCat.length > 1 ? `<button type="button" data-more-cat><span><small>More in</small>${esc(R.category)}</span><b aria-hidden="true">→</b></button>` : "") +
+      (nextKey ? `<a href="#recipe-${nextKey}"><span><small>Next</small>${esc(nextR.title)}</span><b aria-hidden="true">→</b></a>` : "");
+    el.hidden = !el.innerHTML;
+    const more = el.querySelector("[data-more-cat]");
+    if (more) more.onclick = () => openCategory(R.category, key);
+  });
   // With a photo, the header shows it full width with the title on top; without one, the plain header.
   document.querySelectorAll(".r-hero").forEach((h) => h.classList.toggle("has-hero", !!R.photo));
   // Only photos Sheila approved; no photo, no frame.
@@ -295,6 +306,7 @@ function fillMockup() {
     // Swipe left/right anywhere on the recipe to move between the views.
     let t0 = null;
     scope.addEventListener("touchstart", (e) => {
+      if (e.target.closest(".mem-carousel")) { t0 = null; return; } // swiping the memories, not the tabs
       t0 = e.touches.length === 1 ? { x: e.touches[0].clientX, y: e.touches[0].clientY, t: Date.now() } : null;
     }, { passive: true });
     scope.addEventListener("touchend", (e) => {
@@ -528,7 +540,21 @@ async function updateWake() {
   } catch { wakeLock = null; } // e.g. battery saver: the phone just sleeps as normal
   wakeBusy = false;
 }
+function updateRecipeBar() {
+  const bar = document.querySelector("[data-rbar]");
+  const screen = document.querySelector("[data-screen=recipe]");
+  const hero = document.querySelector(".r-hero");
+  if (!bar || !screen || !hero) return;
+  bar.hidden = screen.hidden || hero.getBoundingClientRect().bottom > 0;
+}
 function setupCooking() {
+  let ticking = false;
+  window.addEventListener("scroll", () => {
+    if (ticking) return;
+    ticking = true;
+    requestAnimationFrame(() => { ticking = false; updateRecipeBar(); });
+  }, { passive: true });
+  window.addEventListener("hashchange", () => requestAnimationFrame(updateRecipeBar));
   document.querySelectorAll("[data-clear-ticks]").forEach((b) => (b.onclick = () => { store.set(ticksKey(), null); applyTicks(); }));
   window.addEventListener("hashchange", updateWake);
   document.addEventListener("visibilitychange", updateWake); // the lock lapses when the phone locks or you switch apps
