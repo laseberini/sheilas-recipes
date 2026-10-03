@@ -308,13 +308,21 @@ function fillMockup() {
     const key = m && (OLD_KEYS[m[1]] || m[1]);
     return key && RECIPES[key] ? key : null;
   };
+  // Where the reader was on the home page, so "← All recipes" (or the phone's back button) returns
+  // them there instead of to the top.
+  let homeY = null;
+  let onRecipe = false;
   const route = () => {
     const key = recipeKey();
+    if (key && !onRecipe) homeY = window.scrollY; // still showing the home page at this point
+    const fromRecipe = onRecipe && !key;
+    onRecipe = !!key;
     document.querySelectorAll("[data-screen]").forEach((s) => (s.hidden = s.dataset.screen !== (key ? "recipe" : "home")));
     if (key) {
       renderRecipe(RECIPES[key], key);
       views.forEach((show) => show("recipe"));
     }
+    if (fromRecipe && homeY !== null) return window.scrollTo(0, homeY);
     // Jump to a section on the home page (e.g. #recipes), otherwise start at the top.
     const target = !key && location.hash.length > 1 && document.getElementById(location.hash.slice(1));
     target ? target.scrollIntoView() : window.scrollTo(0, 0);
@@ -334,6 +342,8 @@ function fillMockup() {
     [hidden] { display: none !important; }
     .intro-p { display: block; }
     [data-collapsed] .intro-first::after, .intro-last::after { content: "”"; }
+    /* Folded, her intro shows three lines; "Read more" opens the rest. */
+    [data-collapsed] .intro-first { display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
     .intro-p + .intro-p, .intro-more .intro-p { margin-top: .6em; }
     .intro-actions { display: block; margin-top: .7em; font-size: .72em; opacity: .9; }
     .intro-actions button { font: inherit; font-weight: 600; color: inherit; background: none; border: 0; padding: 0; cursor: pointer;
