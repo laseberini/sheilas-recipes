@@ -213,24 +213,9 @@ function renderRecipe(R, key) {
 }
 
 function fillMockup() {
-  // Her intro: the first paragraph, with the rest behind "Read more" so it doesn't take over the page.
-  document.querySelectorAll("[data-fill=intro]").forEach((el) => {
-    const [first, ...rest] = MOCK.intro;
-    // The closing quote mark goes after whichever paragraph is last on show.
-    el.dataset.collapsed = "";
-    el.innerHTML = `<span class="intro-p intro-first">${esc(first)}</span>
-      <span class="intro-more" hidden>${rest.map((p, i) => `<span class="intro-p${i === rest.length - 1 ? " intro-last" : ""}">${esc(p)}</span>`).join("")}</span>
-      <span class="intro-actions"><button type="button" class="intro-toggle">Read more</button> ·
-      <button type="button" class="intro-note">See her handwritten note</button></span>`;
-    const more = el.querySelector(".intro-more");
-    const toggle = el.querySelector(".intro-toggle");
-    toggle.onclick = () => {
-      more.hidden = !more.hidden;
-      more.hidden ? (el.dataset.collapsed = "") : delete el.dataset.collapsed;
-      toggle.textContent = more.hidden ? "Read more" : "Show less";
-    };
-    el.querySelector(".intro-note").onclick = () => openLightbox(withV(MOCK.introPage), "Sheila's handwritten introduction");
-  });
+  // Her story, in full, for the "My story" panel.
+  document.querySelectorAll("[data-fill=story]").forEach((el) => (el.innerHTML = MOCK.intro.map((p) => `<p>${esc(p)}</p>`).join("")));
+  document.querySelectorAll("[data-story-note]").forEach((b) => (b.onclick = () => openLightbox(withV(MOCK.introPage), "Sheila's handwritten introduction")));
   const searchText = (id) => {
     const r = RECIPES[id];
     return [r.title, r.from || "", r.category, ...r.ingredients, ...r.method, ...r.notes].join(" ").toLowerCase();
@@ -312,7 +297,26 @@ function fillMockup() {
   // them there instead of to the top.
   let homeY = null;
   let onRecipe = false;
+  let storyOpen = false;
+  const storyEl = document.querySelector("[data-story]");
+  const closeStory = () => (history.state?.story ? history.back() : location.replace("#"));
   const route = () => {
+    // #story: her story over the home page, which stays where it was underneath.
+    const wantStory = location.hash === "#story";
+    if (storyEl) {
+      storyEl.hidden = !wantStory;
+      document.documentElement.style.overflow = wantStory ? "hidden" : "";
+    }
+    if (wantStory || storyOpen) {
+      const wasOpen = storyOpen;
+      storyOpen = wantStory;
+      if (wantStory && !wasOpen) storyEl?.querySelector(".story-panel")?.scrollTo(0, 0);
+      if (wantStory || !recipeKey()) {
+        document.querySelectorAll("[data-screen]").forEach((s) => (s.hidden = s.dataset.screen !== "home"));
+        if (onRecipe) { onRecipe = false; if (homeY !== null) window.scrollTo(0, homeY); }
+        return;
+      }
+    }
     const key = recipeKey();
     if (key && !onRecipe) homeY = window.scrollY; // still showing the home page at this point
     const fromRecipe = onRecipe && !key;
@@ -328,6 +332,15 @@ function fillMockup() {
     target ? target.scrollIntoView() : window.scrollTo(0, 0);
   };
   window.addEventListener("hashchange", route);
+  // "My story" remembers that it opened the panel, so closing goes back instead of adding history.
+  document.querySelectorAll('a[href="#story"]').forEach((a) => (a.onclick = (e) => {
+    e.preventDefault();
+    history.pushState({ story: true }, "", "#story");
+    route();
+  }));
+  document.querySelectorAll("[data-story-close]").forEach((a) => (a.onclick = (e) => { e.preventDefault(); closeStory(); }));
+  storyEl?.addEventListener("click", (e) => { if (e.target === storyEl) closeStory(); });
+  document.addEventListener("keydown", (e) => { if (e.key === "Escape" && storyOpen && !document.querySelector(".lb")) closeStory(); });
   route();
 
   // Version at the top of every page, so it's easy to check which version a phone is showing.
@@ -340,14 +353,6 @@ function fillMockup() {
   const style = document.createElement("style");
   style.textContent = `
     [hidden] { display: none !important; }
-    .intro-p { display: block; }
-    [data-collapsed] .intro-first::after, .intro-last::after { content: "”"; }
-    /* Folded, her intro shows three lines; "Read more" opens the rest. */
-    [data-collapsed] .intro-first { display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
-    .intro-p + .intro-p, .intro-more .intro-p { margin-top: .6em; }
-    .intro-actions { display: block; margin-top: .7em; font-size: .72em; opacity: .9; }
-    .intro-actions button { font: inherit; font-weight: 600; color: inherit; background: none; border: 0; padding: 0; cursor: pointer;
-      text-decoration: underline; text-underline-offset: 3px; }
     .ver-top { position: fixed; top: 8px; right: 8px; z-index: 998; font: 600 11px/1 system-ui, sans-serif; letter-spacing: .04em;
       color: #fff; background: rgba(20,20,20,.62); padding: 5px 8px; border-radius: 99px; pointer-events: none; }
     .no-results { grid-column: 1 / -1; text-align: center; color: var(--muted, #777); padding: 30px 0; }
