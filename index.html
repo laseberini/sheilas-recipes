@@ -1,10 +1,10 @@
 <!doctype html>
-<html lang="en" data-version="0.36" data-built="2026-10-03 21:56">
+<html lang="en" data-version="0.37" data-built="2026-10-03 22:00">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Sheila's Recipes</title>
-<link rel="manifest" href="manifest.webmanifest?v=0.36">
+<link rel="manifest" href="manifest.webmanifest?v=0.37">
 <link rel="icon" type="image/png" sizes="32x32" href="images/icons/sheila-32.png">
 <link rel="apple-touch-icon" href="images/icons/sheila-180.png">
 <meta name="apple-mobile-web-app-title" content="Sheila's Recipes">
@@ -13,8 +13,8 @@
 <meta name="theme-color" content="#1d3f7a">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,400;1,9..144,600&family=Work+Sans:wght@400;500;600&display=swap" rel="stylesheet">
-<script src="recipes-data.js?v=0.36"></script>
-<script src="shared.js?v=0.36"></script>
+<script src="recipes-data.js?v=0.37"></script>
+<script src="shared.js?v=0.37"></script>
 <style>
   :root {
     --link-accent: #1d3f7a;
@@ -67,7 +67,7 @@
     padding: 40px 44px 32px; box-shadow: 0 30px 80px rgba(0,0,0,.3); border-top: 8px solid var(--terracotta); animation: storyUp .28s ease-out; overscroll-behavior: contain; }
   .story .kicker { color: var(--terracotta); }
   .story h2 { font-size: clamp(32px, 5vw, 44px); color: var(--cobalt); margin: 6px 0 18px; }
-  .story-text { font: italic 400 clamp(18px, 2.2vw, 21px)/1.6 Fraunces, serif; color: var(--ink); }
+  .story-text { font: 400 clamp(18px, 2.2vw, 21px)/1.65 Fraunces, serif; color: var(--ink); }
   .story-text p { margin: 0 0 .8em; }
   .story-text p:first-child::before { content: "“"; color: var(--terracotta); font: 600 1.6em/0 Fraunces, serif; vertical-align: -.3em; margin-right: 2px; }
   .story-text p:last-child::after { content: "”"; color: var(--terracotta); }
@@ -89,7 +89,7 @@
   .person-photo .initials { display: grid; place-items: center; background: var(--sand); color: var(--cobalt); font: 600 32px Fraunces, serif; }
   .person-pane .kicker { color: var(--olive); }
   .person-pane h2 { font-size: clamp(28px, 4.6vw, 40px); color: var(--cobalt); margin: 2px 0 0; line-height: 1.1; }
-  .person-bio { font-size: 17px; line-height: 1.65; }
+  .person-bio { font-size: 18px; line-height: 1.65; }
   .person-bio p { margin: 0 0 .8em; }
   .person-rh { font: 600 13px "Work Sans"; letter-spacing: .14em; text-transform: uppercase; color: var(--terracotta); margin: 18px 0 8px; padding-top: 16px; border-top: 1px solid var(--sand); }
   .person-recipes a { display: flex; align-items: center; gap: 12px; padding: 8px 0; text-decoration: none; color: var(--cobalt); font: 600 18px Fraunces, serif; }
@@ -162,10 +162,10 @@
   .ing-box { background: #fff; border-radius: 18px; padding: 28px; border-top: 6px solid var(--terracotta); align-self: start; position: sticky; top: 20px; }
   .ing-box h3, .method-box h3 { font-size: 28px; color: var(--cobalt); margin-bottom: 14px; }
   .ing { list-style: none; padding: 0; margin: 0; }
-  .ing li { display: flex; gap: 12px; padding: 9px 0; border-bottom: 1px solid var(--sand); }
+  .ing li { display: flex; gap: 12px; padding: 9px 0; border-bottom: 1px solid var(--sand); font-size: 18px; }
   .ing li::before { content: ""; flex: none; width: 18px; height: 18px; border: 2px solid var(--terracotta); border-radius: 50%; margin-top: 4px; }
   .method { list-style: none; padding: 0; margin: 0; counter-reset: s; }
-  .method li { counter-increment: s; display: grid; grid-template-columns: 52px 1fr; gap: 14px; padding: 0 0 22px; font-size: 18px; }
+  .method li { counter-increment: s; display: grid; grid-template-columns: 52px 1fr; gap: 14px; padding: 0 0 22px; font-size: 19px; }
   .method li::before { content: counter(s); width: 44px; height: 44px; border-radius: 50%; background: var(--lemon); color: var(--cobalt); display: grid; place-items: center; font: 600 20px Fraunces; }
   /* Cooking help: screen-on switch, tick-off ingredients and steps, the next step highlighted. */
   .box-head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; margin-bottom: 14px; }
@@ -179,7 +179,7 @@
   .method li.done::before { content: "✓"; background: #e6e9d6; color: var(--olive); }
   .method li.done > span { color: var(--muted); }
   .method li.next > span { background: #fdf3cf; box-shadow: 0 0 0 8px #fdf3cf; border-radius: 4px; }
-  .notes { background: var(--cobalt); color: var(--cream); padding: 20px 24px; border-radius: 18px; font: italic 20px Fraunces, serif; }
+  .notes { background: var(--cobalt); color: var(--cream); padding: 20px 24px; border-radius: 18px; font: 400 19px/1.55 Fraunces, serif; }
   .notes p { margin: 0; }
 
 
@@ -264,7 +264,7 @@
     .tiles { height: 28px; background-size: 28px 28px, 28px 28px, 14px 14px; }
     .mem .mem-head, .home-mem .mem-head { margin-bottom: 16px; }
     .ing-box { position: static; }
-    .switch button { font-size: 13px; }
+    .switch button { font-size: 16px; line-height: 1.2; padding: 11px 6px; }
     .dish-ph { max-width: 260px; }
   }
   /* Recipe header: the dish photo full width, title and pills on top (when there's a photo). */
@@ -284,6 +284,17 @@
   @media (min-width: 801px) { .r-hero.has-hero .wrap { padding-bottom: 80px; } .r-hero.has-hero .back { top: 24px; left: 24px; } }
   .switch { z-index: 2; }
   .r-hero.has-hero h1 { font-size: clamp(34px, 7vw, 80px); }
+  @media (max-width: 800px) { .r-hero.has-hero { min-height: min(44vh, 380px); } .r-hero.has-hero .wrap { padding-bottom: 54px; } }
+  /* A+ : extra-large text for reading at arm's length (remembered on this phone). */
+  .r-hero { position: relative; }
+  .text-size { position: absolute; top: 16px; right: 16px; z-index: 3; min-width: 48px; height: 40px; padding: 0 12px; border: 0; border-radius: 99px;
+    background: rgba(255,255,255,.92); color: var(--cobalt); font: 700 17px/1 "Work Sans"; cursor: pointer; box-shadow: 0 4px 14px rgba(0,0,0,.18); }
+  .r-hero:not(.has-hero) .text-size { background: #fff; }
+  @media (min-width: 801px) { .text-size { top: 24px; right: 24px; } }
+  .big-text .ing li, .big-text .method li { font-size: 23px; }
+  .big-text .notes { font-size: 23px; }
+  .big-text .person-bio { font-size: 22px; }
+  .big-text .method li { grid-template-columns: 56px 1fr; }
 </style>
 </head>
 <body>
@@ -347,6 +358,7 @@
     <div class="wrap">
       <div>
         <a class="back" href="#recipes">← All recipes</a>
+        <button type="button" class="text-size" data-text-size aria-pressed="false" aria-label="Bigger text">A+</button>
         <h1 data-fill="title"></h1>
         <div class="meta"><span data-fill="cat"></span><span data-fill="date" data-prefix="Written "></span><span data-fill="serves" data-prefix="Serves "></span><a class="mem-chip" href="#memories" data-fill="mem-chip" hidden></a></div>
       </div>
