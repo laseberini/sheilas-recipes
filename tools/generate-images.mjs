@@ -5,6 +5,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import { execFileSync } from "node:child_process";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const OUT = path.join(ROOT, "images", "style-tests");
@@ -143,6 +144,74 @@ async function generate(key, prompt, refs = []) {
 }
 
 const args = process.argv.slice(2);
+
+// What to photograph for a recipe: a hand-written description if we have one, otherwise the recipe itself.
+function describe(r) {
+  if (DISHES[r.id]) return DISHES[r.id];
+  const clean = (lines) => (lines || [])
+    .map((l) => l.replace(/\[\?\]|\[illegible\]/g, "").trim())
+    .filter((l) => l && !/^(Her page|Possible duplicate|Refers to|No separate ingredient)/.test(l));
+  return `the finished, home-cooked dish "${r.title}", made from this family recipe and served the way the recipe ` +
+    `describes (show the finished food, not raw ingredients). Ingredients: ${clean(r.ingredients).join("; ")}. ` +
+    `Method: ${clean(r.method).join(" ")} ${clean(r.notes).length ? "Notes: " + clean(r.notes).join(" ") : ""}`;
+}
+
+// Re-save a generated JPEG at web size and quality (~150 KB instead of ~700 KB).
+function webSize(file) {
+  file = file.replace(/'/g, "''"); // PowerShell single-quoted string: the folder name has an apostrophe
+  const ps = `Add-Type -AssemblyName System.Drawing; $i=[System.Drawing.Image]::FromFile('${file}'); ` +
+    `$b=New-Object System.Drawing.Bitmap 1200,([int]($i.Height*1200/$i.Width)); $g=[System.Drawing.Graphics]::FromImage($b); ` +
+    `$g.InterpolationMode='HighQualityBicubic'; $g.DrawImage($i,0,0,$b.Width,$b.Height); $i.Dispose(); ` +
+    `$c=[System.Drawing.Imaging.ImageCodecInfo]::GetImageEncoders()|?{$_.MimeType -eq 'image/jpeg'}; ` +
+    `$p=New-Object System.Drawing.Imaging.EncoderParameters 1; ` +
+    `$p.Param[0]=New-Object System.Drawing.Imaging.EncoderParameter([System.Drawing.Imaging.Encoder]::Quality,[long]82); ` +
+    `$b.Save('${file}',$c,$p); $g.Dispose(); $b.Dispose()`;
+  execFileSync("powershell", ["-NoProfile", "-Command", ps]);
+}
+
+// Review mode: photo candidates for Sheila to approve or reject (with a comment) in the editor.
+//   node tools/generate-images.mjs --review            recipes with no photo yet, plus new versions of
+//                                                     rejected ones that take all her comments into account
+//   node tools/generate-images.mjs --review --ids a,b  only these recipes
+async function review(key) {
+  const recipes = JSON.parse(fs.readFileSync(path.join(ROOT, "data", "recipes.json"), "utf8")).recipes;
+  const photosFile = path.join(ROOT, "data", "photos.json");
+  const loadPhotos = () => (fs.existsSync(photosFile) ? JSON.parse(fs.readFileSync(photosFile, "utf8")) : {});
+  const only = args.includes("--ids") ? args[args.indexOf("--ids") + 1].split(",") : null;
+  const start = loadPhotos();
+  const todo = recipes.filter((r) => (!only || only.includes(r.id)) && (!start[r.id] || start[r.id].status === "rejected"));
+  const refs = REFS.benchmark2.map((f) => fs.readFileSync(path.join(ROOT, "Kitchen photos", "ref", f)).toString("base64"));
+  fs.mkdirSync(path.join(ROOT, "images", "candidates"), { recursive: true });
+  console.log(`Model ${MODEL}: ${todo.length} photo(s) to make for review`);
+
+  for (let i = 0; i < todo.length; i += 4) {
+    await Promise.all(todo.slice(i, i + 4).map(async (r) => {
+      const prev = start[r.id];
+      const round = (prev?.round || 0) + 1;
+      const feedback = (prev?.history || []).filter((h) => h.status === "rejected" && h.comment).map((h) => `"${h.comment}"`);
+      const prompt = `A photograph of ${describe(r)}. ${STYLES.benchmark2} ${COMMON}` +
+        (feedback.length ? ` Sheila rejected earlier pictures of this dish. Make sure to fix every one of her comments: ${feedback.join("; ")}.` : "");
+      try {
+        const rel = `images/candidates/${r.id}-${round}.jpg`;
+        fs.writeFileSync(path.join(ROOT, rel), await generate(key, prompt, refs));
+        webSize(path.join(ROOT, rel));
+        const photos = loadPhotos(); // re-read, so decisions made in the editor meanwhile are kept
+        photos[r.id] = { ...(photos[r.id] || {}), source: "ai", status: "pending", candidate: rel, round, comment: "",
+          history: photos[r.id]?.history || [] };
+        fs.writeFileSync(photosFile, JSON.stringify(photos, null, 2) + "\n");
+        console.log(`ok   ${r.id} (round ${round})`);
+      } catch (e) {
+        console.log(`FAIL ${r.id}: ${e.message}`);
+      }
+    }));
+  }
+}
+
+if (args.includes("--review")) {
+  await review(readKey());
+  process.exit(0);
+}
+
 const pick = (flag, all) => {
   const i = args.indexOf(flag);
   return i >= 0 ? args[i + 1].split(",") : Object.keys(all);

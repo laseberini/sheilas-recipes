@@ -24,7 +24,7 @@ for (const f of pages) {
   const file = path.join(ROOT, "mockups", f);
   const html = fs.readFileSync(file, "utf8")
     .replace(/<html lang="en"[^>]*>/, `<html lang="en" data-version="${version}" data-built="${built}">`)
-    .replace(/shared\.js(\?v=[^"]*)?"/, `shared.js?v=${version}"`);
+    .replace(/(shared|recipes-data)\.js(\?v=[^"]*)?"/g, (_, name) => `${name}.js?v=${version}"`);
   fs.writeFileSync(file, html);
 }
 console.log(`v${current} → v${version} (${built}); updated version.json and ${pages.length} pages`);

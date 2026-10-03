@@ -24,226 +24,7 @@ const withV = (url) => `${url}${url.includes("?") ? "&" : "?"}v=${VERSION}`;
   }
 })();
 
-// The recipes shown in full on the site so far (refreshed from data/recipes.json).
-// The recipes shown in full on the site so far (refreshed from data/recipes.json).
-const RECIPES = {
-  "fish": {
-    "title": "Fish Cakes",
-    "from": "Simy",
-    "date": "4/09",
-    "category": "Meat, Chicken & Fish",
-    "page": "../images/pages/p170308.jpg",
-    "photo": "../images/dishes/fish-cakes.jpg",
-    "ingredients": [
-      "250g mince hake with carrot & onion (chopped)",
-      "1 small egg",
-      "Salt, pepper, garlic salt",
-      "Small tsp sugar (optional)",
-      "Breadcrumbs"
-    ],
-    "method": [
-      "Put in bowl & mix.",
-      "Roll into balls & roll in breadcrumbs & flatten gently (if v got time, before frying, put fish cakes on a plate, leave in fridge for a bit).",
-      "Oil in frying pan, not too much or too little, very hot oil, turn every few minutes till brown.",
-      "Take kitchen paper, put fish cakes to drain oil on them, more paper & drain again.",
-      "Then \" \" put on cakes, cover with more paper, press gently to remove oil."
-    ],
-    "notes": [
-      "Serve with chips/salad, whatever & chrain.",
-      "Ingredients numbered 1-5 in the margin (numbers stripped)"
-    ]
-  },
-  "lemon": {
-    "title": "Lemon Meringue",
-    "from": null,
-    "date": null,
-    "category": "Desserts",
-    "page": "../images/pages/p170706.jpg",
-    "photo": "../images/dishes/lemon-meringue.jpg",
-    "ingredients": [
-      "2 big tins condensed milk",
-      "1-1½ packets Marie biscuits",
-      "6-8oz (180-250g) butter",
-      "4 eggs, separated",
-      "6 tablespoons sugar",
-      "½ tsp baking powder",
-      "¾ cup lemon juice"
-    ],
-    "method": [
-      "Heat oven 120.",
-      "1. Crush Marie biscuits well.",
-      "2. Melt butter, mix with biscuits.",
-      "Line bottom & side of dish.",
-      "3. Beat condensed milk.",
-      "4. Add 4 egg yolks (yellow), beat.",
-      "5. Add lemon juice, beat.",
-      "Pour mixture into biscuit lined dish.",
-      "Topping",
-      "1. Beat egg whites till stiff.",
-      "2. Add 1 tablespoon sugar for (egg) each egg white; beat for one minute.",
-      "3. Fold in rest of sugar, cut into fluffy egg white.",
-      "4. Gently put egg white on top of mix.",
-      "Bake for ± 30 mins or until meringue slightly browned."
-    ],
-    "notes": []
-  },
-  "pesto": {
-    "title": "Aletta's Pesto Sauce",
-    "from": "Aletta Taranto",
-    "date": null,
-    "category": "Sauces",
-    "page": "../images/pages/p-alettas-pesto.jpg",
-    "photo": "../images/dishes/alettas-pesto-sauce.jpg",
-    "aliases": [
-      "Pesto Sauce"
-    ],
-    "ingredients": [
-      "2 firmly packed cups of fresh basil leaves",
-      "½ cup olive oil",
-      "2 tablespoons pine nuts",
-      "2 cloves garlic (each clove cut in half)",
-      "½ cup fresh grated Pecorino/Parmesan cheese",
-      "3 tablespoons butter, cut into 2 to 3 pieces",
-      "1 tsp salt"
-    ],
-    "method": [
-      "In Magimix:",
-      "Put - basil (washed & dried), oil, nuts, garlic & salt - mix thoroughly.",
-      "Add - cheese - blend.",
-      "Add - butter - blend.",
-      "When using:",
-      "Place pesto in a bowl & stir in some hot water from the cooking pasta, then turn pesto (paste) into a sauce. Pour over pasta, make sure to coat all the pasta.",
-      "Use as much pesto according to how much pasta you are cooking.",
-      "Serve with grated Pecorino/Parmesan cheese."
-    ],
-    "notes": [
-      "(Genuine Pesto Sauce from Italian Riviera & Genova region - this recipe handed down from Aletta's mother-in-law who came from that region - where Pesto Sauce originates.)",
-      "NB: Pesto can be deep frozen in airtight bowl & defrosted when needed (can be re-frozen)."
-    ]
-  },
-  "linguine": {
-    "title": "Linguine Pesto",
-    "from": null,
-    "date": null,
-    "category": "Pasta & Rice",
-    "page": "../images/pages/p-linguine-pesto.jpg",
-    "photo": "../images/dishes/linguine-pesto.jpg",
-    "uses": [
-      "pesto"
-    ],
-    "ingredients": [
-      "Linguine",
-      "½ tablespoon salt",
-      "Aletta's pesto sauce (see recipe)",
-      "Grated pecorino (Parmigiano) cheese",
-      "If you like:",
-      "Some crumbled feta",
-      "Some baby tomatoes"
-    ],
-    "method": [
-      "Boil linguine with ½ tablespoon salt.",
-      "Take some of the linguine water & use a little to thin the pesto sauce.",
-      "When linguine cooked strain off the water, add the pesto sauce to the pasta making sure all the linguine are well covered.",
-      "Sprinkle grated pecorino (Parmigiano) cheese on top.",
-      "If you like:",
-      "Sprinkle some crumbled feta into the pasta.",
-      "Grill some baby tomatoes & mix them into the pasta, mix well, carefully then pecorino."
-    ],
-    "notes": [
-      "If you like (feta & grilled baby tomatoes) - delish addition."
-    ]
-  }
-};
-
-const MOCK = {
-  categories: [
-    {
-      "name": "Soups & Starters",
-      "recipes": [
-        "Aletta's Wonderful Sicilia Caponata",
-        "Minestrone Soup",
-        "Nonna's Butter Bean & Potato Salad"
-      ]
-    },
-    {
-      "name": "Meat, Chicken & Fish",
-      "recipes": [
-        "Brisket in Coke",
-        "Cape Bobotie",
-        "Chicken à la Familia",
-        "Fish Cakes",
-        "Nonna's Artichoke & Chicken",
-        "Pulpetti"
-      ]
-    },
-    {
-      "name": "Pasta & Rice",
-      "recipes": [
-        "Easy 'No Meat' Lasagne - Quite a Big Dish",
-        "Gnocchi",
-        "Linguine Pesto",
-        "Natalia's Funghi Risotto (Mushroom Rice)",
-        "Oven Penne Tomato, Pesto, Mellenzana",
-        "Polenta Parmigiana"
-      ]
-    },
-    {
-      "name": "Sauces",
-      "recipes": [
-        "Aletta's Pesto Sauce",
-        "Bolognaise Sauce",
-        "Neapolitan Sauce",
-        "Porcini Sauce"
-      ]
-    },
-    {
-      "name": "Vegetables & Sides",
-      "recipes": [
-        "Melanzana alla Parmigiana",
-        "Mushroom & Cheese Quiche / Onion & Cheese Quiche",
-        "Nonna's Wonderful & Secret Mellenzana (Brinjals)",
-        "Spinach, Feta & Ricotta Pie",
-        "Stuffed Artichokes",
-        "Stuffed Mellenzana (Brinjals)",
-        "Sweetcorn Bake"
-      ]
-    },
-    {
-      "name": "Baking",
-      "recipes": [
-        "Grilled Vegetable Bread - Variation",
-        "Lamington Squares",
-        "Poppy Seed Nix Recipe",
-        "Win Friends and Influence People Peanut Butter Chocolate Brownies"
-      ]
-    },
-    {
-      "name": "Desserts",
-      "recipes": [
-        "Apple / Youngberry Crumble",
-        "Avis Cheese Cake",
-        "Brandy Tart",
-        "Bronwyn's Pecan Pie / Tart",
-        "Bronwyn's Peppermint Crisp Cake",
-        "Cheese Fridge Cake",
-        "Chocolate Nut Tart",
-        "Lemon Meringue",
-        "Winter Pudding"
-      ]
-    }
-  ],
-  // Which mock recipe each title opens; everything else opens Fish Cakes.
-  links: {"Fish Cakes":"fish","Lemon Meringue":"lemon","Aletta's Pesto Sauce":"pesto","Linguine Pesto":"linguine"},
-  intro: [
-    "When I first got married 60 years ago to my 'Italian' hubby we settled in Swaziland for 7 years. I had NO clue how to cook but with a little help from my friends, especially my friend Aletta also married to an Italian & I sort of began my 'like' of cooking.",
-    "However when we moved back to Jhb I started asking my mother-in-law (who I refer to as 'Nonna - granny') how to make her food.",
-    "Now... she was Italian but born in Turkey, raised on the Island Rhodes, married an Italian Slav & called herself 'oriental' Italian. She was just the most wonderful cook & the few recipes I got from her I have kept hidden & only cooked by me for years. By now I had developed a love of cooking & decided to share her few but stunning recipes with you.",
-    "Now I decided to pick my mothers brain as well as her parents came from Riga & she had wonderful recipes to share as well as her 'own' wonderful food & thats when I decided to create this book & gather more recipes from family & friends.",
-    "Its really been fun & is a 'Pot Pourrie' of all these mixed & scrumptious recipes so kindly given to me.",
-    "Thanks all of you for your generosity & willingness to part with your treasures!!"
-  ],
-  introPage: "../images/pages/p-intro.jpg",
-};
+// RECIPES and MOCK (categories, intro) come from recipes-data.js, built by tools/build-site.mjs.
 
 const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
 
@@ -346,7 +127,7 @@ function openLightbox(src, alt) {
 }
 
 document.addEventListener("click", (e) => {
-  const page = e.target.closest("img[data-fill=page], [data-fill=dish] img");
+  const page = e.target.closest("[data-fill=pages] img, [data-fill=dish] img");
   if (page) openLightbox(page.src, page.alt);
 });
 
@@ -391,7 +172,7 @@ function renderRecipe(R, key) {
     el.innerHTML = `${esc(words.join(" "))} <em>${esc(last)}</em>`;
   });
   set("cat", (el) => (el.textContent = (el.dataset.prefix || "") + R.category));
-  for (const key of ["from", "date"]) {
+  for (const key of ["from", "date", "serves"]) {
     set(key, (el) => {
       el.hidden = !R[key];
       el.textContent = R[key] ? (el.dataset.prefix || "") + R[key] : "";
@@ -410,10 +191,17 @@ function renderRecipe(R, key) {
     el.hidden = !R.notes.length;
     el.innerHTML = R.notes.map((m) => `<p>${linkify(m, R)}</p>`).join("");
   });
-  set("page", (el) => (el.src = withV(R.page)));
+  // Her page(s): a recipe can run over more than one page. No page, no "Her page" view.
+  set("pages", (el) => (el.innerHTML = R.pages
+    .map((p, i) => `<img src="${withV(p)}" alt="The original recipe page${R.pages.length > 1 ? ` (${i + 1} of ${R.pages.length})` : ""}">`).join("")));
+  document.querySelectorAll("[data-views]").forEach((g) => (g.hidden = !R.pages.length));
+  // Only photos Sheila approved; no photo, no frame.
   set("dish", (el) => {
+    el.hidden = !R.photo;
     el.classList.toggle("has-photo", !!R.photo);
-    el.innerHTML = R.photo ? `<img src="${withV(R.photo)}" alt="${esc(R.title)}, as it might look on the table (AI-generated picture)">` : "";
+    el.innerHTML = R.photo
+      ? `<img src="${withV(R.photo)}" alt="${esc(R.title)}${R.photoReal ? "" : ", as it might look on the table (AI-generated picture)"}">`
+      : "";
   });
 }
 
@@ -433,15 +221,15 @@ function fillMockup() {
     };
     el.querySelector(".intro-note").onclick = () => openLightbox(withV(MOCK.introPage), "Sheila's handwritten introduction");
   });
-  const searchText = (title) => {
-    const r = RECIPES[MOCK.links[title]];
-    return [title, ...(r ? [...r.ingredients, ...r.method, r.from || ""] : [])].join(" ").toLowerCase();
+  const searchText = (id) => {
+    const r = RECIPES[id];
+    return [r.title, r.from || "", r.category, ...r.ingredients, ...r.method, ...r.notes].join(" ").toLowerCase();
   };
   document.querySelectorAll("[data-fill=categories]").forEach((el) => {
     el.innerHTML = MOCK.categories.map((c) => `
       <section class="cat">
-        <h3 class="cat-name">${esc(c.name)} <span class="cat-count">${c.recipes.length}</span></h3>
-        <ul class="cat-list">${c.recipes.map((t) => `<li><a href="#recipe-${MOCK.links[t] || "fish"}">${esc(t)}</a></li>`).join("")}</ul>
+        <h3 class="cat-name">${esc(c.name)} <span class="cat-count">${c.ids.length}</span></h3>
+        <ul class="cat-list">${c.ids.map((id) => `<li data-id="${id}"><a href="#recipe-${id}">${esc(RECIPES[id].title)}</a></li>`).join("")}</ul>
       </section>`).join("") + '<p class="no-results" hidden>No recipes match that search.</p>';
   });
   document.querySelectorAll("[data-search]").forEach((input) => {
@@ -451,7 +239,7 @@ function fillMockup() {
       document.querySelectorAll(".cat").forEach((cat) => {
         let inCat = 0;
         cat.querySelectorAll(".cat-list li").forEach((li) => {
-          const hit = !q || searchText(li.textContent).includes(q);
+          const hit = !q || searchText(li.dataset.id).includes(q);
           li.hidden = !hit;
           inCat += hit;
         });
@@ -502,16 +290,19 @@ function fillMockup() {
     }, { passive: true });
   });
 
-  // Home ↔ recipe "pages". #recipe-fish, #recipe-lemon (plain #recipe = Fish Cakes).
+  // Home ↔ recipe "pages": #recipe-fish-cakes. #recipes (the list) is not a recipe; an unknown or
+  // not-yet-checked recipe shows the home page. Links from the early mockup still work.
+  const OLD_KEYS = { fish: "fish-cakes", lemon: "lemon-mereingue", pesto: "alettas-pesto-sauce", linguine: "linguine-pesto" };
   const recipeKey = () => {
-    const m = location.hash.match(/^#recipe(?:-([\w-]+))?$/); // #recipe-fish; #recipes (the list) is not a recipe
-    return m ? m[1] || "fish" : null;
+    const m = location.hash.match(/^#recipe-([\w-]+)$/);
+    const key = m && (OLD_KEYS[m[1]] || m[1]);
+    return key && RECIPES[key] ? key : null;
   };
   const route = () => {
     const key = recipeKey();
     document.querySelectorAll("[data-screen]").forEach((s) => (s.hidden = s.dataset.screen !== (key ? "recipe" : "home")));
     if (key) {
-      renderRecipe(RECIPES[key] || RECIPES.fish, RECIPES[key] ? key : "fish");
+      renderRecipe(RECIPES[key], key);
       views.forEach((show) => show("recipe"));
     }
     // Jump to a section on the home page (e.g. #recipes), otherwise start at the top.
@@ -559,7 +350,7 @@ function fillMockup() {
     .pane-from-left { animation: paneFromLeft .28s ease-out; }
 
     /* Original page: tap to open full screen, pinch / double-tap / scroll-wheel to zoom. */
-    [data-fill=page], [data-fill=dish] img { cursor: zoom-in; }
+    [data-fill=pages] img, [data-fill=dish] img { cursor: zoom-in; }
     /* Dish photo fills whatever frame each design gives it. */
     .has-photo { position: relative; overflow: hidden; background: none !important; }
     .has-photo > img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; }

@@ -1,12 +1,13 @@
 <!doctype html>
-<html lang="en" data-version="0.14" data-built="2026-10-03 17:08">
+<html lang="en" data-version="0.15" data-built="2026-10-03 17:50">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>B · Nonna's Table</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,400;1,9..144,600&family=Work+Sans:wght@400;500;600&display=swap" rel="stylesheet">
-<script src="shared.js?v=0.14"></script>
+<script src="recipes-data.js?v=0.15"></script>
+<script src="shared.js?v=0.15"></script>
 <style>
   :root {
     --link-accent: #1d3f7a;
@@ -106,7 +107,7 @@
   .notes { background: var(--cobalt); color: var(--cream); padding: 20px 24px; border-radius: 18px; font: italic 20px Fraunces, serif; }
   .notes p { margin: 0; }
   .page-pane { text-align: center; padding-bottom: 80px; }
-  .page-pane img { max-width: 680px; width: 100%; border-radius: 6px; border: 10px solid #fff; box-shadow: 0 20px 50px rgba(0,0,0,.15); }
+  .page-pane img { display: block; margin: 0 auto 24px; max-width: 680px; width: 100%; border-radius: 6px; border: 10px solid #fff; box-shadow: 0 20px 50px rgba(0,0,0,.15); }
 
 
   footer { background: var(--cobalt); color: var(--cream); text-align: center; padding: 30px; font: italic 18px Fraunces; }
@@ -153,7 +154,7 @@
       <div>
         <a class="back" href="#">← All recipes</a>
         <h1 data-fill="title"></h1>
-        <div class="meta"><span data-fill="cat"></span><span data-fill="from" data-prefix="From "></span><span data-fill="date" data-prefix="Written "></span></div>
+        <div class="meta"><span data-fill="cat"></span><span data-fill="from" data-prefix="From "></span><span data-fill="date" data-prefix="Written "></span><span data-fill="serves" data-prefix="Serves "></span></div>
       </div>
       <div class="dish-ph" data-fill="dish"></div>
     </div>
@@ -163,7 +164,7 @@
       <button data-view="page">Her page</button>
       <button data-view="recipe">The recipe</button>
     </div>
-    <div data-pane="page" class="page-pane"><img data-fill="page" alt="The original handwritten recipe page"></div>
+    <div data-pane="page" class="page-pane" data-fill="pages"></div>
     <div data-pane="recipe" class="recipe-body">
       <div class="ing-box"><h3>Ingredients</h3><ul class="ing" data-fill="ingredients"></ul></div>
       <div class="method-box"><h3>Method</h3><ol class="method" data-fill="method"></ol><div class="notes" data-fill="notes"></div></div>
