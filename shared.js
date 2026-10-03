@@ -178,23 +178,30 @@ function renderRecipe(R, key) {
     const last = words.pop();
     el.innerHTML = `${esc(words.join(" "))} <em>${esc(last)}</em>`;
   });
-  set("cat", (el) => (el.textContent = (el.dataset.prefix || "") + R.category));
-  for (const key of ["from", "date", "serves"]) {
+  // The category pill opens the other recipes in that category.
+  set("cat", (el) => {
+    el.textContent = (el.dataset.prefix || "") + R.category;
+    el.classList.add("tap");
+    el.setAttribute("role", "button");
+    el.tabIndex = 0;
+    el.onclick = () => openCategory(R.category, key);
+    el.onkeydown = (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); openCategory(R.category, key); } };
+  });
+  for (const key of ["date", "serves"]) {
     set(key, (el) => {
       el.hidden = !R[key];
       el.textContent = R[key] ? (el.dataset.prefix || "") + R[key] : "";
     });
   }
-  // "From Nonna" opens who Nonna is, when we know.
+  // Second tab: "From Nonna" - who the recipe comes from. Nobody known, no tabs.
   const person = R.person && MOCK.people?.[R.person];
-  set("from", (el) => {
-    if (person) el.textContent = (el.dataset.prefix || "") + person.name;
-    el.classList.toggle("tap", !!person);
-    person ? el.setAttribute("role", "button") : el.removeAttribute("role");
-    el.tabIndex = person ? 0 : -1;
-    el.onclick = person ? () => openPerson(R.person) : null;
-    el.onkeydown = person ? (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); openPerson(R.person); } } : null;
+  set("person-tab", (el) => (el.textContent = person ? `From ${person.name}` : ""));
+  set("person-pane", (el) => {
+    el.innerHTML = person ? personHTML(R.person, key) : "";
+    const img = el.querySelector(".person-photo img");
+    if (img) img.onclick = () => openLightbox(img.src, person.name);
   });
+  document.querySelectorAll("[data-views]").forEach((g) => (g.hidden = !person));
   set("ingredients", (el) => (el.innerHTML = R.ingredients
     .map((i) => (i.trim().endsWith(":") ? `<li class="sub">${esc(i)}</li>` : `<li>${linkify(i, R)}</li>`)).join("")));
   document.querySelectorAll("[data-views]").forEach((group) => {
@@ -208,10 +215,12 @@ function renderRecipe(R, key) {
     el.hidden = !R.notes.length;
     el.innerHTML = R.notes.map((m) => `<p>${linkify(m, R)}</p>`).join("");
   });
-  // Her page(s): a recipe can run over more than one page. No page, no "Her page" view.
-  set("pages", (el) => (el.innerHTML = R.pages
-    .map((p, i) => `<img src="${withV(p)}" alt="The original recipe page${R.pages.length > 1 ? ` (${i + 1} of ${R.pages.length})` : ""}">`).join("")));
-  document.querySelectorAll("[data-views]").forEach((g) => (g.hidden = !R.pages.length));
+  // Her handwritten page(s), small at the end of the recipe; tap to see full screen.
+  set("pages", (el) => {
+    el.hidden = !R.pages.length;
+    el.innerHTML = R.pages.map((p, i) => `<img src="${withV(p)}" alt="The handwritten recipe page${R.pages.length > 1 ? ` (${i + 1} of ${R.pages.length})` : ""}">`).join("") +
+      `<figcaption>${R.pages.length > 1 ? "The handwritten pages" : "The handwritten page"} · tap to see</figcaption>`;
+  });
   // With a photo, the header shows it full width with the title on top; without one, the plain header.
   document.querySelectorAll(".r-hero").forEach((h) => h.classList.toggle("has-hero", !!R.photo));
   // Only photos Sheila approved; no photo, no frame.
@@ -407,44 +416,55 @@ function fillMockup() {
   document.head.appendChild(style);
 }
 
-// Whose recipe: photo, who they are to Sheila, a few lines, and all their recipes on the site.
-// Opening adds a history step (same address), so the phone's back button closes it.
+// A list of recipes as links, each with its dish photo; the one being read is marked "You're here".
+const recipeLinks = (entries, currentKey, showWho = true) => entries.map(([rid, r]) => {
+  const here = rid === currentKey;
+  const who = showWho && r.person && MOCK.people?.[r.person];
+  return `<a href="#recipe-${rid}"${here ? ' aria-current="page"' : ""}>${r.photo ? `<img src="${withV(r.photo)}" alt="">` : ""}` +
+    `<span>${esc(r.title)}${who ? `<small>From ${esc(who.name)}</small>` : ""}</span><b aria-hidden="true">${here ? "You're here" : "→"}</b></a>`;
+}).join("");
+const byTitle = ([, a], [, b]) => a.title.localeCompare(b.title);
+
+// "From Nonna" tab: photo, who they are to Sheila, a few lines, and their other recipes.
 const personInitials = (name) => name.split(/\s+/).filter((w) => !/^the$/i.test(w)).map((w) => w[0]).join("").slice(0, 2).toUpperCase();
-function openPerson(id) {
-  const p = MOCK.people?.[id];
-  const panel = document.querySelector("[data-person]");
-  if (!p || !panel) return;
-  const fill = (name, html) => panel.querySelectorAll(`[data-fill=${name}]`).forEach((el) => (el.innerHTML = html));
-  fill("person-photo", p.photo ? `<img src="${withV(p.photo)}" alt="${esc(p.name)}">` : `<div class="initials">${esc(personInitials(p.name))}</div>`);
-  fill("person-relation", esc(p.relation || ""));
-  fill("person-name", esc(p.name));
-  fill("person-bio", (p.bio || "").split(/\n+/).filter(Boolean).map((t) => `<p>${esc(t)}</p>`).join(""));
-  const theirs = Object.entries(RECIPES).filter(([, r]) => r.person === id).sort(([, a], [, b]) => a.title.localeCompare(b.title));
-  fill("person-rh", `${theirs.length === 1 ? "Recipe" : "Recipes"} from ${esc(p.name)}`);
-  fill("person-recipes", theirs.map(([rid, r]) =>
-    `<a href="#recipe-${rid}">${r.photo ? `<img src="${withV(r.photo)}" alt="">` : ""}<span>${esc(r.title)}</span><b aria-hidden="true">→</b></a>`).join(""));
-  const img = panel.querySelector(".person-photo img");
-  if (img) img.onclick = () => openLightbox(img.src, p.name);
-  panel.hidden = false;
-  panel.querySelector(".story-panel").scrollTo(0, 0);
-  document.documentElement.style.overflow = "hidden";
-  if (!history.state?.person) history.pushState({ person: id }, "", location.href);
+function personHTML(id, currentKey) {
+  const p = MOCK.people[id];
+  const others = Object.entries(RECIPES).filter(([rid, r]) => r.person === id && rid !== currentKey).sort(byTitle);
+  return `<div class="person-top">
+      <div class="person-photo">${p.photo ? `<img src="${withV(p.photo)}" alt="${esc(p.name)}">` : `<div class="initials">${esc(personInitials(p.name))}</div>`}</div>
+      <div>${p.relation ? `<div class="kicker">${esc(p.relation)}</div>` : ""}<h2>${esc(p.name)}</h2></div>
+    </div>
+    <div class="person-bio">${(p.bio || "").split(/\n+/).filter(Boolean).map((t) => `<p>${esc(t)}</p>`).join("")}</div>
+    ${others.length ? `<h3 class="person-rh">More from ${esc(p.name)}</h3><div class="person-recipes">${recipeLinks(others, null, false)}</div>` : ""}`;
 }
-function hidePerson() {
-  const panel = document.querySelector("[data-person]");
-  if (!panel || panel.hidden) return;
-  panel.hidden = true;
+
+// Category sheet: the recipes in this category, so you can hop to another without going back to the list.
+// Opening adds a history step (same address), so the phone's back button closes it.
+function openCategory(name, currentKey) {
+  const sheet = document.querySelector("[data-cat-sheet]");
+  if (!sheet) return;
+  sheet.querySelector("[data-fill=catm-title]").textContent = name;
+  sheet.querySelector("[data-fill=catm-list]").innerHTML = recipeLinks(Object.entries(RECIPES).filter(([, r]) => r.category === name).sort(byTitle), currentKey);
+  sheet.hidden = false;
+  sheet.querySelector(".story-panel").scrollTo(0, 0);
+  document.documentElement.style.overflow = "hidden";
+  if (!history.state?.sheet) history.pushState({ sheet: true }, "", location.href);
+}
+function hideSheet() {
+  const sheet = document.querySelector("[data-cat-sheet]");
+  if (!sheet || sheet.hidden) return;
+  sheet.hidden = true;
   document.documentElement.style.overflow = "";
 }
-const closePerson = () => (history.state?.person ? history.back() : hidePerson());
-function setupPerson() {
-  const panel = document.querySelector("[data-person]");
-  if (!panel) return;
-  panel.querySelector("[data-person-close]").onclick = (e) => { e.preventDefault(); closePerson(); };
-  panel.addEventListener("click", (e) => { if (e.target === panel) closePerson(); });
-  document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !panel.hidden && !document.querySelector(".lb")) closePerson(); });
-  window.addEventListener("popstate", () => { if (!history.state?.person) hidePerson(); });
-  window.addEventListener("hashchange", hidePerson); // tapped one of their recipes
+const closeSheet = () => (history.state?.sheet ? history.back() : hideSheet());
+function setupSheet() {
+  const sheet = document.querySelector("[data-cat-sheet]");
+  if (!sheet) return;
+  sheet.querySelector("[data-sheet-close]").onclick = (e) => { e.preventDefault(); closeSheet(); };
+  sheet.addEventListener("click", (e) => { if (e.target === sheet) closeSheet(); });
+  document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !sheet.hidden && !document.querySelector(".lb")) closeSheet(); });
+  window.addEventListener("popstate", () => { if (!history.state?.sheet) hideSheet(); });
+  window.addEventListener("hashchange", hideSheet); // picked a recipe, or "See all the recipes"
 }
 
 // Memories: anyone can share a memory of a dish. It lands in the family's Google Sheet
@@ -576,4 +596,4 @@ function setupMemories() {
 
 document.addEventListener("DOMContentLoaded", fillMockup);
 document.addEventListener("DOMContentLoaded", setupMemories);
-document.addEventListener("DOMContentLoaded", setupPerson);
+document.addEventListener("DOMContentLoaded", setupSheet);

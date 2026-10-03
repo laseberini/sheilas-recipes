@@ -1,10 +1,10 @@
 <!doctype html>
-<html lang="en" data-version="0.31" data-built="2026-10-03 21:10">
+<html lang="en" data-version="0.32" data-built="2026-10-03 21:21">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Sheila's Recipes</title>
-<link rel="manifest" href="manifest.webmanifest?v=0.31">
+<link rel="manifest" href="manifest.webmanifest?v=0.32">
 <link rel="icon" type="image/png" sizes="32x32" href="images/icons/sheila-32.png">
 <link rel="apple-touch-icon" href="images/icons/sheila-180.png">
 <meta name="apple-mobile-web-app-title" content="Sheila's Recipes">
@@ -13,8 +13,8 @@
 <meta name="theme-color" content="#1d3f7a">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,400;1,9..144,600&family=Work+Sans:wght@400;500;600&display=swap" rel="stylesheet">
-<script src="recipes-data.js?v=0.31"></script>
-<script src="shared.js?v=0.31"></script>
+<script src="recipes-data.js?v=0.32"></script>
+<script src="shared.js?v=0.32"></script>
 <style>
   :root {
     --link-accent: #1d3f7a;
@@ -79,13 +79,14 @@
   @keyframes storyFade { from { opacity: 0; } }
   @keyframes storyUp { from { transform: translateY(24px); opacity: 0; } }
   /* Whose recipe panel */
-  .person-panel { border-top-color: var(--olive); }
-  .person-top { display: flex; align-items: center; gap: 18px; margin: 4px 40px 16px 0; }
+  /* "From Nonna" tab: who the recipe comes from. */
+  .person-pane { max-width: 760px; margin: 0 auto; padding-bottom: var(--section); }
+  .person-top { display: flex; align-items: center; gap: 18px; margin: 0 0 16px; }
   .person-photo img, .person-photo .initials { width: 92px; height: 92px; border-radius: 50%; object-fit: cover; display: block; border: 4px solid #fff; box-shadow: 0 6px 18px rgba(29,63,122,.15); }
   .person-photo img { cursor: zoom-in; }
   .person-photo .initials { display: grid; place-items: center; background: var(--sand); color: var(--cobalt); font: 600 32px Fraunces, serif; }
-  .person-panel .kicker { color: var(--olive); }
-  .person-panel h2 { font-size: clamp(28px, 4.6vw, 40px); color: var(--cobalt); margin: 2px 0 0; line-height: 1.1; }
+  .person-pane .kicker { color: var(--olive); }
+  .person-pane h2 { font-size: clamp(28px, 4.6vw, 40px); color: var(--cobalt); margin: 2px 0 0; line-height: 1.1; }
   .person-bio { font-size: 17px; line-height: 1.65; }
   .person-bio p { margin: 0 0 .8em; }
   .person-rh { font: 600 13px "Work Sans"; letter-spacing: .14em; text-transform: uppercase; color: var(--terracotta); margin: 18px 0 8px; padding-top: 16px; border-top: 1px solid var(--sand); }
@@ -93,10 +94,22 @@
   .person-recipes a + a { border-top: 1px solid var(--sand); }
   .person-recipes img { width: 46px; height: 46px; border-radius: 50%; object-fit: cover; flex: none; }
   .person-recipes a b { margin-left: auto; color: var(--terracotta); }
+  .person-recipes small { display: block; font: 500 13px "Work Sans"; color: var(--muted); }
+  .person-recipes a[aria-current] { color: var(--muted); pointer-events: none; }
+  .person-recipes a[aria-current] b { font: 600 12px "Work Sans"; color: var(--olive); letter-spacing: .04em; text-transform: uppercase; }
+  /* Category list sheet */
+  .cat-panel { border-top-color: var(--cobalt); }
+  .cat-panel .kicker { color: var(--terracotta); }
+  .cat-panel h2 { font-size: clamp(28px, 4.6vw, 40px); color: var(--cobalt); margin: 4px 40px 12px 0; }
+  .catm-all { display: inline-block; margin-top: 16px; color: var(--terracotta); font-weight: 600; }
+  /* Her handwritten page(s), small, at the end of the recipe. */
+  .her-pages { margin: 28px 0 0; display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
+  .her-pages img { width: 84px; height: 112px; object-fit: cover; border-radius: 6px; border: 4px solid #fff; box-shadow: 0 8px 20px rgba(0,0,0,.14); }
+  .her-pages figcaption { font: italic 17px Fraunces, serif; color: var(--muted); }
   /* "From Nonna" on a recipe opens the panel. */
   .meta .tap { cursor: pointer; }
   .meta .tap::after { content: " ›"; font-weight: 700; }
-  .r-hero:not(.has-hero) .meta .tap { box-shadow: inset 0 0 0 1.5px var(--olive); }
+  .r-hero:not(.has-hero) .meta .tap { box-shadow: inset 0 0 0 1.5px var(--cobalt-2); }
   @media (max-width: 640px) {
     .story { padding: 0; align-items: flex-end; }
     .story-panel { border-radius: 22px 22px 0 0; max-height: 92vh; padding: 32px 22px 28px; }
@@ -154,8 +167,6 @@
   .method li::before { content: counter(s); width: 44px; height: 44px; border-radius: 50%; background: var(--lemon); color: var(--cobalt); display: grid; place-items: center; font: 600 20px Fraunces; }
   .notes { background: var(--cobalt); color: var(--cream); padding: 20px 24px; border-radius: 18px; font: italic 20px Fraunces, serif; }
   .notes p { margin: 0; }
-  .page-pane { text-align: center; padding-bottom: var(--section); }
-  .page-pane img { display: block; margin: 0 auto 24px; max-width: 680px; width: 100%; border-radius: 6px; border: 10px solid #fff; box-shadow: 0 20px 50px rgba(0,0,0,.15); }
 
 
   /* Memories: shared by family and friends, shown once the family approves them. */
@@ -306,17 +317,14 @@
   </article>
 </div>
 
-<!-- Whose recipe: opened by tapping "From …" on a recipe. Same panel style as "My story". -->
-<div class="story" data-person hidden>
-  <article class="story-panel person-panel" role="dialog" aria-modal="true" aria-labelledby="person-name">
-    <a class="story-close" href="#" data-person-close aria-label="Close">×</a>
-    <div class="person-top">
-      <div class="person-photo" data-fill="person-photo"></div>
-      <div><div class="kicker" data-fill="person-relation"></div><h2 id="person-name" data-fill="person-name"></h2></div>
-    </div>
-    <div class="person-bio" data-fill="person-bio"></div>
-    <h3 class="person-rh" data-fill="person-rh"></h3>
-    <div class="person-recipes" data-fill="person-recipes"></div>
+<!-- The recipes in a category, opened by tapping the category pill on a recipe. Same panel style as "My story". -->
+<div class="story" data-cat-sheet hidden>
+  <article class="story-panel cat-panel" role="dialog" aria-modal="true" aria-labelledby="catm-title">
+    <a class="story-close" href="#" data-sheet-close aria-label="Close">×</a>
+    <div class="kicker">More in this category</div>
+    <h2 id="catm-title" data-fill="catm-title"></h2>
+    <div class="person-recipes" data-fill="catm-list"></div>
+    <a class="catm-all" href="#recipes" data-sheet-all>See all the recipes</a>
   </article>
 </div>
 
@@ -326,21 +334,23 @@
       <div>
         <a class="back" href="#recipes">← All recipes</a>
         <h1 data-fill="title"></h1>
-        <div class="meta"><span data-fill="cat"></span><span data-fill="from" data-prefix="From "></span><span data-fill="date" data-prefix="Written "></span><span data-fill="serves" data-prefix="Serves "></span><a class="mem-chip" href="#memories" data-fill="mem-chip" hidden></a></div>
+        <div class="meta"><span data-fill="cat"></span><span data-fill="date" data-prefix="Written "></span><span data-fill="serves" data-prefix="Serves "></span><a class="mem-chip" href="#memories" data-fill="mem-chip" hidden></a></div>
       </div>
       <div class="dish-ph" data-fill="dish"></div>
     </div>
   </section>
   <div class="wrap">
     <div class="switch" data-views>
-      <button data-view="page">Her page</button>
       <button data-view="recipe">The recipe</button>
+      <button data-view="person" data-fill="person-tab"></button>
     </div>
-    <div data-pane="page" class="page-pane" data-fill="pages"></div>
     <div data-pane="recipe" class="recipe-body">
       <div class="ing-box"><h3>Ingredients</h3><ul class="ing" data-fill="ingredients"></ul></div>
-      <div class="method-box"><h3>Method</h3><ol class="method" data-fill="method"></ol><div class="notes" data-fill="notes"></div></div>
+      <div class="method-box"><h3>Method</h3><ol class="method" data-fill="method"></ol><div class="notes" data-fill="notes"></div>
+        <figure class="her-pages" data-fill="pages"></figure></div>
     </div>
+    <!-- Whose recipe: their photo, who they are to Sheila, a few lines and their other recipes. -->
+    <div data-pane="person" class="person-pane" data-fill="person-pane"></div>
   </div>
   <section class="mem wrap" id="memories" data-mem-section hidden>
     <div class="mem-head"><h2>Memories</h2><p>Cooked this with Sheila? Eaten it at her table? Share a memory of this dish.</p></div>
