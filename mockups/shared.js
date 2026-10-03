@@ -24,145 +24,216 @@ const withV = (url) => `${url}${url.includes("?") ? "&" : "?"}v=${VERSION}`;
   }
 })();
 
+// The recipes shown in full on the site so far (refreshed from data/recipes.json).
+// The recipes shown in full on the site so far (refreshed from data/recipes.json).
 const RECIPES = {
-  fish: {
-    title: "Fish Cakes",
-    from: "Simy",
-    date: "4/09",
-    category: "Fish",
-    page: "../images/pages/p170308.jpg",
-    photo: "../images/dishes/fish-cakes.jpg",
-    ingredients: [
-      "250g mince Hake with carrot & onion (chopped)",
+  "fish": {
+    "title": "Fish Cakes",
+    "from": "Simy",
+    "date": "4/09",
+    "category": "Meat, Chicken & Fish",
+    "page": "../images/pages/p170308.jpg",
+    "photo": "../images/dishes/fish-cakes.jpg",
+    "ingredients": [
+      "250g mince hake with carrot & onion (chopped)",
       "1 small egg",
-      "Salt, pepper garlic salt",
-      "Small tspn suger (optional)",
-      "Bread crumbs",
+      "Salt, pepper, garlic salt",
+      "Small tsp sugar (optional)",
+      "Breadcrumbs"
     ],
-    method: [
-      "Put in Bowl & Mix",
-      "Roll into balls & roll in Breadcrumbs & flatten gently (if v got time Before frying, Put fish cakes on a plate, leave in fridge for a bit)",
-      "Oil in frying pan, not too much or too little very hot oil, turn every few minutes till Brown",
-      "Take kitchen paper, put fish cakes to drain oil on then, more paper & drain again, put on cakes, cover with more paper, press gently to remove oil",
+    "method": [
+      "Put in bowl & mix.",
+      "Roll into balls & roll in breadcrumbs & flatten gently (if v got time, before frying, put fish cakes on a plate, leave in fridge for a bit).",
+      "Oil in frying pan, not too much or too little, very hot oil, turn every few minutes till brown.",
+      "Take kitchen paper, put fish cakes to drain oil on them, more paper & drain again.",
+      "Then \" \" put on cakes, cover with more paper, press gently to remove oil."
     ],
-    notes: ["Serve with chips/salad whatever & Chrain"],
+    "notes": [
+      "Serve with chips/salad, whatever & chrain.",
+      "Ingredients numbered 1-5 in the margin (numbers stripped)"
+    ]
   },
-  lemon: {
-    title: "Lemon Meringue",
-    from: null,
-    date: null,
-    category: "Desserts",
-    page: "../images/pages/p170706.jpg",
-    photo: "../images/dishes/lemon-meringue.jpg",
-    ingredients: [
-      "2 Big tins condenced milk",
-      "1-1½ packets marie biscuits",
+  "lemon": {
+    "title": "Lemon Meringue",
+    "from": null,
+    "date": null,
+    "category": "Desserts",
+    "page": "../images/pages/p170706.jpg",
+    "photo": "../images/dishes/lemon-meringue.jpg",
+    "ingredients": [
+      "2 big tins condensed milk",
+      "1-1½ packets Marie biscuits",
       "6-8oz (180-250g) butter",
-      "4 Eggs Separated",
-      "6 Tablespoons sugar",
-      "½ tspn Baking Powder",
-      "¾ Cup Lemon Juice",
+      "4 eggs, separated",
+      "6 tablespoons sugar",
+      "½ tsp baking powder",
+      "¾ cup lemon juice"
     ],
-    method: [
-      "Heat oven 120",
-      "Crush marie Biscuits well",
-      "melt Butter - mix with Biscuits",
-      "Line bottom & side of Dish",
-      "Beat condenced milk",
-      "add 4 egg yolks (yellow) - beat",
-      "add Lemon juice - beat",
-      "pour mixture into biscuit lined dish",
-      "Topping:",
-      "Beat egg whites till stiff",
-      "add 1 tablespoon Sugar for each egg white; Beat for one minute",
-      "Fold in Rest of Sugar, cut into fluffy egg white",
-      "Gently put egg white on top of mix",
-      "Bake for ± 30 mins or until Mereingue slightly Browned",
+    "method": [
+      "Heat oven 120.",
+      "1. Crush Marie biscuits well.",
+      "2. Melt butter, mix with biscuits.",
+      "Line bottom & side of dish.",
+      "3. Beat condensed milk.",
+      "4. Add 4 egg yolks (yellow), beat.",
+      "5. Add lemon juice, beat.",
+      "Pour mixture into biscuit lined dish.",
+      "Topping",
+      "1. Beat egg whites till stiff.",
+      "2. Add 1 tablespoon sugar for (egg) each egg white; beat for one minute.",
+      "3. Fold in rest of sugar, cut into fluffy egg white.",
+      "4. Gently put egg white on top of mix.",
+      "Bake for ± 30 mins or until meringue slightly browned."
     ],
-    notes: [],
+    "notes": []
   },
+  "pesto": {
+    "title": "Aletta's Pesto Sauce",
+    "from": "Aletta Taranto",
+    "date": null,
+    "category": "Sauces",
+    "page": "../images/pages/p-alettas-pesto.jpg",
+    "photo": "../images/dishes/alettas-pesto-sauce.jpg",
+    "aliases": [
+      "Pesto Sauce"
+    ],
+    "ingredients": [
+      "2 firmly packed cups of fresh basil leaves",
+      "½ cup olive oil",
+      "2 tablespoons pine nuts",
+      "2 cloves garlic (each clove cut in half)",
+      "½ cup fresh grated Pecorino/Parmesan cheese",
+      "3 tablespoons butter, cut into 2 to 3 pieces",
+      "1 tsp salt"
+    ],
+    "method": [
+      "In Magimix:",
+      "Put - basil (washed & dried), oil, nuts, garlic & salt - mix thoroughly.",
+      "Add - cheese - blend.",
+      "Add - butter - blend.",
+      "When using:",
+      "Place pesto in a bowl & stir in some hot water from the cooking pasta, then turn pesto (paste) into a sauce. Pour over pasta, make sure to coat all the pasta.",
+      "Use as much pesto according to how much pasta you are cooking.",
+      "Serve with grated Pecorino/Parmesan cheese."
+    ],
+    "notes": [
+      "(Genuine Pesto Sauce from Italian Riviera & Genova region - this recipe handed down from Aletta's mother-in-law who came from that region - where Pesto Sauce originates.)",
+      "NB: Pesto can be deep frozen in airtight bowl & defrosted when needed (can be re-frozen)."
+    ]
+  },
+  "linguine": {
+    "title": "Linguine Pesto",
+    "from": null,
+    "date": null,
+    "category": "Pasta & Rice",
+    "page": "../images/pages/p-linguine-pesto.jpg",
+    "photo": "../images/dishes/linguine-pesto.jpg",
+    "uses": [
+      "pesto"
+    ],
+    "ingredients": [
+      "Linguine",
+      "½ tablespoon salt",
+      "Aletta's pesto sauce (see recipe)",
+      "Grated pecorino (Parmigiano) cheese",
+      "If you like:",
+      "Some crumbled feta",
+      "Some baby tomatoes"
+    ],
+    "method": [
+      "Boil linguine with ½ tablespoon salt.",
+      "Take some of the linguine water & use a little to thin the pesto sauce.",
+      "When linguine cooked strain off the water, add the pesto sauce to the pasta making sure all the linguine are well covered.",
+      "Sprinkle grated pecorino (Parmigiano) cheese on top.",
+      "If you like:",
+      "Sprinkle some crumbled feta into the pasta.",
+      "Grill some baby tomatoes & mix them into the pasta, mix well, carefully then pecorino."
+    ],
+    "notes": [
+      "If you like (feta & grilled baby tomatoes) - delish addition."
+    ]
+  }
 };
-
-Object.assign(RECIPES, { pesto: {
-  "title": "Aletta's Pesto Sauce",
-  "from": "Aletta Taranto",
-  "date": null,
-  "category": "Sauces",
-  "page": "../images/pages/p-alettas-pesto.jpg",
-  "photo": "../images/dishes/alettas-pesto-sauce.jpg",
-  "ingredients": [
-    "2 Firmly packed cups of fresh Basil leaves",
-    "½ cup olive oil",
-    "2 tablespoons Pine nuts",
-    "2 cloves garlic (each clove cut in half)",
-    "½ cup fresh grated Pecorino/Parmesan cheese",
-    "3 tablespoons butter cut into 2 to 3 pieces",
-    "1 tspn Salt"
-  ],
-  "method": [
-    "In Magimix:",
-    "Put - Basil (washed & dried), oil, nuts, garlic & Salt - mix thoroughly",
-    "add - cheese - Blend",
-    "add - Butter - Blend",
-    "When using:",
-    "Place pesto in a bowl & stir in some hot water from the cooking Pasta then turn Pesto (paste) into a Sauce - Pour over Pasta, make sure to coat all the pasta.",
-    "Use as much Pesto according to how much pasta you are cooking",
-    "Serve with grated Pecorino/Parmesan cheese"
-  ],
-  "notes": [
-    "(Genuine Pesto Sauce from Italian Riviera & Genova Region - This recipe handed down from Aletta's mother-in-law who came from that Region - where Pesto Sauce originates)",
-    "NB Pesto can be deep Frozen in airtight Bowl & defrosted when needed (Can be re-frozen)"
-  ],
-}, linguine: {
-  "title": "Linguine Pesto",
-  "from": null,
-  "date": null,
-  "category": "Pasta & Rice",
-  "page": "../images/pages/p-linguine-pesto.jpg",
-  "photo": "../images/dishes/linguine-pesto.jpg",
-  "uses": [
-    "pesto"
-  ],
-  "ingredients": [
-    "Linguini",
-    "½ tablespoon salt",
-    "Aletta's Pesto Sauce (see recipe)",
-    "grated pecorino (Parmigiano) cheese",
-    "If you like:",
-    "some crumbled feta",
-    "some baby tomatos"
-  ],
-  "method": [
-    "Boil Linguini with ½ tablespoon salt.",
-    "Take some of the Linguini water & use a little to thin the pesto sauce.",
-    "When Linguini cooked strain off the water, add the Pesto Sauce to the pasta Making sure all the linguini are well covered",
-    "Sprinkle grated pecorino (Parmigiano) cheese on top",
-    "If you like:",
-    "Sprinkle some crumbled feta into the pasta",
-    "grill some baby tomatos & mix them into the pasta, mix well, carefully then pecorino"
-  ],
-  "notes": [
-    "If you like (feta & grilled baby tomatoes) - delish addition"
-  ],
-} });
-
-RECIPES.pesto.aliases = ["Pesto Sauce"];
 
 const MOCK = {
   categories: [
-    { name: "Soups", recipes: ["Minestrone Soup"] },
-    { name: "Starters & Salads", recipes: ["Aletta's Caponata", "Nonna's Butter Bean & Potato Salad"] },
-    { name: "Fish", recipes: ["Fish Cakes"] },
-    { name: "Chicken", recipes: ["Nonna's Artichoke & Chicken"] },
-    { name: "Meat", recipes: ["Brisket in Coke", "Cape Bobotie", "Pulpetti"] },
-    { name: "Pasta & Rice", recipes: ["Linguine Pesto", "Easy 'No Meat' Lasagne", "Gnocchi", "Funghi Risotto", "Oven Penne with Mellenzana", "Polenta Parmigiana"] },
-    { name: "Vegetables & Sides", recipes: ["Nonna's Secret Mellenzana", "Melanzana alla Parmigiana", "Stuffed Artichokes", "Spinach, Feta & Ricotta Pie", "Mushroom & Cheese Quiche", "Sweetcorn Bake"] },
-    { name: "Sauces", recipes: ["Aletta's Pesto Sauce", "Neapolitan Sauce", "Nonna's Bolognaise", "Porcini Sauce"] },
-    { name: "Desserts", recipes: ["Lemon Meringue", "Brandy Tart", "Chocolate Nut Tart", "Bronwyn's Pecan Pie", "Peppermint Crisp Cake", "Cheese Fridge Cake", "Avis' Cheesecake", "Apple & Youngberry Crumble", "Winter Pudding"] },
-    { name: "Cakes & Bakes", recipes: ["Lamington Squares", "Poppy Seed Cake", "Peanut Butter Brownies"] },
+    {
+      "name": "Soups & Starters",
+      "recipes": [
+        "Aletta's Wonderful Sicilia Caponata",
+        "Minestrone Soup",
+        "Nonna's Butter Bean & Potato Salad"
+      ]
+    },
+    {
+      "name": "Meat, Chicken & Fish",
+      "recipes": [
+        "Brisket in Coke",
+        "Cape Bobotie",
+        "Chicken à la Familia",
+        "Fish Cakes",
+        "Nonna's Artichoke & Chicken",
+        "Pulpetti"
+      ]
+    },
+    {
+      "name": "Pasta & Rice",
+      "recipes": [
+        "Easy 'No Meat' Lasagne - Quite a Big Dish",
+        "Gnocchi",
+        "Linguine Pesto",
+        "Natalia's Funghi Risotto (Mushroom Rice)",
+        "Oven Penne Tomato, Pesto, Mellenzana",
+        "Polenta Parmigiana"
+      ]
+    },
+    {
+      "name": "Sauces",
+      "recipes": [
+        "Aletta's Pesto Sauce",
+        "Bolognaise Sauce",
+        "Neapolitan Sauce",
+        "Porcini Sauce"
+      ]
+    },
+    {
+      "name": "Vegetables & Sides",
+      "recipes": [
+        "Melanzana alla Parmigiana",
+        "Mushroom & Cheese Quiche / Onion & Cheese Quiche",
+        "Nonna's Wonderful & Secret Mellenzana (Brinjals)",
+        "Spinach, Feta & Ricotta Pie",
+        "Stuffed Artichokes",
+        "Stuffed Mellenzana (Brinjals)",
+        "Sweetcorn Bake"
+      ]
+    },
+    {
+      "name": "Baking",
+      "recipes": [
+        "Grilled Vegetable Bread - Variation",
+        "Lamington Squares",
+        "Poppy Seed Nix Recipe",
+        "Win Friends and Influence People Peanut Butter Chocolate Brownies"
+      ]
+    },
+    {
+      "name": "Desserts",
+      "recipes": [
+        "Apple / Youngberry Crumble",
+        "Avis Cheese Cake",
+        "Brandy Tart",
+        "Bronwyn's Pecan Pie / Tart",
+        "Bronwyn's Peppermint Crisp Cake",
+        "Cheese Fridge Cake",
+        "Chocolate Nut Tart",
+        "Lemon Meringue",
+        "Winter Pudding"
+      ]
+    }
   ],
   // Which mock recipe each title opens; everything else opens Fish Cakes.
-  links: { "Fish Cakes": "fish", "Lemon Meringue": "lemon", "Linguine Pesto": "linguine", "Aletta's Pesto Sauce": "pesto" },
+  links: {"Fish Cakes":"fish","Lemon Meringue":"lemon","Aletta's Pesto Sauce":"pesto","Linguine Pesto":"linguine"},
   intro: [
     "When I first got married 60 years ago to my 'Italian' hubby we settled in Swaziland for 7 years. I had NO clue how to cook but with a little help from my friends, especially my friend Aletta also married to an Italian & I sort of began my 'like' of cooking.",
     "However when we moved back to Jhb I started asking my mother-in-law (who I refer to as 'Nonna - granny') how to make her food.",
