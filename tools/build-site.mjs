@@ -45,7 +45,8 @@ for (const r of live) {
     uses: (r.uses || []).filter((id) => liveIds.has(id)),
     ...(ALIASES[r.id] ? { aliases: ALIASES[r.id] } : {}),
     ingredients: lines(r.ingredients),
-    method: lines(r.method),
+    // The site numbers the steps itself, so her own "1." / "2)" at the start of a step would double up.
+    method: lines(r.method).map((m) => m.replace(/^\d+\s*[.)]\s+/, "")),
     // "Serves 6-8" is already shown at the top.
     notes: lines(r.notes).filter((n) => !serves || n.replace(/\.$/, "").toLowerCase() !== `serves ${serves}`.toLowerCase()),
   };

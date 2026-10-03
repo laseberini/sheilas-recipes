@@ -53,13 +53,13 @@ const RECIPES = {
       "Vinegar"
     ],
     "method": [
-      "1. Chop egg fruit (brinjals) leaving on skin & fry gently in some oil. Remove from pan.",
-      "2. Boil chopped celery until soft, approx 7 minutes.",
-      "3. Drain celery & fry in the oil. Remove & put together with egg fruit (brinjals) in a dish.",
-      "4. Fry onions in the same oil until light brown & add the olives and fry a little. Remove.",
-      "5. Place all the fried vegetables back in the pan and add approx 2 tablespoons capers.",
-      "6. Season with some sugar & vinegar according to taste.",
-      "7. Leave to cool, pour into bottle. Ready to eat or keep in the fridge."
+      "Chop egg fruit (brinjals) leaving on skin & fry gently in some oil. Remove from pan.",
+      "Boil chopped celery until soft, approx 7 minutes.",
+      "Drain celery & fry in the oil. Remove & put together with egg fruit (brinjals) in a dish.",
+      "Fry onions in the same oil until light brown & add the olives and fry a little. Remove.",
+      "Place all the fried vegetables back in the pan and add approx 2 tablespoons capers.",
+      "Season with some sugar & vinegar according to taste.",
+      "Leave to cool, pour into bottle. Ready to eat or keep in the fridge."
     ],
     "notes": [
       "This is a wonderful Sicilian cold dish which you can keep in a bottle in the fridge. You can serve with antipasto, or eat with some wonderful bread, cheese & wine or on its own!!"
@@ -85,9 +85,9 @@ const RECIPES = {
       "Seasoning: black pepper, salt & vinegar & oil (not olive oil)"
     ],
     "method": [
-      "1. Boil some potatoes ± 3 for 1 tin butter beans till soft but not soggy. Peel & slice in rounds.",
-      "2. Drain butter beans.",
-      "3. Take crushed garlic, chopped parsley & sliced spring onion.",
+      "Boil some potatoes ± 3 for 1 tin butter beans till soft but not soggy. Peel & slice in rounds.",
+      "Drain butter beans.",
+      "Take crushed garlic, chopped parsley & sliced spring onion.",
       "Layer your potatoes, beans & chopped parsley, spring onion & garlic.",
       "Season black pepper, salt & vinegar & oil."
     ],
@@ -114,16 +114,16 @@ const RECIPES = {
       "Approx 4 - 5 potatoes peeled & sliced in half twice lengthwise"
     ],
     "method": [
-      "1. Parboil chicken pieces.",
-      "2. Parboild artichokes then remove outer hard leaves of artichokes, cut artichokes lengthwise.",
-      "3. Parboil peeled potatoes.",
+      "Parboil chicken pieces.",
+      "Parboild artichokes then remove outer hard leaves of artichokes, cut artichokes lengthwise.",
+      "Parboil peeled potatoes.",
       "Make a mixture of:",
       "Flour, breadcrumbs, salt, pepper, crushed garlic, salt, origanum & chopped parsley.",
       "In a frying pan heat some oil & butter with a cube of chicken stock melted into the oil. [NOT DISSOLVED]",
-      "1. Dip dried chicken pieces into mixture & fry gently till golden, remove & put pieces in a big casserole dish at one end.",
-      "2. Do the same with the potatoes using the same frying pan as the chicken, remove & put potato pieces next to the chicken.",
-      "3. Repeat procedure [dip into mixture & then fry gently] with the artichokes, remove & put next to the potatoes.",
-      "4. Lastly, take drained peas and do the same as the above, remove & put next to the artichokes."
+      "Dip dried chicken pieces into mixture & fry gently till golden, remove & put pieces in a big casserole dish at one end.",
+      "Do the same with the potatoes using the same frying pan as the chicken, remove & put potato pieces next to the chicken.",
+      "Repeat procedure [dip into mixture & then fry gently] with the artichokes, remove & put next to the potatoes.",
+      "Lastly, take drained peas and do the same as the above, remove & put next to the artichokes."
     ],
     "notes": [
       "It looks wonderful in the dish - different colours & textures - with bits of crumbs from the mixture. Serve hot with a delicious salad and some warm bread/rolls."
@@ -159,15 +159,15 @@ const RECIPES = {
       "4 bay leaves"
     ],
     "method": [
-      "1. Saute onions in a little oil until golden.",
-      "2. Add beef mince & saute until browned.",
-      "3. Soak bread in milk - squeeze out milk & keep aside.",
-      "4. Crumble bread & add to mince mixture.",
-      "5. Mix in remaining ingredients except eggs, leftover milk & bay leaves.",
-      "6. Place mixture in a greased ovenproof dish.",
-      "7. Roll up bay leaves & press upright into mince mixture.",
-      "8. Whisk milk & egg together & pour gently over mince mixture.",
-      "9. Bake at 180 for approx 45 minutes or until topping set & golden."
+      "Saute onions in a little oil until golden.",
+      "Add beef mince & saute until browned.",
+      "Soak bread in milk - squeeze out milk & keep aside.",
+      "Crumble bread & add to mince mixture.",
+      "Mix in remaining ingredients except eggs, leftover milk & bay leaves.",
+      "Place mixture in a greased ovenproof dish.",
+      "Roll up bay leaves & press upright into mince mixture.",
+      "Whisk milk & egg together & pour gently over mince mixture.",
+      "Bake at 180 for approx 45 minutes or until topping set & golden."
     ],
     "notes": []
   },
@@ -249,7 +249,7 @@ const RECIPES = {
       "3 celery chopped [or celery salt]",
       "250g potato chopped",
       "2-3 baby marrow chopped",
-      "3oz green beans chopped",
+      "85 g green beans chopped",
       "250g cabbage chopped",
       "2 x 400g tinned tomato mashed and undrained [keep the juice]",
       "1 tin butter beans with liquid",
