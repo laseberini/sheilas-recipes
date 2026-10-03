@@ -1,12 +1,12 @@
 <!doctype html>
-<html lang="en" data-version="0.9" data-built="2026-10-03 16:13">
+<html lang="en" data-version="0.10" data-built="2026-10-03 16:16">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>B · Nonna's Table</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,400;1,9..144,600&family=Work+Sans:wght@400;500;600&display=swap" rel="stylesheet">
-<script src="shared.js?v=0.9"></script>
+<script src="shared.js?v=0.10"></script>
 <style>
   :root {
     --eng-accent: #1d3f7a; --eng-bg: #ffffff;
@@ -66,50 +66,13 @@
 
   .cats { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 22px; padding-bottom: 80px; }
   .cat { background: #fff; border-radius: 18px; overflow: hidden; box-shadow: 0 1px 0 var(--sand), 0 12px 30px rgba(29,63,122,.07); }
-  .cat-name { font-size: 25px; padding: 20px 24px 16px; color: #fff; background: var(--terracotta); display: flex; justify-content: space-between; align-items: center; }
-  .cat:nth-child(4n+2) .cat-name { background: var(--olive); }
-  .cat:nth-child(4n+3) .cat-name { background: var(--cobalt-2); }
-  .cat:nth-child(4n+4) .cat-name { background: var(--lemon); color: var(--cobalt); }
-  .cat-count { font: 600 14px "Work Sans"; background: rgba(255,255,255,.25); border-radius: 99px; padding: 3px 10px; }
+  /* Soft pastel washes of the four Mediterranean colours, with darker lettering. */
+  .cat-name { font-size: 25px; padding: 20px 24px 16px; color: #9a4522; background: #f2e0d5; display: flex; justify-content: space-between; align-items: center; }
+  .cat:nth-child(4n+2) .cat-name { background: #e6e9d6; color: #4f5a24; }
+  .cat:nth-child(4n+3) .cat-name { background: #e1e8f3; color: var(--cobalt); }
+  .cat:nth-child(4n+4) .cat-name { background: #f7eecd; color: #7a5b05; }
+  .cat-count { font: 600 14px "Work Sans"; background: rgba(0,0,0,.06); border-radius: 99px; padding: 3px 10px; }
 
-  /* Category colour options (mockup: switch with the buttons above the categories). */
-  .cat-opts { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; margin: -10px 0 22px; font-size: 14px; color: var(--muted); }
-  .cat-opts b { font-weight: 600; margin-right: 4px; }
-  .cat-opts button { font: 500 13px "Work Sans", sans-serif; border: 1px solid var(--sand); background: #fff; color: var(--cobalt);
-    border-radius: 99px; padding: 6px 12px; cursor: pointer; }
-  .cat-opts button.on { background: var(--cobalt); border-color: var(--cobalt); color: #fff; }
-
-  /* 1. Soft pastel: the same four colours as gentle washes, darker lettering. */
-  [data-cats="soft"] .cat-name { background: #f2e0d5; color: #9a4522; }
-  [data-cats="soft"] .cat:nth-child(4n+2) .cat-name { background: #e6e9d6; color: #4f5a24; }
-  [data-cats="soft"] .cat:nth-child(4n+3) .cat-name { background: #e1e8f3; color: var(--cobalt); }
-  [data-cats="soft"] .cat:nth-child(4n+4) .cat-name { background: #f7eecd; color: #7a5b05; }
-  [data-cats="soft"] .cat-count { background: rgba(0,0,0,.06); }
-
-  /* 2. White & line: white header, a thin coloured line under the name. */
-  [data-cats="line"] .cat-name { background: #fff !important; color: var(--cobalt) !important; border-bottom: 3px solid #d9a58a; }
-  [data-cats="line"] .cat:nth-child(4n+2) .cat-name { border-bottom-color: #b8c08f; }
-  [data-cats="line"] .cat:nth-child(4n+3) .cat-name { border-bottom-color: #9fb4d8; }
-  [data-cats="line"] .cat:nth-child(4n+4) .cat-name { border-bottom-color: #ecd27c; }
-  [data-cats="line"] .cat-count { background: var(--cream); color: var(--muted); }
-
-  /* 3. Calm blue: every category the same soft blue-grey, like the tiles. */
-  [data-cats="blue"] .cat .cat-name { background: #e8edf5; color: var(--cobalt); }
-  [data-cats="blue"] .cat-count { background: #fff; color: var(--cobalt); }
-
-  /* 4. Tile accent: white header with a small blue-and-white tile by each name. */
-  [data-cats="tile"] .cat .cat-name { background: #fff; color: var(--cobalt); justify-content: flex-start; gap: 12px;
-    border-bottom: 1px solid var(--sand); }
-  [data-cats="tile"] .cat-name::before { content: ""; flex: none; width: 26px; height: 26px; border-radius: 5px;
-    background-color: var(--cobalt);
-    background-image: radial-gradient(circle at 50% 50%, var(--lemon) 0 3px, transparent 4px),
-      radial-gradient(circle at 50% 50%, transparent 0 7px, #fff 8px 9px, transparent 10px),
-      conic-gradient(from 45deg, #fff 0 25%, transparent 0 50%, #fff 0 75%, transparent 0);
-    background-size: 26px 26px, 26px 26px, 13px 13px; }
-  [data-cats="tile"] .cat:nth-child(4n+2) .cat-name::before { background-color: #7d8c4a; }
-  [data-cats="tile"] .cat:nth-child(4n+3) .cat-name::before { background-color: #c25a2c; }
-  [data-cats="tile"] .cat:nth-child(4n+4) .cat-name::before { background-color: #4f74b5; }
-  [data-cats="tile"] .cat-count { margin-left: auto; background: var(--cream); color: var(--muted); }
   .cat-list { list-style: none; margin: 0; padding: 10px 24px 18px; }
   .cat-list li { border-bottom: 1px solid var(--sand); }
   .cat-list li:last-child { border: 0; }
@@ -193,9 +156,6 @@
   </section>
   <section class="wrap" id="recipes">
     <div class="menu-head"><h2>The recipes</h2><input class="search" placeholder="Search: brinjal, cake, Nonna…"></div>
-    <div class="cat-opts" id="catOpts"><b>Category colours:</b>
-      <button data-c="">Original</button><button data-c="soft">1 · Soft pastel</button><button data-c="line">2 · White &amp; line</button>
-      <button data-c="blue">3 · Calm blue</button><button data-c="tile">4 · Tile accent</button></div>
     <div class="cats" data-fill="categories"></div>
   </section>
   <div class="tiles"></div>
@@ -229,19 +189,5 @@
   <div class="tiles"></div>
   <footer>Made with love for Sheila's family</footer>
 </div>
-<script>
-  // Mockup only: try the category colour options; the choice is kept in the address (?cats=soft) so it can be shared.
-  (() => {
-    const url = new URL(location.href);
-    const set = (c) => {
-      document.body.dataset.cats = c;
-      document.querySelectorAll("#catOpts button").forEach((b) => b.classList.toggle("on", b.dataset.c === c));
-      c ? url.searchParams.set("cats", c) : url.searchParams.delete("cats");
-      history.replaceState(null, "", url);
-    };
-    document.querySelectorAll("#catOpts button").forEach((b) => (b.onclick = () => set(b.dataset.c)));
-    set(url.searchParams.get("cats") || "");
-  })();
-</script>
 </body>
 </html>
