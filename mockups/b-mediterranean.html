@@ -1,13 +1,20 @@
 <!doctype html>
-<html lang="en" data-version="0.18" data-built="2026-10-03 19:01">
+<html lang="en" data-version="0.19" data-built="2026-10-03 19:11">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>B · Nonna's Table</title>
+<title>Sheila's Recipes</title>
+<link rel="manifest" href="../manifest.webmanifest">
+<link rel="icon" type="image/png" sizes="32x32" href="../images/icons/sheila-32.png">
+<link rel="apple-touch-icon" href="../images/icons/sheila-180.png">
+<meta name="apple-mobile-web-app-title" content="Sheila's Recipes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#1d3f7a">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,400;1,9..144,600&family=Work+Sans:wght@400;500;600&display=swap" rel="stylesheet">
-<script src="recipes-data.js?v=0.18"></script>
-<script src="shared.js?v=0.18"></script>
+<script src="recipes-data.js?v=0.19"></script>
+<script src="shared.js?v=0.19"></script>
 <style>
   :root {
     --link-accent: #1d3f7a;
@@ -138,7 +145,15 @@
   .mem-form .hp { position: absolute; left: -9999px; width: 1px; height: 1px; opacity: 0; }
   .meta a.mem-chip { background: var(--lemon); color: var(--cobalt); border-radius: 99px; padding: 6px 14px; font-size: 14px; font-weight: 600; text-decoration: none; }
   .home-mem { background: var(--sand); padding: 60px 0 64px; }
-  .home-mem .mem-list { margin: 0; }
+  /* Home: memories as a swipeable carousel, one card tall, the next one peeking in. */
+  .home-mem .mem-list { position: relative; display: flex; gap: 16px; margin: 0 auto; max-width: 760px; padding: 4px 6% 20px; overflow-x: auto;
+    scroll-snap-type: x mandatory; scrollbar-width: none; overscroll-behavior-x: contain; }
+  .home-mem .mem-list::-webkit-scrollbar { display: none; }
+  .home-mem .mem-card { flex: 0 0 min(88%, 620px); scroll-snap-align: center; }
+  .home-mem .mem-card blockquote { display: -webkit-box; -webkit-line-clamp: 6; -webkit-box-orient: vertical; overflow: hidden; }
+  .mem-dots { display: flex; justify-content: center; gap: 8px; margin-top: 4px; }
+  .mem-dots button { width: 9px; height: 9px; padding: 0; border: 0; border-radius: 99px; background: rgba(29,63,122,.25); cursor: pointer; transition: width .2s, background .2s; }
+  .mem-dots button.on { width: 24px; background: var(--cobalt); }
   @media (max-width: 800px) { .mem-head h2 { font-size: 36px; } }
 
   footer { background: var(--cobalt); color: var(--cream); text-align: center; padding: 30px; font: italic 18px Fraunces; }
@@ -175,6 +190,7 @@
     <div class="wrap">
       <div class="mem-head"><h2>Memories</h2><p>Stories from around Sheila's table. Open any recipe to add yours.</p></div>
       <div class="mem-list" data-fill="home-memories"></div>
+      <div class="mem-dots" data-fill="mem-dots"></div>
     </div>
   </section>
   <section class="wrap" id="recipes">

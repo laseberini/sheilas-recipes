@@ -394,11 +394,23 @@ function drawMemories() {
   document.querySelectorAll("[data-fill=mem-chip]").forEach((a) => {
     a.textContent = mine.length ? `${mine.length} ${mine.length === 1 ? "memory" : "memories"} ↓` : "Share a memory ↓";
   });
-  // Home page: the newest few, each linking to its dish.
-  const recent = memories.filter((m) => RECIPES[m.recipe]).sort((a, b) => (b.at || "").localeCompare(a.at || "")).slice(0, 3);
+  // Home page: the newest ten as a carousel (swipe, or tap a dot), each linking to its dish.
+  const recent = memories.filter((m) => RECIPES[m.recipe]).sort((a, b) => (b.at || "").localeCompare(a.at || "")).slice(0, 10);
   document.querySelectorAll("[data-mem-home]").forEach((s) => (s.hidden = !recent.length));
   document.querySelectorAll("[data-fill=home-memories]").forEach((el) => {
     el.innerHTML = recent.map((m) => memCard(m, `about <a href="#recipe-${m.recipe}">${esc(RECIPES[m.recipe].title)}</a>`)).join("");
+    const dots = el.parentElement.querySelector("[data-fill=mem-dots]");
+    dots.hidden = recent.length < 2;
+    dots.innerHTML = recent.map((_, i) => `<button type="button" aria-label="Memory ${i + 1} of ${recent.length}"></button>`).join("");
+    const cards = [...el.children];
+    const current = () => {
+      const mid = el.scrollLeft + el.clientWidth / 2;
+      return cards.reduce((best, c, i) => (Math.abs(c.offsetLeft + c.offsetWidth / 2 - mid) < Math.abs(cards[best].offsetLeft + cards[best].offsetWidth / 2 - mid) ? i : best), 0);
+    };
+    const mark = () => [...dots.children].forEach((d, i) => d.classList.toggle("on", i === current()));
+    [...dots.children].forEach((d, i) => (d.onclick = () => el.scrollTo({ left: cards[i].offsetLeft + cards[i].offsetWidth / 2 - el.clientWidth / 2, behavior: "smooth" })));
+    el.onscroll = () => requestAnimationFrame(mark);
+    mark();
   });
 }
 
