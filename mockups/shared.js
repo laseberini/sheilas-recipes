@@ -119,7 +119,7 @@ const RECIPES = {
       columns: [
         [{ op: "crush well", from: 0, to: 0 }, { op: "melt", from: 1, to: 1 }, { op: "beat", from: 2, to: 2 }],
         [{ op: "mix", from: 0, to: 1 }, { op: "add & beat", from: 2, to: 3 }],
-        [{ op: "press over base & sides of a pie dish", from: 0, to: 1 }, { op: "add & beat", from: 2, to: 4 }],
+        [{ op: "press over base & sides of the dish", from: 0, to: 1 }, { op: "add & beat", from: 2, to: 4 }],
         [{ op: "pour filling into base", from: 0, to: 4 }, { op: "beat till stiff", from: 5, to: 6, est: true }],
         [{ op: "beat in, 1 min", from: 5, to: 7 }],
         [{ op: "fold in gently", from: 5, to: 8 }],
@@ -130,6 +130,193 @@ const RECIPES = {
   },
 };
 
+Object.assign(RECIPES, { pesto: {
+  "title": "Aletta's Pesto Sauce",
+  "from": "Aletta Taranto",
+  "date": null,
+  "category": "Sauces",
+  "page": "../images/pages/p-alettas-pesto.jpg",
+  "photo": "../images/dishes/alettas-pesto-sauce.jpg",
+  "ingredients": [
+    "2 Firmly packed cups of fresh Basil leaves",
+    "½ cup olive oil",
+    "2 tablespoons Pine nuts",
+    "2 cloves garlic (each clove cut in half)",
+    "½ cup fresh grated Pecorino/Parmesan cheese",
+    "3 tablespoons butter cut into 2 to 3 pieces",
+    "1 tspn Salt"
+  ],
+  "method": [
+    "In Magimix:",
+    "Put - Basil (washed & dried), oil, nuts, garlic & Salt - mix thoroughly",
+    "add - cheese - Blend",
+    "add - Butter - Blend",
+    "When using:",
+    "Place pesto in a bowl & stir in some hot water from the cooking Pasta then turn Pesto (paste) into a Sauce - Pour over Pasta, make sure to coat all the pasta.",
+    "Use as much Pesto according to how much pasta you are cooking",
+    "Serve with grated Pecorino/Parmesan cheese"
+  ],
+  "notes": [
+    "(Genuine Pesto Sauce from Italian Riviera & Genova Region - This recipe handed down from Aletta's mother-in-law who came from that Region - where Pesto Sauce originates)",
+    "NB Pesto can be deep Frozen in airtight Bowl & defrosted when needed (Can be re-frozen)"
+  ],
+  "table": {
+    "ingredients": [
+      {
+        "text": "500 ml (2 firmly packed cups) fresh basil leaves, washed & dried"
+      },
+      {
+        "text": "125 ml (½ cup) olive oil"
+      },
+      {
+        "text": "30 ml (2 Tbsp) pine nuts"
+      },
+      {
+        "text": "2 cloves garlic, halved"
+      },
+      {
+        "text": "5 ml (1 tsp) salt"
+      },
+      {
+        "text": "125 ml (½ cup) grated pecorino / parmesan"
+      },
+      {
+        "text": "45 ml (3 Tbsp) butter, in 2–3 pieces"
+      }
+    ],
+    "columns": [
+      [
+        {
+          "op": "blend thoroughly in the Magimix",
+          "from": 0,
+          "to": 4
+        }
+      ],
+      [
+        {
+          "op": "add & blend",
+          "from": 0,
+          "to": 5
+        }
+      ],
+      [
+        {
+          "op": "add & blend",
+          "from": 0,
+          "to": 6
+        }
+      ]
+    ],
+    "finish": "Use straight away, or freeze in an airtight bowl (it can be re-frozen)"
+  }
+}, linguine: {
+  "title": "Linguine Pesto",
+  "from": null,
+  "date": null,
+  "category": "Pasta & Rice",
+  "page": "../images/pages/p-linguine-pesto.jpg",
+  "photo": "../images/dishes/linguine-pesto.jpg",
+  "uses": [
+    "pesto"
+  ],
+  "ingredients": [
+    "Linguini",
+    "½ tablespoon salt",
+    "Aletta's Pesto Sauce (see recipe)",
+    "grated pecorino (Parmigiano) cheese",
+    "If you like:",
+    "some crumbled feta",
+    "some baby tomatos"
+  ],
+  "method": [
+    "Boil Linguini with ½ tablespoon salt.",
+    "Take some of the Linguini water & use a little to thin the pesto sauce.",
+    "When Linguini cooked strain off the water, add the Pesto Sauce to the pasta Making sure all the linguini are well covered",
+    "Sprinkle grated pecorino (Parmigiano) cheese on top",
+    "If you like:",
+    "Sprinkle some crumbled feta into the pasta",
+    "grill some baby tomatos & mix them into the pasta, mix well, carefully then pecorino"
+  ],
+  "notes": [
+    "If you like (feta & grilled baby tomatoes) - delish addition"
+  ],
+  "table": {
+    "ingredients": [
+      {
+        "text": "±400 g linguine",
+        "est": true
+      },
+      {
+        "text": "a big pot of water with 7.5 ml (½ Tbsp) salt",
+        "est": true
+      },
+      {
+        "text": "Aletta's Pesto Sauce",
+        "link": "pesto"
+      },
+      {
+        "text": "±250 g baby tomatoes, if you like",
+        "est": true
+      },
+      {
+        "text": "±100 g crumbled feta, if you like",
+        "est": true
+      },
+      {
+        "text": "grated pecorino (Parmigiano)"
+      }
+    ],
+    "columns": [
+      [
+        {
+          "op": "boil till al dente",
+          "from": 0,
+          "to": 1
+        },
+        {
+          "op": "grill till blistered",
+          "from": 3,
+          "to": 3
+        }
+      ],
+      [
+        {
+          "op": "drain, keep a cup of the water",
+          "from": 0,
+          "to": 1
+        },
+        {
+          "op": "thin with a little pasta water",
+          "from": 2,
+          "to": 2
+        }
+      ],
+      [
+        {
+          "op": "toss till every strand is coated",
+          "from": 0,
+          "to": 2
+        }
+      ],
+      [
+        {
+          "op": "mix in carefully",
+          "from": 0,
+          "to": 4
+        }
+      ],
+      [
+        {
+          "op": "sprinkle on top",
+          "from": 0,
+          "to": 5
+        }
+      ]
+    ],
+    "finish": "Serve straight away"
+  }
+} });
+
 const MOCK = {
   categories: [
     { name: "Soups", recipes: ["Minestrone Soup"] },
@@ -137,17 +324,23 @@ const MOCK = {
     { name: "Fish", recipes: ["Fish Cakes"] },
     { name: "Chicken", recipes: ["Nonna's Artichoke & Chicken"] },
     { name: "Meat", recipes: ["Brisket in Coke", "Cape Bobotie", "Pulpetti"] },
-    { name: "Pasta & Rice", recipes: ["Easy 'No Meat' Lasagne", "Gnocchi", "Funghi Risotto", "Oven Penne with Mellenzana", "Polenta Parmigiana"] },
+    { name: "Pasta & Rice", recipes: ["Linguine Pesto", "Easy 'No Meat' Lasagne", "Gnocchi", "Funghi Risotto", "Oven Penne with Mellenzana", "Polenta Parmigiana"] },
     { name: "Vegetables & Sides", recipes: ["Nonna's Secret Mellenzana", "Melanzana alla Parmigiana", "Stuffed Artichokes", "Spinach, Feta & Ricotta Pie", "Mushroom & Cheese Quiche", "Sweetcorn Bake"] },
-    { name: "Sauces", recipes: ["Neapolitan Sauce", "Nonna's Bolognaise", "Porcini Sauce"] },
+    { name: "Sauces", recipes: ["Aletta's Pesto Sauce", "Neapolitan Sauce", "Nonna's Bolognaise", "Porcini Sauce"] },
     { name: "Desserts", recipes: ["Lemon Meringue", "Brandy Tart", "Chocolate Nut Tart", "Bronwyn's Pecan Pie", "Peppermint Crisp Cake", "Cheese Fridge Cake", "Avis' Cheesecake", "Apple & Youngberry Crumble", "Winter Pudding"] },
     { name: "Cakes & Bakes", recipes: ["Lamington Squares", "Poppy Seed Cake", "Peanut Butter Brownies"] },
   ],
   // Which mock recipe each title opens; everything else opens Fish Cakes.
-  links: { "Fish Cakes": "fish", "Lemon Meringue": "lemon" },
-  intro:
-    "This is where Sheila's own welcome note will go once it's scanned: a few words about where these recipes came from, " +
-    "the people who shared them, and the meals they've been part of over the years.",
+  links: { "Fish Cakes": "fish", "Lemon Meringue": "lemon", "Linguine Pesto": "linguine", "Aletta's Pesto Sauce": "pesto" },
+  intro: [
+    "When I first got married 32 years ago to my 'Italian' hubby we settled in Swaziland for 7 years. I had NO clue how to cook but with a little help from my friends, especially my friend Aletta also married to an Italian & I sort of began my 'like' of cooking.",
+    "However when we moved back to Jhb I started asking my mother-in-law (who I refer to as 'Nonna - granny') how to make her food.",
+    "Now... she was Italian but born in Turkey, raised on the Island Rhodes, married an Italian Slav & called herself 'oriental' Italian. She was just the most wonderful cook & the few recipes I got from her I have kept hidden & only cooked by me for years. By now I had developed a love of cooking & decided to share her few but stunning recipes with you.",
+    "Now I decided to pick my mothers brain as well as her parents came from Riga & she had wonderful recipes to share as well as her 'own' wonderful food & thats when I decided to create this book & gather more recipes from family & friends.",
+    "Its really been fun & is a 'Pot Pourrie' of all these mixed & scrumptious recipes so kindly given to me.",
+    "Thanks all of you for your generosity & willingness to part with your treasures!!"
+  ],
+  introPage: "../images/pages/p-intro.jpg",
 };
 
 const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
@@ -161,7 +354,8 @@ function recipeTable(t) {
   for (const s of t.setup || []) rows.push(wide("eng-setup", s));
   for (let r = 0; r < n; r++) {
     const ing = t.ingredients[r];
-    let row = `<td class="eng-ing${ing.est ? " est" : ""}">${esc(ing.text)}</td>`;
+    const label = ing.link ? `<a class="rec-link" href="#recipe-${ing.link}">${esc(ing.text)} →</a>` : esc(ing.text);
+    let row = `<td class="eng-ing${ing.est ? " est" : ""}">${label}</td>`;
     for (const col of t.columns) {
       const at = (i) => col.find((s) => i >= s.from && i <= s.to);
       const step = at(r);
@@ -341,7 +535,26 @@ function methodItems(lines) {
   return lines.map((m) => (m.trim().endsWith(":") ? `<li class="sub">${esc(m)}</li>` : `<li>${esc(m)}</li>`)).join("");
 }
 
-function renderRecipe(R) {
+function linkify(text, R) {
+  let html = esc(text);
+  for (const key of R.uses || []) {
+    if (html.includes(esc(RECIPES[key].title))) html = html.replace(/\s*\(see recipe\)/i, ""); // the link arrow already says it
+    const title = esc(RECIPES[key].title);
+    if (html.includes(title)) html = html.replace(title, `<a class="rec-link" href="#recipe-${key}">${title} →</a>`);
+  }
+  return html;
+}
+
+// "Uses …" / "Used in …" strip shown under the view switch.
+function relatedStrip(key, R) {
+  const link = (k) => `<a class="rec-link" href="#recipe-${k}">${esc(RECIPES[k].title)} →</a>`;
+  const uses = (R.uses || []).map(link);
+  const usedIn = Object.keys(RECIPES).filter((k) => (RECIPES[k].uses || []).includes(key)).map(link);
+  return (uses.length ? `<span><b>Uses</b> ${uses.join(" ")}</span>` : "") +
+    (usedIn.length ? `<span><b>Used in</b> ${usedIn.join(" ")}</span>` : "");
+}
+
+function renderRecipe(R, key) {
   const set = (name, fn) => document.querySelectorAll(`[data-fill=${name}]`).forEach(fn);
   set("title", (el) => (el.textContent = R.title));
   set("title-em", (el) => {
@@ -356,7 +569,14 @@ function renderRecipe(R) {
       el.textContent = R[key] ? (el.dataset.prefix || "") + R[key] : "";
     });
   }
-  set("ingredients", (el) => (el.innerHTML = R.ingredients.map((i) => `<li>${esc(i)}</li>`).join("")));
+  set("ingredients", (el) => (el.innerHTML = R.ingredients
+    .map((i) => (i.trim().endsWith(":") ? `<li class="sub">${esc(i)}</li>` : `<li>${linkify(i, R)}</li>`)).join("")));
+  document.querySelectorAll("[data-views]").forEach((group) => {
+    let strip = group.parentElement.querySelector(":scope > .rel");
+    if (!strip) { strip = document.createElement("div"); strip.className = "rel"; group.after(strip); }
+    strip.innerHTML = relatedStrip(key, R);
+    strip.hidden = !strip.innerHTML;
+  });
   set("method", (el) => (el.innerHTML = methodItems(R.method)));
   set("notes", (el) => {
     el.hidden = !R.notes.length;
@@ -371,7 +591,21 @@ function renderRecipe(R) {
 }
 
 function fillMockup() {
-  document.querySelectorAll("[data-fill=intro]").forEach((el) => (el.textContent = MOCK.intro));
+  // Her intro: the first paragraph, with the rest behind "Read more" so it doesn't take over the page.
+  document.querySelectorAll("[data-fill=intro]").forEach((el) => {
+    const [first, ...rest] = MOCK.intro;
+    el.innerHTML = `<span class="intro-p">${esc(first)}</span>
+      <span class="intro-more" hidden>${rest.map((p) => `<span class="intro-p">${esc(p)}</span>`).join("")}</span>
+      <span class="intro-actions"><button type="button" class="intro-toggle">Read more</button> ·
+      <button type="button" class="intro-note">See her handwritten note</button></span>`;
+    const more = el.querySelector(".intro-more");
+    const toggle = el.querySelector(".intro-toggle");
+    toggle.onclick = () => {
+      more.hidden = !more.hidden;
+      toggle.textContent = more.hidden ? "Read more" : "Show less";
+    };
+    el.querySelector(".intro-note").onclick = () => openLightbox(withV(MOCK.introPage), "Sheila's handwritten introduction");
+  });
   document.querySelectorAll("[data-fill=categories]").forEach((el) => {
     el.innerHTML = MOCK.categories.map((c) => `
       <section class="cat">
@@ -429,7 +663,7 @@ function fillMockup() {
     const key = recipeKey();
     document.querySelectorAll("[data-screen]").forEach((s) => (s.hidden = s.dataset.screen !== (key ? "recipe" : "home")));
     if (key) {
-      renderRecipe(RECIPES[key] || RECIPES.fish);
+      renderRecipe(RECIPES[key] || RECIPES.fish, RECIPES[key] ? key : "fish");
       views.forEach((show) => show(key === "lemon" ? "engineer" : "recipe"));
     }
     window.scrollTo(0, 0);
@@ -450,6 +684,12 @@ function fillMockup() {
   };
   drawBar();
   document.body.appendChild(bar);
+  // Version at the top of every page, so it's easy to check which version a phone is showing.
+  const badge = document.createElement("div");
+  badge.className = "ver-top";
+  badge.textContent = `v${VERSION}`;
+  badge.title = `Built ${document.documentElement.dataset.built || ""}`;
+  document.body.appendChild(badge);
   window.addEventListener("hashchange", drawBar);
 
   const style = document.createElement("style");
@@ -463,6 +703,20 @@ function fillMockup() {
     .mock-switch .ver { color: #9a9a9a; padding: 8px 10px 8px 4px; white-space: nowrap; font-variant-numeric: tabular-nums; }
     body { padding-bottom: 80px; }
     [hidden] { display: none !important; }
+    .intro-p { display: block; }
+    .intro-p + .intro-p, .intro-more .intro-p { margin-top: .6em; }
+    .intro-actions { display: block; margin-top: .7em; font-size: .72em; opacity: .9; }
+    .intro-actions button { font: inherit; font-weight: 600; color: inherit; background: none; border: 0; padding: 0; cursor: pointer;
+      text-decoration: underline; text-underline-offset: 3px; }
+    .ver-top { position: fixed; top: 8px; right: 8px; z-index: 998; font: 600 11px/1 system-ui, sans-serif; letter-spacing: .04em;
+      color: #fff; background: rgba(20,20,20,.62); padding: 5px 8px; border-radius: 99px; pointer-events: none; }
+    .rel { display: flex; flex-wrap: wrap; gap: 8px 18px; align-items: center; margin: 0 0 22px; font-size: 15px; }
+    .rel b { font-weight: 600; margin-right: 6px; opacity: .75; }
+    .rec-link { color: var(--eng-accent, currentColor); font-weight: 600; text-decoration: none;
+      border-bottom: 2px solid color-mix(in srgb, var(--eng-accent, currentColor) 35%, transparent); }
+    .rec-link:hover { border-bottom-color: currentColor; }
+    li.sub { list-style: none; font-weight: 700; margin-top: 8px; }
+    li.sub::before { content: none !important; }
 
     .method li.sub { counter-increment: none !important; display: block !important; padding: 8px 0 6px !important; font-weight: 700; }
     .method li.sub::before { content: none !important; }

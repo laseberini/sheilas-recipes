@@ -21,6 +21,10 @@ function readKey() {
 
 // What each dish looks like, written from her recipes.
 const DISHES = {
+  "lemon-meringue-rect": "a homemade South African lemon meringue pudding baked in a rectangular dish: a crushed Marie " +
+    "biscuit base, a pale yellow condensed-milk lemon filling and soft swirled meringue with lightly browned peaks covering " +
+    "the whole dish; one corner square has been cut and lifted onto a small white plate beside the dish so the three layers " +
+    "show",
   "alettas-pesto-sauce": "freshly made Genovese basil pesto (blended in a food processor with basil, olive oil, pine nuts, " +
     "garlic, pecorino and a little butter): a vivid green, slightly coarse, glossy pesto in a small white ceramic bowl with " +
     "a teaspoon resting in it, a few fresh basil leaves and a small piece of pecorino beside the bowl",
@@ -69,6 +73,8 @@ const KITCHEN = "The reference photos show Sheila's real kitchen and her own ser
   "kitchen and natural daylight, served in or on her white ceramic dishes like the ones shown. Use the references only for " +
   "the setting, dishes and light; do not copy any food from them. ";
 const REFS = {
+  "benchmark2-bluedish": ["k09.jpg", "k07.jpg"],
+  "benchmark2-whitedish": ["k09.jpg", "k10.jpg"],
   benchmark2: ["k09.jpg", "k06.jpg"],
   benchmark: ["k09.jpg", "k06.jpg"],
   "kitchen-close": ["k02.jpg", "k06.jpg"],
@@ -96,6 +102,14 @@ STYLES.benchmark = "The FIRST reference photo is the benchmark: a real, candid p
 STYLES.benchmark2 = STYLES.benchmark + " Do NOT copy the objects around the dish in the first reference (no phone, no salt " +
   "shaker, no bread board, no jar lid): keep the countertop around the food mostly clear, with at most one simple, natural " +
   "item that suits this dish. Use a serving dish that suits this food rather than the scalloped dish in the reference.";
+
+// Benchmark look, in a specific dish of hers.
+STYLES["benchmark2-bluedish"] = STYLES.benchmark2.replace("Use a serving dish that suits this food rather than the " +
+  "scalloped dish in the reference.", "Bake and serve it in the blue-grey rectangular ceramic baking dish with a white rim " +
+  "shown in the SECOND reference (her own dish), same size and shape.");
+STYLES["benchmark2-whitedish"] = STYLES.benchmark2.replace("Use a serving dish that suits this food rather than the " +
+  "scalloped dish in the reference.", "Serve it in the white rectangular ceramic dish with the scalloped, curled edges " +
+  "shown in the references (her own dish), same size and shape.");
 
 const COMMON = "Photorealistic, appetising, realistic portions and textures, looks genuinely home-made rather than " +
   "restaurant-perfect. No people, no hands, no text, no labels, no logos, no watermark.";

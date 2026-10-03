@@ -10,3 +10,10 @@ data/backups/
 *.tmp
 
 node_modules/
+
+# Kitchen reference photos (originals) and the zip they came in
+Kitchen photos/
+Kitchen photos-*.zip
+
+# Gemini style experiments
+images/style-tests/
