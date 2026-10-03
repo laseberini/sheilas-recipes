@@ -1,10 +1,10 @@
 <!doctype html>
-<html lang="en" data-version="0.36" data-built="2026-10-03 21:56">
+<html lang="en" data-version="0.38" data-built="2026-10-03 22:07">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Sheila's Recipes</title>
-<link rel="manifest" href="manifest.webmanifest?v=0.36">
+<link rel="manifest" href="manifest.webmanifest?v=0.38">
 <link rel="icon" type="image/png" sizes="32x32" href="images/icons/sheila-32.png">
 <link rel="apple-touch-icon" href="images/icons/sheila-180.png">
 <meta name="apple-mobile-web-app-title" content="Sheila's Recipes">
@@ -13,8 +13,8 @@
 <meta name="theme-color" content="#1d3f7a">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,400;1,9..144,600&family=Work+Sans:wght@400;500;600&display=swap" rel="stylesheet">
-<script src="recipes-data.js?v=0.36"></script>
-<script src="shared.js?v=0.36"></script>
+<script src="recipes-data.js?v=0.38"></script>
+<script src="shared.js?v=0.38"></script>
 <style>
   :root {
     --link-accent: #1d3f7a;
@@ -211,10 +211,10 @@
   .meta a.mem-chip { background: var(--lemon); color: var(--cobalt); border-radius: 99px; padding: 6px 14px; font-size: 14px; font-weight: 600; text-decoration: none; }
   .home-mem { background: var(--sand); padding: var(--section) 0; }
   /* Home: memories as a swipeable carousel, one card tall, the next one peeking in. */
-  .home-mem .mem-list { position: relative; display: flex; gap: 16px; margin: 0 auto; max-width: 760px; padding: 4px 6% 20px; overflow-x: auto;
+  .mem-carousel .mem-list { position: relative; display: flex; gap: 16px; margin: 0 auto; max-width: 760px; padding: 4px 6% 20px; overflow-x: auto;
     scroll-snap-type: x mandatory; scrollbar-width: none; overscroll-behavior-x: contain; }
-  .home-mem .mem-list::-webkit-scrollbar { display: none; }
-  .home-mem .mem-card { flex: 0 0 min(88%, 620px); scroll-snap-align: center; }
+  .mem-carousel .mem-list::-webkit-scrollbar { display: none; }
+  .mem-carousel .mem-card { flex: 0 0 min(88%, 620px); scroll-snap-align: center; }
   .home-mem .mem-card blockquote { display: -webkit-box; -webkit-line-clamp: 6; -webkit-box-orient: vertical; overflow: hidden; }
   /* The dish leads each home card; the opening quote mark moves inline beneath it. */
   .mem-home-card::before { content: none; }
@@ -227,13 +227,13 @@
   .mem-dish:hover b { transform: translateX(3px); }
   /* On a computer: ‹ › buttons beside the cards, and the cards can be dragged with the mouse. */
   .mem-carousel { position: relative; max-width: 760px; margin: 0 auto; }
-  .home-mem .mem-list:focus { outline: none; }
-  .home-mem .mem-list:focus-visible { outline: 2px solid var(--cobalt-2); outline-offset: 4px; border-radius: 18px; }
-  .home-mem .mem-list.dragging { scroll-snap-type: none; cursor: grabbing; user-select: none; }
-  .home-mem .mem-list.dragging a { pointer-events: none; }
+  .mem-carousel .mem-list:focus { outline: none; }
+  .mem-carousel .mem-list:focus-visible { outline: 2px solid var(--cobalt-2); outline-offset: 4px; border-radius: 18px; }
+  .mem-carousel .mem-list.dragging { scroll-snap-type: none; cursor: grabbing; user-select: none; }
+  .mem-carousel .mem-list.dragging a { pointer-events: none; }
   .mem-arrow { display: none; }
   @media (hover: hover) and (pointer: fine) {
-    .home-mem .mem-list { cursor: grab; }
+    .mem-carousel .mem-list { cursor: grab; }
     .mem-arrow { display: grid; place-items: center; position: absolute; top: calc(50% - 30px); width: 46px; height: 46px; padding: 0 0 4px;
       border: 0; border-radius: 50%; background: #fff; color: var(--cobalt); font: 400 34px/1 Fraunces, serif; cursor: pointer;
       box-shadow: 0 6px 18px rgba(29,63,122,.18); transition: transform .15s, opacity .2s; z-index: 1; }
@@ -244,9 +244,20 @@
   }
   /* Wide screens: one whole memory at a time (no cut-off neighbour), arrows outside the card. */
   @media (min-width: 900px) {
-    .home-mem .mem-list { padding-inline: 2px; gap: 24px; }
-    .home-mem .mem-card { flex-basis: 100%; }
+    .mem-carousel .mem-list { padding-inline: 2px; gap: 24px; }
+    .mem-carousel .mem-card { flex-basis: 100%; }
   }
+  /* Recipe page: each memory card is as tall as its own story; "+ Add a memory" opens the form. */
+  .mem .mem-carousel .mem-list { align-items: flex-start; }
+  .mem-carousel .mem-empty { flex: 1; text-align: center; padding: 4px 0 0; }
+  .mem-add-row { text-align: center; margin-top: 14px; }
+  .mem-add { border: 0; background: var(--cobalt); color: #fff; font: 600 16px "Work Sans"; padding: 12px 24px; border-radius: 99px; cursor: pointer; }
+  .mem-panel { border-top-color: var(--lemon); }
+  .mem-panel .kicker { color: var(--terracotta); margin-right: 44px; }
+  .mem-panel h2 { margin: 4px 44px 6px 0; }
+  .memf-intro { margin: 0 0 16px; color: var(--muted); }
+  .mem-panel .mem-form { background: none; padding: 0; max-width: none; }
+  .mem-panel .mem-form input, .mem-panel .mem-form textarea { border-color: var(--sand); }
   .mem-dots { display: flex; justify-content: center; gap: 8px; margin-top: 4px; }
   .mem-dots button { width: 9px; height: 9px; padding: 0; border: 0; border-radius: 99px; background: rgba(29,63,122,.25); cursor: pointer; transition: width .2s, background .2s; }
   .mem-dots button.on { width: 24px; background: var(--cobalt); }
@@ -332,13 +343,31 @@
 </div>
 
 <!-- The recipes in a category, opened by tapping the category pill on a recipe. Same panel style as "My story". -->
-<div class="story" data-cat-sheet hidden>
+<div class="story" data-sheet data-cat-sheet hidden>
   <article class="story-panel cat-panel" role="dialog" aria-modal="true" aria-labelledby="catm-title">
     <a class="story-close" href="#" data-sheet-close aria-label="Close">×</a>
     <div class="kicker">More in this category</div>
     <h2 id="catm-title" data-fill="catm-title"></h2>
     <div class="person-recipes" data-fill="catm-list"></div>
     <a class="catm-all" href="#recipes" data-sheet-all>See all the recipes</a>
+  </article>
+</div>
+
+<!-- Share a memory of the recipe being read. -->
+<div class="story" data-sheet data-mem-sheet hidden>
+  <article class="story-panel mem-panel" role="dialog" aria-modal="true" aria-labelledby="memf-title">
+    <a class="story-close" href="#" data-sheet-close aria-label="Close">×</a>
+    <div class="kicker" data-fill="memf-dish"></div>
+    <h2 id="memf-title">Share a memory</h2>
+    <p class="memf-intro">Cooked this with Sheila? Eaten it at her table? Tell us about it.</p>
+    <form class="mem-form" data-mem-form>
+      <input name="name" required maxlength="60" placeholder="Your name" aria-label="Your name" autocomplete="name">
+      <textarea name="text" required maxlength="1500" placeholder="Your memory of this dish…" aria-label="Your memory"></textarea>
+      <input class="hp" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">
+      <button type="submit">Share memory</button>
+      <p class="mem-msg" hidden></p>
+      <p class="fine">The family reads every memory before it appears on the site.</p>
+    </form>
   </article>
 </div>
 
@@ -369,17 +398,14 @@
     <div data-pane="person" class="person-pane" data-fill="person-pane"></div>
   </div>
   <section class="mem wrap" id="memories" data-mem-section hidden>
-    <div class="mem-head"><h2>Memories</h2><p>Cooked this with Sheila? Eaten it at her table? Share a memory of this dish.</p></div>
-    <div class="mem-list" data-fill="memories"></div>
-    <form class="mem-form" data-mem-form>
-      <h3>Share a memory</h3>
-      <input name="name" required maxlength="60" placeholder="Your name" aria-label="Your name" autocomplete="name">
-      <textarea name="text" required maxlength="1500" placeholder="Your memory of this dish…" aria-label="Your memory"></textarea>
-      <input class="hp" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">
-      <button type="submit">Share memory</button>
-      <p class="mem-msg" hidden></p>
-      <p class="fine">The family reads every memory before it appears on the site.</p>
-    </form>
+    <div class="mem-head"><h2>Memories</h2></div>
+    <div class="mem-carousel">
+      <div class="mem-list" data-fill="memories" tabindex="0" aria-label="Memories of this dish - use the arrow keys to move"></div>
+      <button type="button" class="mem-arrow prev" data-mem-prev aria-label="Previous memory">‹</button>
+      <button type="button" class="mem-arrow next" data-mem-next aria-label="Next memory">›</button>
+    </div>
+    <div class="mem-dots" data-fill="mem-dots"></div>
+    <div class="mem-add-row"><button type="button" class="mem-add" data-mem-add>+ Add a memory</button></div>
   </section>
   <div class="tiles"></div>
   <footer>Made with love for Sheila's family</footer>

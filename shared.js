@@ -443,29 +443,35 @@ function personHTML(id, currentKey) {
 
 // Category sheet: the recipes in this category, so you can hop to another without going back to the list.
 // Opening adds a history step (same address), so the phone's back button closes it.
-function openCategory(name, currentKey) {
-  const sheet = document.querySelector("[data-cat-sheet]");
+function openSheet(sheet) {
   if (!sheet) return;
-  sheet.querySelector("[data-fill=catm-title]").textContent = name;
-  sheet.querySelector("[data-fill=catm-list]").innerHTML = recipeLinks(Object.entries(RECIPES).filter(([, r]) => r.category === name).sort(byTitle), currentKey);
   sheet.hidden = false;
   sheet.querySelector(".story-panel").scrollTo(0, 0);
   document.documentElement.style.overflow = "hidden";
   if (!history.state?.sheet) history.pushState({ sheet: true }, "", location.href);
 }
-function hideSheet() {
+function openCategory(name, currentKey) {
   const sheet = document.querySelector("[data-cat-sheet]");
-  if (!sheet || sheet.hidden) return;
-  sheet.hidden = true;
+  if (!sheet) return;
+  sheet.querySelector("[data-fill=catm-title]").textContent = name;
+  sheet.querySelector("[data-fill=catm-list]").innerHTML = recipeLinks(Object.entries(RECIPES).filter(([, r]) => r.category === name).sort(byTitle), currentKey);
+  openSheet(sheet);
+}
+function hideSheet() {
+  const open = [...document.querySelectorAll("[data-sheet]")].filter((s) => !s.hidden);
+  if (!open.length) return;
+  open.forEach((s) => (s.hidden = true));
   document.documentElement.style.overflow = "";
 }
 const closeSheet = () => (history.state?.sheet ? history.back() : hideSheet());
 function setupSheet() {
-  const sheet = document.querySelector("[data-cat-sheet]");
-  if (!sheet) return;
-  sheet.querySelector("[data-sheet-close]").onclick = (e) => { e.preventDefault(); closeSheet(); };
-  sheet.addEventListener("click", (e) => { if (e.target === sheet) closeSheet(); });
-  document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !sheet.hidden && !document.querySelector(".lb")) closeSheet(); });
+  document.querySelectorAll("[data-sheet]").forEach((sheet) => {
+    sheet.querySelector("[data-sheet-close]").onclick = (e) => { e.preventDefault(); closeSheet(); };
+    sheet.addEventListener("click", (e) => { if (e.target === sheet) closeSheet(); });
+  });
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && document.querySelector("[data-sheet]:not([hidden])") && !document.querySelector(".lb")) closeSheet();
+  });
   window.addEventListener("popstate", () => { if (!history.state?.sheet) hideSheet(); });
   window.addEventListener("hashchange", hideSheet); // picked a recipe, or "See all the recipes"
 }
@@ -553,10 +559,11 @@ function drawMemories() {
   const mine = memories.filter((m) => m.recipe === id);
   document.querySelectorAll("[data-fill=memories]").forEach((el) => {
     el.innerHTML = mine.length ? mine.map((m) => memCard(m)).join("")
-      : '<p class="mem-empty">No memories of this dish yet. Be the first to share one.</p>';
+      : '<p class="mem-empty">No memories of this dish yet.</p>';
+    bindCarousel(el, mine.length);
   });
   document.querySelectorAll("[data-fill=mem-chip]").forEach((a) => {
-    a.textContent = mine.length ? `${mine.length} ${mine.length === 1 ? "memory" : "memories"} ↓` : "Share a memory ↓";
+    a.textContent = mine.length ? `${mine.length} ${mine.length === 1 ? "memory" : "memories"} ↓` : "Share a memory";
   });
   // Home page: the newest ten as a carousel (swipe, tap a dot; on a computer also ‹ ›, drag or ← →).
   // The memories arrive a moment after the page, and their section sits above the recipe list. If
@@ -573,70 +580,86 @@ function drawMemories() {
   };
   document.querySelectorAll("[data-fill=home-memories]").forEach((el) => {
     el.innerHTML = recent.map(memHomeCard).join("");
-    const section = el.closest("[data-mem-home]");
-    const dots = section.querySelector("[data-fill=mem-dots]");
-    const prev = section.querySelector("[data-mem-prev]");
-    const next = section.querySelector("[data-mem-next]");
-    dots.hidden = recent.length < 2;
-    dots.innerHTML = recent.map((_, i) => `<button type="button" aria-label="Memory ${i + 1} of ${recent.length}"></button>`).join("");
-    const cards = [...el.children];
-    const current = () => {
-      const mid = el.scrollLeft + el.clientWidth / 2;
-      return cards.reduce((best, c, i) => (Math.abs(c.offsetLeft + c.offsetWidth / 2 - mid) < Math.abs(cards[best].offsetLeft + cards[best].offsetWidth / 2 - mid) ? i : best), 0);
-    };
-    const go = (i) => {
-      i = Math.max(0, Math.min(cards.length - 1, i));
-      el.scrollTo({ left: cards[i].offsetLeft + cards[i].offsetWidth / 2 - el.clientWidth / 2, behavior: "smooth" });
-    };
-    const mark = () => {
-      const at = current();
-      [...dots.children].forEach((d, i) => d.classList.toggle("on", i === at));
-      prev.disabled = at === 0;
-      next.disabled = at === cards.length - 1;
-    };
-    [...dots.children].forEach((d, i) => (d.onclick = () => go(i)));
-    prev.onclick = () => go(current() - 1);
-    next.onclick = () => go(current() + 1);
-    el.onkeydown = (e) => {
-      if (e.key === "ArrowLeft" || e.key === "ArrowRight") { e.preventDefault(); go(current() + (e.key === "ArrowRight" ? 1 : -1)); }
-    };
-    // Mouse: drag the cards sideways; a real drag doesn't count as a click on the dish link.
-    let drag = null;
-    el.onpointerdown = (e) => {
-      if (e.pointerType !== "mouse" || e.button !== 0) return;
-      drag = { x: e.clientX, left: el.scrollLeft, start: current(), moved: false };
-    };
-    el.onpointermove = (e) => {
-      if (!drag) return;
-      const dx = e.clientX - drag.x;
-      if (!drag.moved && Math.abs(dx) > 5) { drag.moved = true; el.classList.add("dragging"); try { el.setPointerCapture(e.pointerId); } catch {} }
-      if (drag.moved) el.scrollLeft = drag.left - dx;
-    };
-    el.onpointerup = el.onpointercancel = (e) => {
-      if (!drag) return;
-      const { moved, x, start } = drag;
-      drag = null;
-      if (!moved) return;
-      el.classList.remove("dragging");
-      const dx = e.clientX - x;
-      go(Math.abs(dx) > 40 ? start + (dx < 0 ? 1 : -1) : start); // a short flick moves one card
-    };
-    el.ondragstart = (e) => e.preventDefault(); // images and links would otherwise start a browser drag
-    el.onscroll = () => requestAnimationFrame(mark);
-    mark();
+    bindCarousel(el, recent.length);
   });
   holdPlace();
+}
+
+// Swipeable row of memory cards (home page and recipe page): swipe, tap a dot; on a computer
+// also ‹ ›, drag with the mouse, or ← →.
+function bindCarousel(el, count) {
+  const section = el.closest("section");
+  const dots = section.querySelector("[data-fill=mem-dots]");
+  const prev = section.querySelector("[data-mem-prev]");
+  const next = section.querySelector("[data-mem-next]");
+  dots.hidden = count < 2;
+  dots.innerHTML = Array.from({ length: count }, (_, i) => `<button type="button" aria-label="Memory ${i + 1} of ${count}"></button>`).join("");
+  const cards = [...el.children];
+  const current = () => {
+    const mid = el.scrollLeft + el.clientWidth / 2;
+    return cards.reduce((best, c, i) => (Math.abs(c.offsetLeft + c.offsetWidth / 2 - mid) < Math.abs(cards[best].offsetLeft + cards[best].offsetWidth / 2 - mid) ? i : best), 0);
+  };
+  const go = (i) => {
+    i = Math.max(0, Math.min(cards.length - 1, i));
+    el.scrollTo({ left: cards[i].offsetLeft + cards[i].offsetWidth / 2 - el.clientWidth / 2, behavior: "smooth" });
+  };
+  const mark = () => {
+    const at = current();
+    [...dots.children].forEach((d, i) => d.classList.toggle("on", i === at));
+    prev.disabled = !count || at === 0;
+    next.disabled = !count || at === cards.length - 1;
+  };
+  [...dots.children].forEach((d, i) => (d.onclick = () => go(i)));
+  prev.onclick = () => go(current() - 1);
+  next.onclick = () => go(current() + 1);
+  el.onkeydown = (e) => {
+    if (e.key === "ArrowLeft" || e.key === "ArrowRight") { e.preventDefault(); go(current() + (e.key === "ArrowRight" ? 1 : -1)); }
+  };
+  // Mouse: drag the cards sideways; a real drag doesn't count as a click on the dish link.
+  let drag = null;
+  el.onpointerdown = (e) => {
+    if (e.pointerType !== "mouse" || e.button !== 0) return;
+    drag = { x: e.clientX, left: el.scrollLeft, start: current(), moved: false };
+  };
+  el.onpointermove = (e) => {
+    if (!drag) return;
+    const dx = e.clientX - drag.x;
+    if (!drag.moved && Math.abs(dx) > 5) { drag.moved = true; el.classList.add("dragging"); try { el.setPointerCapture(e.pointerId); } catch {} }
+    if (drag.moved) el.scrollLeft = drag.left - dx;
+  };
+  el.onpointerup = el.onpointercancel = (e) => {
+    if (!drag) return;
+    const { moved, x, start } = drag;
+    drag = null;
+    if (!moved) return;
+    el.classList.remove("dragging");
+    const dx = e.clientX - x;
+    go(Math.abs(dx) > 40 ? start + (dx < 0 ? 1 : -1) : start); // a short flick moves one card
+  };
+  el.ondragstart = (e) => e.preventDefault(); // images and links would otherwise start a browser drag
+  el.onscroll = () => requestAnimationFrame(mark);
+  mark();
+}
+
+function openMemoryForm() {
+  const sheet = document.querySelector("[data-mem-sheet]");
+  if (!sheet) return;
+  sheet.querySelector("[data-fill=memf-dish]").textContent = RECIPES[memRecipeId()]?.title || "";
+  sheet.querySelectorAll(".mem-msg").forEach((m) => (m.hidden = true));
+  openSheet(sheet);
 }
 
 function setupMemories() {
   if (!MEMORIES_URL) return;
   document.querySelectorAll("[data-mem-section], [data-fill=mem-chip]").forEach((el) => (el.hidden = false));
-  // The chip scrolls down to the memories without leaving the recipe.
+  // The chip scrolls down to the memories, or (with none yet) opens the form straight away.
   document.querySelectorAll("[data-fill=mem-chip]").forEach((a) => (a.onclick = (e) => {
     e.preventDefault();
+    if (!memories.some((m) => m.recipe === memRecipeId())) return openMemoryForm();
     if (document.querySelector("[data-recipe]")?.dataset.tab === "person") document.querySelector("[data-views] [data-view=recipe]")?.click();
     document.getElementById("memories").scrollIntoView({ behavior: "smooth" });
   }));
+  document.querySelectorAll("[data-mem-add]").forEach((b) => (b.onclick = openMemoryForm));
   window.addEventListener("hashchange", drawMemories);
   drawMemories();
   fetch(MEMORIES_URL)
@@ -660,6 +683,7 @@ function setupMemories() {
       if (!d.ok) throw new Error(d.error);
       form.reset();
       say("Thank you! Your memory will appear here once the family has read it.");
+      setTimeout(closeSheet, 2600);
     } catch (err) {
       say(err.message && !/fetch|JSON/i.test(err.message) ? err.message : "Sorry, that didn't send. Please try again.", true);
     } finally {
