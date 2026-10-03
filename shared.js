@@ -9,6 +9,13 @@ const withV = (url) => `${url}${url.includes("?") ? "&" : "?"}v=${VERSION}`;
 // Cache buster: GitHub Pages lets browsers keep a page for ~10 minutes. Ask the server which
 // version is live (bypassing the cache); if this page is older, reload once with the live version
 // in the address, which the browser has never seen and so must fetch fresh.
+// Arriving from an old /mockups/ address adds "?moved" (see mockups/*.html); tidy it away.
+if (new URLSearchParams(location.search).has("moved")) {
+  const tidy = new URL(location.href);
+  tidy.searchParams.delete("moved");
+  history.replaceState(null, "", tidy);
+}
+
 (async () => {
   if (location.protocol === "file:") return;
   try {

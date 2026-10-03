@@ -2,5 +2,7 @@
 <meta charset="utf-8">
 <title>Sheila's Recipes</title>
 <!-- The site lives at the root now; old links land there. -->
-<script>location.replace((location.protocol === "file:" ? "../index.html" : "../") + location.hash);</script>
-<meta http-equiv="refresh" content="0; url=../">
+<!-- "?moved" is an address phones have never saved, so an old saved copy of the root (which
+     pointed back here) can't bounce them in a loop. -->
+<script>location.replace((location.protocol === "file:" ? "../index.html" : "../?moved") + location.hash);</script>
+<meta http-equiv="refresh" content="0; url=../?moved">
