@@ -21,6 +21,9 @@ function readKey() {
 
 // What each dish looks like, written from her recipes.
 const DISHES = {
+  "alettas-pesto-sauce": "freshly made Genovese basil pesto (blended in a food processor with basil, olive oil, pine nuts, " +
+    "garlic, pecorino and a little butter): a vivid green, slightly coarse, glossy pesto in a small white ceramic bowl with " +
+    "a teaspoon resting in it, a few fresh basil leaves and a small piece of pecorino beside the bowl",
   "fish-cakes": "homemade South African fish cakes: six flattened, round pan-fried hake fish cakes with a golden-brown " +
     "breadcrumb crust, slightly irregular hand-shaped edges, tiny flecks of carrot and onion visible where one is broken open; " +
     "served with a few thick-cut chips, a simple green salad and a small bowl of chrain (a finely grated, moist, deep magenta beetroot-and-horseradish relish with a fine texture, not chunky)",
@@ -60,16 +63,53 @@ Object.assign(STYLES, {
     "relaxed and lived-in. " + HOMECOOKED,
 });
 
+// Styles set in Sheila's own kitchen: her photos (Kitchen photos/ref, not committed) are sent as references.
+const KITCHEN = "The reference photos show Sheila's real kitchen and her own serving dishes. Set the food in exactly this " +
+  "place: the same white quartz kitchen island, the same round navy-blue woven placemat, the same bright, modern white " +
+  "kitchen and natural daylight, served in or on her white ceramic dishes like the ones shown. Use the references only for " +
+  "the setting, dishes and light; do not copy any food from them. ";
+const REFS = {
+  benchmark2: ["k09.jpg", "k06.jpg"],
+  benchmark: ["k09.jpg", "k06.jpg"],
+  "kitchen-close": ["k02.jpg", "k06.jpg"],
+  "kitchen-wide": ["k01.jpg", "k05.jpg"],
+};
+Object.assign(STYLES, {
+  "kitchen-close": "Photograph style: a close, slightly elevated phone photo of the food on a navy placemat on the island, " +
+    "the dish filling most of the frame, the kitchen softly out of focus behind. " + KITCHEN + HOMECOOKED,
+  "kitchen-wide": "Photograph style: a photo from standing height at the end of the island, the food on a navy placemat " +
+    "in the foreground and more of the bright kitchen visible behind. " + KITCHEN + HOMECOOKED,
+});
+
+// The benchmark: Laurence's real photo of Sheila's linguine pesto (k09). Match it as closely as possible.
+STYLES.benchmark = "The FIRST reference photo is the benchmark: a real, candid phone photo of a dish Sheila made, served " +
+  "family-style in one of her white ceramic serving dishes on a round navy woven placemat on her white quartz kitchen " +
+  "island. Match it as closely as possible: the same camera height and roughly 45-degree angle, the same close framing " +
+  "where the serving dish fills most of the picture with a little of the countertop around it, the same flat natural " +
+  "daylight, the same slightly muted, unedited phone-camera colour and sharpness, the same casual, unstyled feel. " +
+  "The SECOND reference shows another of her white serving dishes. Serve the new food the same way, in a white serving " +
+  "dish like hers (or the dish the food is naturally baked in), with nothing styled or arranged around it. Use the " +
+  "references only for setting, dishes, angle and light; do not copy any food from them. " + HOMECOOKED;
+
+// Benchmark, refined: same look, but without copying the reference photo's props, so a full set doesn't
+// repeat the same phone and bread board in every picture.
+STYLES.benchmark2 = STYLES.benchmark + " Do NOT copy the objects around the dish in the first reference (no phone, no salt " +
+  "shaker, no bread board, no jar lid): keep the countertop around the food mostly clear, with at most one simple, natural " +
+  "item that suits this dish. Use a serving dish that suits this food rather than the scalloped dish in the reference.";
+
 const COMMON = "Photorealistic, appetising, realistic portions and textures, looks genuinely home-made rather than " +
   "restaurant-perfect. No people, no hands, no text, no labels, no logos, no watermark.";
 
-async function generate(key, prompt) {
+async function generate(key, prompt, refs = []) {
   const res = await fetch("https://generativelanguage.googleapis.com/v1beta/interactions", {
     method: "POST",
     headers: { "x-goog-api-key": key, "Content-Type": "application/json" },
     body: JSON.stringify({
       model: MODEL,
-      input: [{ type: "text", text: prompt }],
+      input: [
+        { type: "text", text: prompt },
+        ...refs.map((data) => ({ type: "image", mime_type: "image/jpeg", data })),
+      ],
       response_format: { type: "image", mime_type: "image/jpeg", aspect_ratio: "4:3", image_size: "1K" },
     }),
   });
@@ -95,17 +135,20 @@ const pick = (flag, all) => {
 };
 const dishes = pick("--only", DISHES);
 const styles = pick("--styles", STYLES);
+const vi = args.indexOf("--variants");
+const variants = vi >= 0 ? Number(args[vi + 1]) : 1;
 
 const key = readKey();
 fs.mkdirSync(OUT, { recursive: true });
-const jobs = dishes.flatMap((d) => styles.map((s) => ({ d, s })));
+const jobs = dishes.flatMap((d) => styles.flatMap((s) => Array.from({ length: variants }, (_, v) => ({ d, s, v }))));
 console.log(`Model ${MODEL}: ${jobs.length} image(s) → ${path.relative(ROOT, OUT)}`);
 
-await Promise.all(jobs.map(async ({ d, s }) => {
+await Promise.all(jobs.map(async ({ d, s, v }) => {
   const prompt = `A photograph of ${DISHES[d]}. ${STYLES[s]} ${COMMON}`;
-  const file = path.join(OUT, `${d}--${s}.jpg`);
+  const file = path.join(OUT, `${d}--${s}${variants > 1 ? `-${v + 1}` : ""}.jpg`);
   try {
-    const img = await generate(key, prompt);
+    const refs = (REFS[s] || []).map((r) => fs.readFileSync(path.join(ROOT, "Kitchen photos", "ref", r)).toString("base64"));
+    const img = await generate(key, prompt, refs);
     fs.writeFileSync(file, img);
     console.log(`ok   ${path.basename(file)} (${Math.round(img.length / 1024)} KB)`);
   } catch (e) {
