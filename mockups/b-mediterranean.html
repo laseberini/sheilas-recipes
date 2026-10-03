@@ -1,13 +1,13 @@
 <!doctype html>
-<html lang="en" data-version="0.16" data-built="2026-10-03 17:55">
+<html lang="en" data-version="0.17" data-built="2026-10-03 19:00">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>B · Nonna's Table</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,400;1,9..144,600&family=Work+Sans:wght@400;500;600&display=swap" rel="stylesheet">
-<script src="recipes-data.js?v=0.16"></script>
-<script src="shared.js?v=0.16"></script>
+<script src="recipes-data.js?v=0.17"></script>
+<script src="shared.js?v=0.17"></script>
 <style>
   :root {
     --link-accent: #1d3f7a;
@@ -110,6 +110,35 @@
   .page-pane img { display: block; margin: 0 auto 24px; max-width: 680px; width: 100%; border-radius: 6px; border: 10px solid #fff; box-shadow: 0 20px 50px rgba(0,0,0,.15); }
 
 
+  /* Memories: shared by family and friends, shown once the family approves them. */
+  .mem { padding: 8px 0 80px; }
+  .mem-head { text-align: center; margin-bottom: 28px; }
+  .mem-head h2 { font-size: 46px; color: var(--cobalt); }
+  .mem-head p { margin: 6px auto 0; max-width: 34em; color: var(--muted); }
+  .mem-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 18px; margin-bottom: 28px; }
+  .mem-card { background: #fff; border-radius: 18px; padding: 22px 24px 18px; box-shadow: 0 1px 0 var(--sand), 0 12px 30px rgba(29,63,122,.07); position: relative; }
+  .mem-card::before { content: "“"; position: absolute; top: 4px; left: 16px; font: 600 54px/1 Fraunces, serif; color: var(--lemon); }
+  .mem-card blockquote { margin: 18px 0 14px; font: italic 19px/1.5 Fraunces, serif; color: var(--ink); white-space: pre-line; overflow-wrap: anywhere; }
+  .mem-who { font: 600 13px "Work Sans"; letter-spacing: .12em; text-transform: uppercase; color: var(--terracotta); }
+  .mem-who small { display: block; margin-top: 2px; font-weight: 500; letter-spacing: 0; text-transform: none; color: var(--muted); }
+  .mem-who small a { color: var(--cobalt); font-weight: 600; }
+  .mem-empty { grid-column: 1 / -1; text-align: center; color: var(--muted); font: italic 19px Fraunces, serif; padding: 10px 0; }
+  .mem-form { background: var(--sand); border-radius: 18px; padding: 24px; max-width: 640px; margin: 0 auto; display: grid; gap: 12px; }
+  .mem-form h3 { font-size: 24px; color: var(--cobalt); }
+  .mem-form input, .mem-form textarea { width: 100%; border: 2px solid #fff; border-radius: 12px; padding: 12px 14px; font: inherit; background: #fff; }
+  .mem-form input:focus, .mem-form textarea:focus { outline: none; border-color: var(--cobalt-2); }
+  .mem-form textarea { min-height: 120px; resize: vertical; }
+  .mem-form button { justify-self: start; border: 0; background: var(--cobalt); color: #fff; font: 600 16px "Work Sans"; padding: 13px 24px; border-radius: 99px; cursor: pointer; }
+  .mem-form button:disabled { opacity: .6; cursor: wait; }
+  .mem-form .fine { font-size: 13px; color: var(--muted); margin: 0; }
+  .mem-form .mem-msg { margin: 0; font-weight: 600; color: var(--olive); }
+  .mem-form .mem-msg.err { color: var(--terracotta); }
+  .mem-form .hp { position: absolute; left: -9999px; width: 1px; height: 1px; opacity: 0; }
+  .meta a.mem-chip { background: var(--lemon); color: var(--cobalt); border-radius: 99px; padding: 6px 14px; font-size: 14px; font-weight: 600; text-decoration: none; }
+  .home-mem { background: var(--sand); padding: 60px 0 64px; }
+  .home-mem .mem-list { margin: 0; }
+  @media (max-width: 800px) { .mem-head h2 { font-size: 36px; } }
+
   footer { background: var(--cobalt); color: var(--cream); text-align: center; padding: 30px; font: italic 18px Fraunces; }
 
   @media (max-width: 800px) {
@@ -140,6 +169,12 @@
   <section class="intro wrap" id="about">
     <blockquote><span data-fill="intro"></span><cite>Sheila</cite></blockquote>
   </section>
+  <section class="home-mem" data-mem-home hidden>
+    <div class="wrap">
+      <div class="mem-head"><h2>Memories</h2><p>Stories from around Sheila's table. Open any recipe to add yours.</p></div>
+      <div class="mem-list" data-fill="home-memories"></div>
+    </div>
+  </section>
   <section class="wrap" id="recipes">
     <div class="menu-head"><h2>The recipes</h2><input class="search" type="search" data-search placeholder="Search: brinjal, cake, Nonna…" aria-label="Search recipes"></div>
     <div class="cats" data-fill="categories"></div>
@@ -154,7 +189,7 @@
       <div>
         <a class="back" href="#">← All recipes</a>
         <h1 data-fill="title"></h1>
-        <div class="meta"><span data-fill="cat"></span><span data-fill="from" data-prefix="From "></span><span data-fill="date" data-prefix="Written "></span><span data-fill="serves" data-prefix="Serves "></span></div>
+        <div class="meta"><span data-fill="cat"></span><span data-fill="from" data-prefix="From "></span><span data-fill="date" data-prefix="Written "></span><span data-fill="serves" data-prefix="Serves "></span><a class="mem-chip" href="#memories" data-fill="mem-chip" hidden></a></div>
       </div>
       <div class="dish-ph" data-fill="dish"></div>
     </div>
@@ -170,6 +205,19 @@
       <div class="method-box"><h3>Method</h3><ol class="method" data-fill="method"></ol><div class="notes" data-fill="notes"></div></div>
     </div>
   </div>
+  <section class="mem wrap" id="memories" data-mem-section hidden>
+    <div class="mem-head"><h2>Memories</h2><p>Cooked this with Sheila? Eaten it at her table? Share a memory of this dish.</p></div>
+    <div class="mem-list" data-fill="memories"></div>
+    <form class="mem-form" data-mem-form>
+      <h3>Share a memory</h3>
+      <input name="name" required maxlength="60" placeholder="Your name" aria-label="Your name" autocomplete="name">
+      <textarea name="text" required maxlength="1500" placeholder="Your memory of this dish…" aria-label="Your memory"></textarea>
+      <input class="hp" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">
+      <button type="submit">Share memory</button>
+      <p class="mem-msg" hidden></p>
+      <p class="fine">The family reads every memory before it appears on the site.</p>
+    </form>
+  </section>
   <div class="tiles"></div>
   <footer>Made with love for Sheila's family</footer>
 </div>

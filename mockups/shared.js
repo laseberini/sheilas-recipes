@@ -369,4 +369,73 @@ function fillMockup() {
   document.head.appendChild(style);
 }
 
+// Memories: anyone can share a memory of a dish. It lands in the family's Google Sheet
+// (tools/memories-apps-script.gs) and shows here once the "Approved" box is ticked there.
+// Until MEMORIES_URL is set, nothing about memories shows on the site.
+const MEMORIES_URL = "https://script.google.com/macros/s/AKfycbwj917FYZgfLXmiZN49o85NAws-T97fkIzzqK5tIB7utVhj7MEiJ6uYPYHEa764KFdQ/exec";
+let memories = [];
+
+const memWhen = (at) => (at ? new Date(at).toLocaleDateString("en-ZA", { month: "long", year: "numeric" }) : "");
+const memCard = (m, about = "") => `<div class="mem-card"><blockquote>${esc(m.text)}</blockquote>
+  <div class="mem-who">${esc(m.name)}<small>${[esc(memWhen(m.at)), about].filter(Boolean).join(" · ")}</small></div></div>`;
+const memRecipeId = () => (location.hash.match(/^#recipe-([\w-]+)$/) || [])[1];
+
+function drawMemories() {
+  const id = memRecipeId();
+  const mine = memories.filter((m) => m.recipe === id);
+  document.querySelectorAll("[data-fill=memories]").forEach((el) => {
+    el.innerHTML = mine.length ? mine.map((m) => memCard(m)).join("")
+      : '<p class="mem-empty">No memories of this dish yet. Be the first to share one.</p>';
+  });
+  document.querySelectorAll("[data-fill=mem-chip]").forEach((a) => {
+    a.textContent = mine.length ? `${mine.length} ${mine.length === 1 ? "memory" : "memories"} ↓` : "Share a memory ↓";
+  });
+  // Home page: the newest few, each linking to its dish.
+  const recent = memories.filter((m) => RECIPES[m.recipe]).sort((a, b) => (b.at || "").localeCompare(a.at || "")).slice(0, 3);
+  document.querySelectorAll("[data-mem-home]").forEach((s) => (s.hidden = !recent.length));
+  document.querySelectorAll("[data-fill=home-memories]").forEach((el) => {
+    el.innerHTML = recent.map((m) => memCard(m, `about <a href="#recipe-${m.recipe}">${esc(RECIPES[m.recipe].title)}</a>`)).join("");
+  });
+}
+
+function setupMemories() {
+  if (!MEMORIES_URL) return;
+  document.querySelectorAll("[data-mem-section], [data-fill=mem-chip]").forEach((el) => (el.hidden = false));
+  // The chip scrolls down to the memories without leaving the recipe.
+  document.querySelectorAll("[data-fill=mem-chip]").forEach((a) => (a.onclick = (e) => {
+    e.preventDefault();
+    document.getElementById("memories").scrollIntoView({ behavior: "smooth" });
+  }));
+  window.addEventListener("hashchange", drawMemories);
+  drawMemories();
+  fetch(MEMORIES_URL)
+    .then((r) => r.json())
+    .then((d) => { memories = d.memories || []; drawMemories(); })
+    .catch(() => {}); // can't reach the sheet: the form still works, the list just stays empty
+
+  document.querySelectorAll("[data-mem-form]").forEach((form) => form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const id = memRecipeId();
+    const msg = form.querySelector(".mem-msg");
+    const button = form.querySelector("button");
+    const say = (text, err) => { msg.textContent = text; msg.classList.toggle("err", !!err); msg.hidden = false; };
+    button.disabled = true;
+    try {
+      // Sent as plain text so the browser posts it straight to Google without a CORS check.
+      const res = await fetch(MEMORIES_URL, { method: "POST", body: JSON.stringify({
+        recipe: id, title: RECIPES[id]?.title || "", name: form.name.value, text: form.text.value, website: form.website.value,
+      }) });
+      const d = await res.json();
+      if (!d.ok) throw new Error(d.error);
+      form.reset();
+      say("Thank you! Your memory will appear here once the family has read it.");
+    } catch (err) {
+      say(err.message && !/fetch|JSON/i.test(err.message) ? err.message : "Sorry, that didn't send. Please try again.", true);
+    } finally {
+      button.disabled = false;
+    }
+  }));
+}
+
 document.addEventListener("DOMContentLoaded", fillMockup);
+document.addEventListener("DOMContentLoaded", setupMemories);
