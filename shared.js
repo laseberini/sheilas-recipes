@@ -275,6 +275,7 @@ function fillMockup() {
     const show = (v, animate) => {
       const dir = current === null ? 0 : Math.sign(ORDER.indexOf(v) - ORDER.indexOf(current));
       current = v;
+      scope.dataset.tab = v; // e.g. Memories belong to the recipe, so they hide on the "From …" tab
       group.querySelectorAll("[data-view]").forEach((b) => b.classList.toggle("on", b.dataset.view === v));
       group.style.setProperty("--pos", ORDER.indexOf(v));
       scope.querySelectorAll("[data-pane]").forEach((p) => {
@@ -561,6 +562,7 @@ function setupMemories() {
   // The chip scrolls down to the memories without leaving the recipe.
   document.querySelectorAll("[data-fill=mem-chip]").forEach((a) => (a.onclick = (e) => {
     e.preventDefault();
+    if (document.querySelector("[data-recipe]")?.dataset.tab === "person") document.querySelector("[data-views] [data-view=recipe]")?.click();
     document.getElementById("memories").scrollIntoView({ behavior: "smooth" });
   }));
   window.addEventListener("hashchange", drawMemories);
