@@ -202,6 +202,8 @@ function renderRecipe(R, key) {
   set("pages", (el) => (el.innerHTML = R.pages
     .map((p, i) => `<img src="${withV(p)}" alt="The original recipe page${R.pages.length > 1 ? ` (${i + 1} of ${R.pages.length})` : ""}">`).join("")));
   document.querySelectorAll("[data-views]").forEach((g) => (g.hidden = !R.pages.length));
+  // With a photo, the header shows it full width with the title on top; without one, the plain header.
+  document.querySelectorAll(".r-hero").forEach((h) => h.classList.toggle("has-hero", !!R.photo));
   // Only photos Sheila approved; no photo, no frame.
   set("dish", (el) => {
     el.hidden = !R.photo;

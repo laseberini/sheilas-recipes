@@ -1,10 +1,10 @@
 <!doctype html>
-<html lang="en" data-version="0.29" data-built="2026-10-03 20:32">
+<html lang="en" data-version="0.30" data-built="2026-10-03 20:36">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Sheila's Recipes</title>
-<link rel="manifest" href="manifest.webmanifest?v=0.29">
+<link rel="manifest" href="manifest.webmanifest?v=0.30">
 <link rel="icon" type="image/png" sizes="32x32" href="images/icons/sheila-32.png">
 <link rel="apple-touch-icon" href="images/icons/sheila-180.png">
 <meta name="apple-mobile-web-app-title" content="Sheila's Recipes">
@@ -13,8 +13,8 @@
 <meta name="theme-color" content="#1d3f7a">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,400;1,9..144,600&family=Work+Sans:wght@400;500;600&display=swap" rel="stylesheet">
-<script src="recipes-data.js?v=0.29"></script>
-<script src="shared.js?v=0.29"></script>
+<script src="recipes-data.js?v=0.30"></script>
+<script src="shared.js?v=0.30"></script>
 <style>
   :root {
     --link-accent: #1d3f7a;
@@ -223,6 +223,23 @@
     .switch button { font-size: 13px; }
     .dish-ph { max-width: 260px; }
   }
+  /* Recipe header: the dish photo full width, title and pills on top (when there's a photo). */
+  .r-hero.has-hero { position: relative; isolation: isolate; display: flex; align-items: flex-end; min-height: min(68vh, 580px); background: var(--cobalt); color: #fff; overflow: hidden; }
+  .r-hero.has-hero .wrap { display: block; width: 100%; padding: 0 24px 66px; }
+  .r-hero.has-hero .wrap > div { position: static; }
+  .r-hero.has-hero .dish-ph { position: absolute; inset: 0; max-width: none; width: 100%; aspect-ratio: auto; border: 0; border-radius: 0; box-shadow: none; z-index: 0; }
+  .r-hero.has-hero .dish-ph img { object-position: center 55%; }
+  .r-hero.has-hero::after { content: ""; position: absolute; inset: 0; z-index: 1; pointer-events: none;
+    background: linear-gradient(to top, rgba(12,20,38,.9) 0%, rgba(12,20,38,.55) 32%, rgba(12,20,38,.05) 62%, rgba(12,20,38,.35) 100%); }
+  .r-hero.has-hero h1, .r-hero.has-hero .meta { position: relative; z-index: 2; }
+  .r-hero.has-hero h1 { color: #fff; margin: 0 0 14px; text-shadow: 0 2px 20px rgba(0,0,0,.35); }
+  .r-hero.has-hero .back { position: absolute; top: 16px; left: 16px; z-index: 3; background: rgba(255,255,255,.92); color: var(--cobalt);
+    padding: 8px 14px; border-radius: 99px; font-size: 14px; box-shadow: 0 4px 14px rgba(0,0,0,.18); }
+  .r-hero.has-hero .meta span { background: rgba(255,255,255,.16); color: #fff; border: 1px solid rgba(255,255,255,.35);
+    -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); }
+  @media (min-width: 801px) { .r-hero.has-hero .wrap { padding-bottom: 80px; } .r-hero.has-hero .back { top: 24px; left: 24px; } }
+  .switch { z-index: 2; }
+  .r-hero.has-hero h1 { font-size: clamp(34px, 7vw, 80px); }
 </style>
 </head>
 <body>
