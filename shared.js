@@ -487,6 +487,8 @@ function applyTicks() {
   const next = t.m.length ? steps.find((li) => !li.classList.contains("sub") && !li.classList.contains("done")) : null;
   steps.forEach((li) => li.classList.toggle("next", li === next));
   document.querySelectorAll("[data-clear-ticks]").forEach((b) => (b.hidden = !t.i.length && !t.m.length));
+  // Once something is ticked, "Clear" takes the place of the "tap as you go" hint.
+  document.querySelectorAll(".tap-hint").forEach((h) => (h.hidden = !!(t.i.length || t.m.length)));
 }
 document.addEventListener("click", (e) => {
   const li = e.target.closest("[data-fill=ingredients] li, [data-fill=method] li");
@@ -499,19 +501,14 @@ document.addEventListener("click", (e) => {
   applyTicks();
 });
 
-// Keep the screen on while a recipe is open (on by default; the switch turns it off for good).
+// The screen stays on while a recipe is open, so it never goes dark mid-recipe. It sleeps as normal
+// on the home page, or when you switch apps or lock the phone.
 const wakeSupported = "wakeLock" in navigator;
-const wakeWanted = () => store.get("keepScreenOn", true);
 let wakeLock = null, wakeBusy = false;
 async function updateWake() {
-  document.querySelectorAll("[data-wake]").forEach((b) => {
-    b.hidden = !wakeSupported;
-    b.setAttribute("aria-pressed", String(wakeWanted()));
-    b.querySelector(".cook-label").textContent = wakeWanted() ? "Screen stays on" : "Screen may go dark";
-  });
   if (!wakeSupported || wakeBusy) return;
   const onRecipe = document.querySelector("[data-screen=recipe]")?.hidden === false;
-  const want = wakeWanted() && onRecipe && document.visibilityState === "visible";
+  const want = onRecipe && document.visibilityState === "visible";
   wakeBusy = true;
   try {
     if (want && !wakeLock) {
@@ -526,7 +523,6 @@ async function updateWake() {
   wakeBusy = false;
 }
 function setupCooking() {
-  document.querySelectorAll("[data-wake]").forEach((b) => (b.onclick = () => { store.set("keepScreenOn", !wakeWanted()); updateWake(); }));
   document.querySelectorAll("[data-clear-ticks]").forEach((b) => (b.onclick = () => { store.set(ticksKey(), null); applyTicks(); }));
   window.addEventListener("hashchange", updateWake);
   document.addEventListener("visibilitychange", updateWake); // the lock lapses when the phone locks or you switch apps

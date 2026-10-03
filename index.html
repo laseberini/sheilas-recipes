@@ -1,10 +1,10 @@
 <!doctype html>
-<html lang="en" data-version="0.34" data-built="2026-10-03 21:48">
+<html lang="en" data-version="0.35" data-built="2026-10-03 21:54">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Sheila's Recipes</title>
-<link rel="manifest" href="manifest.webmanifest?v=0.34">
+<link rel="manifest" href="manifest.webmanifest?v=0.35">
 <link rel="icon" type="image/png" sizes="32x32" href="images/icons/sheila-32.png">
 <link rel="apple-touch-icon" href="images/icons/sheila-180.png">
 <meta name="apple-mobile-web-app-title" content="Sheila's Recipes">
@@ -13,8 +13,8 @@
 <meta name="theme-color" content="#1d3f7a">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,400;1,9..144,600&family=Work+Sans:wght@400;500;600&display=swap" rel="stylesheet">
-<script src="recipes-data.js?v=0.34"></script>
-<script src="shared.js?v=0.34"></script>
+<script src="recipes-data.js?v=0.35"></script>
+<script src="shared.js?v=0.35"></script>
 <style>
   :root {
     --link-accent: #1d3f7a;
@@ -168,14 +168,10 @@
   .method li { counter-increment: s; display: grid; grid-template-columns: 52px 1fr; gap: 14px; padding: 0 0 22px; font-size: 18px; }
   .method li::before { content: counter(s); width: 44px; height: 44px; border-radius: 50%; background: var(--lemon); color: var(--cobalt); display: grid; place-items: center; font: 600 20px Fraunces; }
   /* Cooking help: screen-on switch, tick-off ingredients and steps, the next step highlighted. */
-  .cook-tools { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 16px; margin: 0 0 22px; }
-  .cook-btn { display: inline-flex; align-items: center; gap: 9px; border: 2px solid var(--sand); background: #fff; color: var(--cobalt);
-    font: 600 15px "Work Sans"; padding: 9px 16px; border-radius: 99px; cursor: pointer; }
-  .cook-btn[aria-pressed="true"] { border-color: var(--olive); background: #eef1e4; color: #3f4a1c; }
-  .cook-dot { width: 10px; height: 10px; border-radius: 50%; background: #c9c3b8; }
-  .cook-btn[aria-pressed="true"] .cook-dot { background: var(--olive); box-shadow: 0 0 0 3px rgba(108,122,59,.25); }
-  .cook-hint { font-size: 14px; color: var(--muted); }
-  .cook-clear { margin-left: auto; border: 0; background: none; padding: 6px 0; color: var(--terracotta); font: 600 15px "Work Sans"; text-decoration: underline; cursor: pointer; }
+  .box-head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; margin-bottom: 14px; }
+  .box-head h3 { margin: 0 !important; }
+  .tap-hint { font: italic 400 15px Fraunces, serif; color: var(--muted); margin-left: 6px; white-space: nowrap; }
+  .cook-clear { border: 0; background: none; padding: 4px 0; color: var(--terracotta); font: 600 15px "Work Sans"; text-decoration: underline; cursor: pointer; }
   .ing li:not(.sub), .method li:not(.sub) { cursor: pointer; -webkit-tap-highlight-color: transparent; }
   .ing li::before { display: grid; place-items: center; font: 700 13px/1 system-ui, sans-serif; color: #fff; }
   .ing li.done::before { content: "✓"; background: var(--terracotta); }
@@ -363,14 +359,8 @@
       <button data-view="person" data-fill="person-tab"></button>
     </div>
     <div data-pane="recipe">
-      <!-- Cooking help: keep the phone awake, and tick things off as you go. -->
-      <div class="cook-tools">
-        <button type="button" class="cook-btn" data-wake aria-pressed="true" hidden><span class="cook-dot"></span><span class="cook-label">Screen stays on</span></button>
-        <span class="cook-hint">Tap an ingredient or step to tick it off</span>
-        <button type="button" class="cook-clear" data-clear-ticks hidden>Clear ticks</button>
-      </div>
       <div class="recipe-body">
-        <div class="ing-box"><h3>Ingredients</h3><ul class="ing" data-fill="ingredients"></ul></div>
+        <div class="ing-box"><div class="box-head"><h3>Ingredients <small class="tap-hint">tap as you go</small></h3><button type="button" class="cook-clear" data-clear-ticks hidden>Clear</button></div><ul class="ing" data-fill="ingredients"></ul></div>
         <div class="method-box"><h3>Method</h3><ol class="method" data-fill="method"></ol><div class="notes" data-fill="notes"></div>
           <figure class="her-pages" data-fill="pages"></figure></div>
       </div>
