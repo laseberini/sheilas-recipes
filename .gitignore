@@ -17,3 +17,6 @@ Kitchen photos-*.zip
 
 # Gemini style experiments
 images/style-tests/
+
+# Photo candidates waiting for review (approved ones are copied to images/dishes)
+images/candidates/
