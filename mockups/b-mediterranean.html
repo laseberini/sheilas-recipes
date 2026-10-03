@@ -1,15 +1,15 @@
 <!doctype html>
-<html lang="en" data-version="0.10" data-built="2026-10-03 16:16">
+<html lang="en" data-version="0.11" data-built="2026-10-03 16:41">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>B · Nonna's Table</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,400;1,9..144,600&family=Work+Sans:wght@400;500;600&display=swap" rel="stylesheet">
-<script src="shared.js?v=0.10"></script>
+<script src="shared.js?v=0.11"></script>
 <style>
   :root {
-    --eng-accent: #1d3f7a; --eng-bg: #ffffff;
+    --link-accent: #1d3f7a;
     --cobalt: #1d3f7a;
     --cobalt-2: #2c5aa8;
     --terracotta: #c25a2c;
@@ -93,8 +93,8 @@
     display: grid; place-items: center; color: var(--muted); font: italic 18px Fraunces, serif; text-align: center;
   }
 
-  .switch { position: relative; display: grid; grid-template-columns: repeat(3, 1fr); background: #fff; border-radius: 99px; padding: 5px; max-width: 560px; margin: -28px auto 40px; box-shadow: 0 10px 30px rgba(29,63,122,.12); }
-  .switch::before { content: ""; position: absolute; top: 5px; bottom: 5px; left: 5px; width: calc((100% - 10px) / 3); border-radius: 99px; background: var(--cobalt); transform: translateX(calc(var(--pos, 1) * 100%)); transition: transform .25s; }
+  .switch { position: relative; display: grid; grid-template-columns: repeat(2, 1fr); background: #fff; border-radius: 99px; padding: 5px; max-width: 560px; margin: -28px auto 40px; box-shadow: 0 10px 30px rgba(29,63,122,.12); }
+  .switch::before { content: ""; position: absolute; top: 5px; bottom: 5px; left: 5px; width: calc((100% - 10px) / 2); border-radius: 99px; background: var(--cobalt); transform: translateX(calc(var(--pos, 1) * 100%)); transition: transform .25s; }
   .switch button { position: relative; border: 0; background: none; font: 600 15px "Work Sans"; padding: 12px 8px; color: var(--cobalt); cursor: pointer; }
   .switch button.on { color: #fff; }
 
@@ -112,15 +112,6 @@
   .page-pane { text-align: center; padding-bottom: 80px; }
   .page-pane img { max-width: 680px; width: 100%; border-radius: 6px; border: 10px solid #fff; box-shadow: 0 20px 50px rgba(0,0,0,.15); }
 
-  .eng-pane { padding-bottom: 80px; }
-  .eng-wrap { overflow-x: auto; background: #fff; border-radius: 18px; padding: 20px; }
-  .eng { border-collapse: collapse; width: 100%; min-width: 640px; font-size: 15px; }
-  .eng td { border: 2px solid var(--cobalt); padding: 9px 11px; }
-  .eng-setup, .eng-finish { text-align: center; background: var(--cobalt); color: #fff; font-weight: 500; }
-  .eng-op { text-align: center; font-weight: 600; background: #eef3fb; }
-  .eng .est { color: var(--terracotta); font-style: italic; }
-  .eng-note { color: var(--muted); font-size: 14px; }
-  .est-key::before { content: "Terracotta italic"; color: var(--terracotta); font-style: italic; font-weight: 600; }
 
   footer { background: var(--cobalt); color: var(--cream); text-align: center; padding: 30px; font: italic 18px Fraunces; }
 
@@ -136,7 +127,7 @@
 </style>
 </head>
 <body>
-<div class="topbar"><a class="logo" href="#">Sheila's<i></i></a><nav><a href="#">Recipes</a><a href="#">About</a></nav></div>
+<div class="topbar"><a class="logo" href="#">Sheila's<i></i></a><nav><a href="#recipes">Recipes</a><a href="#about">About</a></nav></div>
 
 <div data-screen="home">
   <section class="hero">
@@ -151,11 +142,11 @@
     </div>
   </section>
   <div class="tiles"></div>
-  <section class="intro wrap">
+  <section class="intro wrap" id="about">
     <blockquote><span data-fill="intro"></span><cite>Sheila</cite></blockquote>
   </section>
   <section class="wrap" id="recipes">
-    <div class="menu-head"><h2>The recipes</h2><input class="search" placeholder="Search: brinjal, cake, Nonna…"></div>
+    <div class="menu-head"><h2>The recipes</h2><input class="search" type="search" data-search placeholder="Search: brinjal, cake, Nonna…" aria-label="Search recipes"></div>
     <div class="cats" data-fill="categories"></div>
   </section>
   <div class="tiles"></div>
@@ -177,14 +168,12 @@
     <div class="switch" data-views>
       <button data-view="page">Her page</button>
       <button data-view="recipe">The recipe</button>
-      <button data-view="engineer">Recipe Table</button>
     </div>
     <div data-pane="page" class="page-pane"><img data-fill="page" alt="The original handwritten recipe page"></div>
     <div data-pane="recipe" class="recipe-body">
       <div class="ing-box"><h3>Ingredients</h3><ul class="ing" data-fill="ingredients"></ul></div>
       <div class="method-box"><h3>Method</h3><ol class="method" data-fill="method"></ol><div class="notes" data-fill="notes"></div></div>
     </div>
-    <div data-pane="engineer" class="eng-pane" data-fill="engineer"></div>
   </div>
   <div class="tiles"></div>
   <footer>Made with love for Sheila's family</footer>

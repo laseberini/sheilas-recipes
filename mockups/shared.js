@@ -24,10 +24,6 @@ const withV = (url) => `${url}${url.includes("?") ? "&" : "?"}v=${VERSION}`;
   }
 })();
 
-// Recipe Table model: one table per recipe, so the whole recipe is visible at once.
-// Ingredient rows down the left; step columns left to right. A column holds one or more
-// steps, each spanning a range of rows (from..to), so side-by-side jobs share a column.
-// est: true marks our estimates, still to be confirmed by Sheila.
 const RECIPES = {
   fish: {
     title: "Fish Cakes",
@@ -50,25 +46,6 @@ const RECIPES = {
       "Take kitchen paper, put fish cakes to drain oil on then, more paper & drain again, put on cakes, cover with more paper, press gently to remove oil",
     ],
     notes: ["Serve with chips/salad whatever & Chrain"],
-    table: {
-      setup: ["Heat ±1 cm sunflower oil in a frying pan until very hot"],
-      ingredients: [
-        { text: "250 g hake mince, with finely chopped carrot & onion" },
-        { text: "1 small egg" },
-        { text: "salt, pepper & garlic salt" },
-        { text: "5 ml (1 tsp) sugar, optional", est: true },
-        { text: "±60 ml (¼ cup) dried breadcrumbs", est: true },
-      ],
-      columns: [
-        [{ op: "mix", from: 0, to: 3 }],
-        [{ op: "roll into 8 balls", from: 0, to: 3, est: true }],
-        [{ op: "coat & flatten to ±2 cm", from: 0, to: 4, est: true }],
-        [{ op: "chill 30 min (optional)", from: 0, to: 4, est: true }],
-        [{ op: "fry 3–4 min a side, till golden", from: 0, to: 4, est: true }],
-        [{ op: "drain on kitchen paper, press gently", from: 0, to: 4 }],
-      ],
-      finish: "Serve with chips or salad & chrain",
-    },
   },
   lemon: {
     title: "Lemon Meringue",
@@ -103,30 +80,6 @@ const RECIPES = {
       "Bake for ± 30 mins or until Mereingue slightly Browned",
     ],
     notes: [],
-    table: {
-      setup: ["Heat the oven to 120 °C"],
-      ingredients: [
-        { text: "1–1½ packets (200–300 g) Marie biscuits", est: true },
-        { text: "180–250 g butter" },
-        { text: "2 large tins (2 × 385 g) condensed milk", est: true },
-        { text: "4 egg yolks" },
-        { text: "180 ml (¾ cup) lemon juice" },
-        { text: "4 egg whites" },
-        { text: "2 ml (½ tsp) baking powder", est: true },
-        { text: "60 ml (4 Tbsp) sugar" },
-        { text: "30 ml (2 Tbsp) sugar" },
-      ],
-      columns: [
-        [{ op: "crush well", from: 0, to: 0 }, { op: "melt", from: 1, to: 1 }, { op: "beat", from: 2, to: 2 }],
-        [{ op: "mix", from: 0, to: 1 }, { op: "add & beat", from: 2, to: 3 }],
-        [{ op: "press over base & sides of the dish", from: 0, to: 1 }, { op: "add & beat", from: 2, to: 4 }],
-        [{ op: "pour filling into base", from: 0, to: 4 }, { op: "beat till stiff", from: 5, to: 6, est: true }],
-        [{ op: "beat in, 1 min", from: 5, to: 7 }],
-        [{ op: "fold in gently", from: 5, to: 8 }],
-        [{ op: "spread meringue over filling", from: 0, to: 8 }],
-      ],
-      finish: "Bake ±30 min, until the meringue is lightly browned",
-    },
   },
 };
 
@@ -160,55 +113,6 @@ Object.assign(RECIPES, { pesto: {
     "(Genuine Pesto Sauce from Italian Riviera & Genova Region - This recipe handed down from Aletta's mother-in-law who came from that Region - where Pesto Sauce originates)",
     "NB Pesto can be deep Frozen in airtight Bowl & defrosted when needed (Can be re-frozen)"
   ],
-  "table": {
-    "ingredients": [
-      {
-        "text": "500 ml (2 firmly packed cups) fresh basil leaves, washed & dried"
-      },
-      {
-        "text": "125 ml (½ cup) olive oil"
-      },
-      {
-        "text": "30 ml (2 Tbsp) pine nuts"
-      },
-      {
-        "text": "2 cloves garlic, halved"
-      },
-      {
-        "text": "5 ml (1 tsp) salt"
-      },
-      {
-        "text": "125 ml (½ cup) grated pecorino / parmesan"
-      },
-      {
-        "text": "45 ml (3 Tbsp) butter, in 2–3 pieces"
-      }
-    ],
-    "columns": [
-      [
-        {
-          "op": "blend thoroughly in the Magimix",
-          "from": 0,
-          "to": 4
-        }
-      ],
-      [
-        {
-          "op": "add & blend",
-          "from": 0,
-          "to": 5
-        }
-      ],
-      [
-        {
-          "op": "add & blend",
-          "from": 0,
-          "to": 6
-        }
-      ]
-    ],
-    "finish": "Use straight away, or freeze in an airtight bowl (it can be re-frozen)"
-  }
 }, linguine: {
   "title": "Linguine Pesto",
   "from": null,
@@ -240,82 +144,9 @@ Object.assign(RECIPES, { pesto: {
   "notes": [
     "If you like (feta & grilled baby tomatoes) - delish addition"
   ],
-  "table": {
-    "ingredients": [
-      {
-        "text": "±400 g linguine",
-        "est": true
-      },
-      {
-        "text": "a big pot of water with 7.5 ml (½ Tbsp) salt",
-        "est": true
-      },
-      {
-        "text": "Aletta's Pesto Sauce",
-        "link": "pesto"
-      },
-      {
-        "text": "±250 g baby tomatoes, if you like",
-        "est": true
-      },
-      {
-        "text": "±100 g crumbled feta, if you like",
-        "est": true
-      },
-      {
-        "text": "grated pecorino (Parmigiano)"
-      }
-    ],
-    "columns": [
-      [
-        {
-          "op": "boil till al dente",
-          "from": 0,
-          "to": 1
-        },
-        {
-          "op": "grill till blistered",
-          "from": 3,
-          "to": 3
-        }
-      ],
-      [
-        {
-          "op": "drain, keep a cup of the water",
-          "from": 0,
-          "to": 1
-        },
-        {
-          "op": "thin with a little pasta water",
-          "from": 2,
-          "to": 2
-        }
-      ],
-      [
-        {
-          "op": "toss till every strand is coated",
-          "from": 0,
-          "to": 2
-        }
-      ],
-      [
-        {
-          "op": "mix in carefully",
-          "from": 0,
-          "to": 4
-        }
-      ],
-      [
-        {
-          "op": "sprinkle on top",
-          "from": 0,
-          "to": 5
-        }
-      ]
-    ],
-    "finish": "Serve straight away"
-  }
 } });
+
+RECIPES.pesto.aliases = ["Pesto Sauce"];
 
 const MOCK = {
   categories: [
@@ -344,87 +175,6 @@ const MOCK = {
 };
 
 const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
-
-function recipeTable(t) {
-  const n = t.ingredients.length;
-  const cols = t.columns.length + 1;
-  const rows = [];
-  // Full-width rows keep their text pinned in view while the table scrolls sideways.
-  const wide = (cls, text) => `<tr><td class="${cls}" colspan="${cols}"><span class="eng-pin">${esc(text)}</span></td></tr>`;
-  for (const s of t.setup || []) rows.push(wide("eng-setup", s));
-  for (let r = 0; r < n; r++) {
-    const ing = t.ingredients[r];
-    const label = ing.link ? `<a class="rec-link" href="#recipe-${ing.link}">${esc(ing.text)} →</a>` : esc(ing.text);
-    let row = `<td class="eng-ing${ing.est ? " est" : ""}">${label}</td>`;
-    for (const col of t.columns) {
-      const at = (i) => col.find((s) => i >= s.from && i <= s.to);
-      const step = at(r);
-      if (step && step.from === r) {
-        row += `<td class="eng-op${step.est ? " est" : ""}" rowspan="${step.to - step.from + 1}">${esc(step.op)}</td>`;
-      } else if (!step && (r === 0 || at(r - 1))) {
-        // Merge consecutive rows that no step in this column touches into one blank cell.
-        let end = r;
-        while (end + 1 < n && !at(end + 1)) end++;
-        row += `<td class="eng-gap" rowspan="${end - r + 1}"></td>`;
-      }
-    }
-    rows.push(`<tr>${row}</tr>`);
-  }
-  if (t.finish) rows.push(wide("eng-finish", t.finish));
-  return `<div class="eng-scroller">
-      <div class="eng-wrap"><table class="eng"><colgroup><col class="eng-col-ing">${t.columns.map(() => `<col class="eng-col-step" style="width:${(70 / t.columns.length).toFixed(2)}%">`).join("")}</colgroup>${rows.join("")}</table></div>
-      <div class="eng-map" aria-label="Jump to a step"></div>
-    </div>
-    <p class="eng-note"><span class="est-key"></span> Estimated amounts and times. Sheila still needs to confirm these.</p>`;
-}
-
-// When the table is wider than the screen: ingredients stay pinned on the left, the steps
-// glide past and snap to a column, a step map shows what's in view (tap to glide there),
-// and the first time it appears the table nudges sideways to show there's more.
-function enhanceTables() {
-  document.querySelectorAll(".eng-scroller").forEach((box) => {
-    const wrap = box.querySelector(".eng-wrap");
-    const map = box.querySelector(".eng-map");
-    if (!wrap.offsetParent) return; // pane hidden
-    const table = wrap.querySelector("table");
-    box.classList.remove("scrolls", "own-borders");
-    const scrolls = wrap.scrollWidth > wrap.clientWidth + 2;
-    if (!scrolls) return;
-    // A pinned column can't keep shared (collapsed) borders, so give each cell its own.
-    const collapsed = getComputedStyle(table).borderCollapse === "collapse";
-    box.classList.add("scrolls");
-    box.classList.toggle("own-borders", collapsed);
-
-    const pin = wrap.querySelector(".eng-ing").offsetWidth;
-    wrap.style.setProperty("--pin", pin + "px");
-    const starts = [...new Set([...wrap.querySelectorAll(".eng-op, .eng-gap")].map((c) => c.offsetLeft + table.offsetLeft))].sort((a, b) => a - b);
-    map.innerHTML = starts.map((x, i) => `<button type="button" aria-label="Step ${i + 1}"></button>`).join("");
-    const buttons = [...map.children];
-    buttons.forEach((b, i) => (b.onclick = () => wrap.scrollTo({ left: starts[i] - pin, behavior: "smooth" })));
-
-    const update = () => {
-      const left = wrap.scrollLeft + pin;
-      const right = wrap.scrollLeft + wrap.clientWidth;
-      buttons.forEach((b, i) => {
-        const end = starts[i + 1] ?? wrap.scrollWidth;
-        b.classList.toggle("on", starts[i] < right - 8 && end > left + 8);
-      });
-      box.classList.toggle("scrolled", wrap.scrollLeft > 2);
-      box.classList.toggle("at-end", wrap.scrollLeft + wrap.clientWidth >= wrap.scrollWidth - 2);
-    };
-    wrap.onscroll = update;
-    update();
-
-    if (!box.dataset.nudged) {
-      box.dataset.nudged = "1";
-      wrap.style.scrollSnapType = "none";
-      setTimeout(() => wrap.scrollTo({ left: 72, behavior: "smooth" }), 350);
-      setTimeout(() => wrap.scrollTo({ left: 0, behavior: "smooth" }), 1050);
-      setTimeout(() => (wrap.style.scrollSnapType = ""), 1700);
-    }
-  });
-}
-window.addEventListener("resize", enhanceTables);
 
 // Full-screen viewer for the original page. Close with ×, Esc, or a tap outside the photo.
 // Zoom with pinch, double-tap / double-click, or the scroll wheel; drag to move around.
@@ -528,21 +278,28 @@ document.addEventListener("click", (e) => {
   const page = e.target.closest("img[data-fill=page], [data-fill=dish] img");
   if (page) openLightbox(page.src, page.alt);
 });
-document.fonts?.ready.then(enhanceTables);
 
-function methodItems(lines) {
+function methodItems(lines, R) {
   // A line ending in ":" is a sub-heading (e.g. "Topping:"), not a numbered step.
-  return lines.map((m) => (m.trim().endsWith(":") ? `<li class="sub">${esc(m)}</li>` : `<li>${esc(m)}</li>`)).join("");
+  return lines.map((m) => (m.trim().endsWith(":") ? `<li class="sub">${esc(m)}</li>` : `<li><span>${linkify(m, R)}</span></li>`)).join(""); // one wrapper, so links flow inside the text
 }
 
+// Every mention of a linked recipe (its title, or another name for it such as "pesto sauce") is a link.
+const reEscape = (t) => t.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 function linkify(text, R) {
-  let html = esc(text);
-  for (const key of R.uses || []) {
-    if (html.includes(esc(RECIPES[key].title))) html = html.replace(/\s*\(see recipe\)/i, ""); // the link arrow already says it
-    const title = esc(RECIPES[key].title);
-    if (html.includes(title)) html = html.replace(title, `<a class="rec-link" href="#recipe-${key}">${title} →</a>`);
+  const names = (R.uses || [])
+    .flatMap((key) => [RECIPES[key].title, ...(RECIPES[key].aliases || [])].map((name) => ({ key, name })))
+    .sort((a, b) => b.name.length - a.name.length);
+  if (!names.length) return esc(text);
+  text = text.replace(/\s*\(see recipe\)/i, ""); // the link says it
+  const all = new RegExp(names.map((n) => reEscape(n.name)).join("|"), "gi");
+  let out = "", last = 0;
+  for (const m of text.matchAll(all)) {
+    const { key } = names.find((n) => n.name.toLowerCase() === m[0].toLowerCase());
+    out += esc(text.slice(last, m.index)) + `<a class="rec-link" href="#recipe-${key}">${esc(m[0])}</a>`;
+    last = m.index + m[0].length;
   }
-  return html;
+  return out + esc(text.slice(last));
 }
 
 // "Uses …" / "Used in …" strip shown under the view switch.
@@ -577,12 +334,11 @@ function renderRecipe(R, key) {
     strip.innerHTML = relatedStrip(key, R);
     strip.hidden = !strip.innerHTML;
   });
-  set("method", (el) => (el.innerHTML = methodItems(R.method)));
+  set("method", (el) => (el.innerHTML = methodItems(R.method, R)));
   set("notes", (el) => {
     el.hidden = !R.notes.length;
-    el.innerHTML = R.notes.map((m) => `<p>${esc(m)}</p>`).join("");
+    el.innerHTML = R.notes.map((m) => `<p>${linkify(m, R)}</p>`).join("");
   });
-  set("engineer", (el) => (el.innerHTML = recipeTable(R.table)));
   set("page", (el) => (el.src = withV(R.page)));
   set("dish", (el) => {
     el.classList.toggle("has-photo", !!R.photo);
@@ -606,18 +362,39 @@ function fillMockup() {
     };
     el.querySelector(".intro-note").onclick = () => openLightbox(withV(MOCK.introPage), "Sheila's handwritten introduction");
   });
+  const searchText = (title) => {
+    const r = RECIPES[MOCK.links[title]];
+    return [title, ...(r ? [...r.ingredients, ...r.method, r.from || ""] : [])].join(" ").toLowerCase();
+  };
   document.querySelectorAll("[data-fill=categories]").forEach((el) => {
     el.innerHTML = MOCK.categories.map((c) => `
       <section class="cat">
         <h3 class="cat-name">${esc(c.name)} <span class="cat-count">${c.recipes.length}</span></h3>
         <ul class="cat-list">${c.recipes.map((t) => `<li><a href="#recipe-${MOCK.links[t] || "fish"}">${esc(t)}</a></li>`).join("")}</ul>
-      </section>`).join("");
+      </section>`).join("") + '<p class="no-results" hidden>No recipes match that search.</p>';
+  });
+  document.querySelectorAll("[data-search]").forEach((input) => {
+    input.addEventListener("input", () => {
+      const q = input.value.trim().toLowerCase();
+      let shown = 0;
+      document.querySelectorAll(".cat").forEach((cat) => {
+        let inCat = 0;
+        cat.querySelectorAll(".cat-list li").forEach((li) => {
+          const hit = !q || searchText(li.textContent).includes(q);
+          li.hidden = !hit;
+          inCat += hit;
+        });
+        cat.hidden = !inCat;
+        shown += inCat;
+      });
+      document.querySelectorAll(".no-results").forEach((p) => (p.hidden = shown > 0));
+    });
   });
 
-  // Three-way switch: her page / the recipe / recipe table.
-  const ORDER = ["page", "recipe", "engineer"];
+  // View switch: her page / the recipe (in the order the buttons appear).
   const views = [];
   document.querySelectorAll("[data-views]").forEach((group) => {
+    const ORDER = [...group.querySelectorAll("[data-view]")].map((b) => b.dataset.view);
     const scope = group.closest("[data-recipe]") || document;
     let current = null;
     const show = (v, animate) => {
@@ -633,17 +410,14 @@ function fillMockup() {
           p.classList.add(dir > 0 ? "pane-from-right" : "pane-from-left");
         }
       });
-      enhanceTables();
     };
     group.querySelectorAll("[data-view]").forEach((b) => (b.onclick = () => show(b.dataset.view, true)));
     views.push(show);
 
-    // Swipe left/right anywhere on the recipe to move between the three views. A swipe that
-    // starts on a table that scrolls sideways is left to the table.
+    // Swipe left/right anywhere on the recipe to move between the views.
     let t0 = null;
     scope.addEventListener("touchstart", (e) => {
-      const onTable = e.target.closest(".eng-scroller.scrolls");
-      t0 = e.touches.length === 1 && !onTable ? { x: e.touches[0].clientX, y: e.touches[0].clientY, t: Date.now() } : null;
+      t0 = e.touches.length === 1 ? { x: e.touches[0].clientX, y: e.touches[0].clientY, t: Date.now() } : null;
     }, { passive: true });
     scope.addEventListener("touchend", (e) => {
       if (!t0) return;
@@ -658,50 +432,33 @@ function fillMockup() {
   });
 
   // Home ↔ recipe "pages". #recipe-fish, #recipe-lemon (plain #recipe = Fish Cakes).
-  const recipeKey = () => (location.hash.startsWith("#recipe") ? location.hash.slice(8) || "fish" : null);
+  const recipeKey = () => {
+    const m = location.hash.match(/^#recipe(?:-([\w-]+))?$/); // #recipe-fish; #recipes (the list) is not a recipe
+    return m ? m[1] || "fish" : null;
+  };
   const route = () => {
     const key = recipeKey();
     document.querySelectorAll("[data-screen]").forEach((s) => (s.hidden = s.dataset.screen !== (key ? "recipe" : "home")));
     if (key) {
       renderRecipe(RECIPES[key] || RECIPES.fish, RECIPES[key] ? key : "fish");
-      views.forEach((show) => show(key === "lemon" ? "engineer" : "recipe"));
+      views.forEach((show) => show("recipe"));
     }
-    window.scrollTo(0, 0);
+    // Jump to a section on the home page (e.g. #recipes), otherwise start at the top.
+    const target = !key && location.hash.length > 1 && document.getElementById(location.hash.slice(1));
+    target ? target.scrollIntoView() : window.scrollTo(0, 0);
   };
   window.addEventListener("hashchange", route);
   route();
 
-  // Switcher between mockups (not part of any design).
-  const here = location.pathname.split("/").pop();
-  const bar = document.createElement("nav");
-  bar.className = "mock-switch";
-  const drawBar = () => {
-    const onRecipe = !!recipeKey();
-    bar.innerHTML = [["a-heirloom.html", "A · Heirloom"], ["b-mediterranean.html", "B · Nonna's Table"], ["c-clean.html", "C · Clean Kitchen"], ["d-magazine.html", "D · Magazine"]]
-      .map(([f, l]) => `<a href="${f}${location.hash}" class="${f === here ? "on" : ""}">${l}</a>`).join("") +
-      (onRecipe ? `<a href="#" class="flip">← Home</a>` : `<a href="#recipe-fish" class="flip">Fish Cakes →</a><a href="#recipe-lemon" class="flip">Lemon Meringue →</a>`) +
-      `<span class="ver" title="Built ${document.documentElement.dataset.built || ""}">v${VERSION}</span>`;
-  };
-  drawBar();
-  document.body.appendChild(bar);
   // Version at the top of every page, so it's easy to check which version a phone is showing.
   const badge = document.createElement("div");
   badge.className = "ver-top";
   badge.textContent = `v${VERSION}`;
   badge.title = `Built ${document.documentElement.dataset.built || ""}`;
   document.body.appendChild(badge);
-  window.addEventListener("hashchange", drawBar);
 
   const style = document.createElement("style");
   style.textContent = `
-    .mock-switch { position: fixed; left: 50%; bottom: 14px; transform: translateX(-50%); z-index: 999;
-      display: flex; gap: 4px; padding: 5px; background: rgba(20,20,20,.88); border-radius: 99px;
-      font: 500 13px/1 system-ui, sans-serif; box-shadow: 0 6px 24px rgba(0,0,0,.25); max-width: calc(100vw - 16px); overflow-x: auto; }
-    .mock-switch a { color: #ddd; text-decoration: none; padding: 8px 12px; border-radius: 99px; white-space: nowrap; }
-    .mock-switch a.on { background: #fff; color: #111; }
-    .mock-switch a.flip { color: #ffd479; }
-    .mock-switch .ver { color: #9a9a9a; padding: 8px 10px 8px 4px; white-space: nowrap; font-variant-numeric: tabular-nums; }
-    body { padding-bottom: 80px; }
     [hidden] { display: none !important; }
     .intro-p { display: block; }
     .intro-p + .intro-p, .intro-more .intro-p { margin-top: .6em; }
@@ -710,25 +467,20 @@ function fillMockup() {
       text-decoration: underline; text-underline-offset: 3px; }
     .ver-top { position: fixed; top: 8px; right: 8px; z-index: 998; font: 600 11px/1 system-ui, sans-serif; letter-spacing: .04em;
       color: #fff; background: rgba(20,20,20,.62); padding: 5px 8px; border-radius: 99px; pointer-events: none; }
+    .no-results { grid-column: 1 / -1; text-align: center; color: var(--muted, #777); padding: 30px 0; }
     .rel { display: flex; flex-wrap: wrap; gap: 8px 18px; align-items: center; margin: 0 0 22px; font-size: 15px; }
     .rel b { font-weight: 600; margin-right: 6px; opacity: .75; }
-    .rec-link { color: var(--eng-accent, currentColor); font-weight: 600; text-decoration: none;
-      border-bottom: 2px solid color-mix(in srgb, var(--eng-accent, currentColor) 35%, transparent); }
-    .rec-link:hover { border-bottom-color: currentColor; }
+    /* Linked recipes read as ordinary hyperlinks inside the text. */
+    .rec-link { color: var(--link-accent, currentColor); font-weight: inherit; text-decoration: underline;
+      text-decoration-thickness: 1px; text-underline-offset: 3px; }
+    .rec-link:hover { text-decoration-thickness: 2px; }
     li.sub { list-style: none; font-weight: 700; margin-top: 8px; }
     li.sub::before { content: none !important; }
 
     .method li.sub { counter-increment: none !important; display: block !important; padding: 8px 0 6px !important; font-weight: 700; }
     .method li.sub::before { content: none !important; }
 
-    /* Auto layout: a step column is never narrower than its longest word, so text can't cross
-       a line. If that makes the table too wide for the screen, it switches to the sideways glide. */
-    .eng { table-layout: auto; }
-    .eng-col-ing { width: 30%; }
-    .eng-op { overflow-wrap: normal; word-break: normal; hyphens: manual; }
-    .eng-wrap { position: relative; }
-
-    /* Swiping between Her page / The recipe / Recipe Table slides the new view in. */
+    /* Swiping between Her page / The recipe slides the new view in. */
     @keyframes paneFromRight { from { opacity: 0; transform: translateX(36px); } to { opacity: 1; transform: none; } }
     @keyframes paneFromLeft { from { opacity: 0; transform: translateX(-36px); } to { opacity: 1; transform: none; } }
     [data-recipe] { overflow-x: clip; }
@@ -751,44 +503,7 @@ function fillMockup() {
     .lb-close:hover { background: rgba(255,255,255,.28); }
     .lb-hint { position: absolute; left: 0; right: 0; bottom: 22px; margin: 0; text-align: center; color: #e8e2da;
       font: 14px system-ui, sans-serif; pointer-events: none; transition: opacity .6s; }
-
-    /* Sideways glide (only kicks in when the table is wider than the screen). */
-    .eng-scroller.scrolls .eng-wrap {
-      overflow-x: auto; scroll-snap-type: x proximity; scroll-padding-left: var(--pin, 140px);
-      overscroll-behavior-x: contain; scrollbar-width: none; -webkit-overflow-scrolling: touch;
-    }
-    .eng-scroller.scrolls .eng-wrap::-webkit-scrollbar { display: none; }
-    .eng-scroller.scrolls:not(.at-end) .eng-wrap {
-      -webkit-mask-image: linear-gradient(to right, #000 calc(100% - 40px), transparent);
-              mask-image: linear-gradient(to right, #000 calc(100% - 40px), transparent);
-    }
-    .eng-scroller.scrolls .eng-op, .eng-scroller.scrolls .eng-gap { scroll-snap-align: start; }
-    .eng-scroller.scrolls .eng-ing { position: sticky; left: 0; z-index: 2; background: var(--eng-bg, #fff); transition: box-shadow .2s; }
-    .eng-scroller.scrolled .eng-ing { box-shadow: 8px 0 12px -8px rgba(0,0,0,.3); }
-    .eng-scroller.own-borders .eng { border-collapse: separate !important; border-spacing: 0 !important; }
-    .eng-scroller.own-borders .eng td:not(.eng-ing):not(.eng-setup):not(.eng-finish) { border-left-width: 0 !important; }
-    .eng-scroller.own-borders .eng tr:not(:first-child) td { border-top-width: 0 !important; }
-    .eng-scroller.scrolls .eng-setup, .eng-scroller.scrolls .eng-finish { text-align: left; }
-    .eng-pin { display: inline-block; }
-    .eng-scroller.scrolls .eng-pin { position: sticky; left: 12px; }
-
-    .eng-map { display: none; gap: 5px; margin-top: 8px; }
-    .eng-scroller.scrolls .eng-map { display: flex; }
-    .eng-map button { flex: 1; height: 22px; padding: 0; border: 0; background: none; cursor: pointer; position: relative; }
-    .eng-map button::after { content: ""; position: absolute; left: 0; right: 0; top: 8px; height: 6px; border-radius: 99px;
-      background: var(--eng-accent, currentColor); opacity: .18; transition: opacity .25s; }
-    .eng-map button.on::after { opacity: .8; }
-
-    /* Upright phone: fixed, comfortable column widths; the table glides sideways. */
-    @media (max-width: 640px) {
-      .eng-wrap { padding: 0 !important; border-radius: 0 !important; background: none !important; --pin: 136px; }
-      .eng { table-layout: auto !important; width: max-content !important; min-width: 100% !important; font-size: 14px !important; line-height: 1.35 !important; }
-      .eng td { padding: 8px 8px !important; }
-      .eng-col-ing { width: 136px; }
-      .eng-col-step { width: auto !important; }
-      .eng-ing { width: 136px !important; min-width: 136px !important; max-width: 136px !important; }
-      .eng-op, .eng-gap { width: 96px !important; min-width: 96px !important; max-width: 96px !important; }
-    }`;
+`;
   document.head.appendChild(style);
 }
 
