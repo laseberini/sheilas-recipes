@@ -209,14 +209,17 @@ function fillMockup() {
   // Her intro: the first paragraph, with the rest behind "Read more" so it doesn't take over the page.
   document.querySelectorAll("[data-fill=intro]").forEach((el) => {
     const [first, ...rest] = MOCK.intro;
-    el.innerHTML = `<span class="intro-p">${esc(first)}</span>
-      <span class="intro-more" hidden>${rest.map((p) => `<span class="intro-p">${esc(p)}</span>`).join("")}</span>
+    // The closing quote mark goes after whichever paragraph is last on show.
+    el.dataset.collapsed = "";
+    el.innerHTML = `<span class="intro-p intro-first">${esc(first)}</span>
+      <span class="intro-more" hidden>${rest.map((p, i) => `<span class="intro-p${i === rest.length - 1 ? " intro-last" : ""}">${esc(p)}</span>`).join("")}</span>
       <span class="intro-actions"><button type="button" class="intro-toggle">Read more</button> ·
       <button type="button" class="intro-note">See her handwritten note</button></span>`;
     const more = el.querySelector(".intro-more");
     const toggle = el.querySelector(".intro-toggle");
     toggle.onclick = () => {
       more.hidden = !more.hidden;
+      more.hidden ? (el.dataset.collapsed = "") : delete el.dataset.collapsed;
       toggle.textContent = more.hidden ? "Read more" : "Show less";
     };
     el.querySelector(".intro-note").onclick = () => openLightbox(withV(MOCK.introPage), "Sheila's handwritten introduction");
@@ -323,6 +326,7 @@ function fillMockup() {
   style.textContent = `
     [hidden] { display: none !important; }
     .intro-p { display: block; }
+    [data-collapsed] .intro-first::after, .intro-last::after { content: "”"; }
     .intro-p + .intro-p, .intro-more .intro-p { margin-top: .6em; }
     .intro-actions { display: block; margin-top: .7em; font-size: .72em; opacity: .9; }
     .intro-actions button { font: inherit; font-weight: 600; color: inherit; background: none; border: 0; padding: 0; cursor: pointer;
