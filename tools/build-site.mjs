@@ -12,8 +12,9 @@ const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const data = JSON.parse(fs.readFileSync(path.join(ROOT, "data", "recipes.json"), "utf8"));
 const photos = JSON.parse(fs.readFileSync(path.join(ROOT, "data", "photos.json"), "utf8"));
 
-// Printed personal emails (addresses, family news): never published.
-const PRIVATE_PAGES = ["p170357", "p170405"];
+// Never published: printed personal emails (addresses, family news), and a printed cookbook page
+// (Roz's Minute Cake - only her transcribed version goes on the site).
+const PRIVATE_PAGES = ["p170357", "p170405", "p-roz-minute-cake"];
 // Other names a recipe goes by in other recipes' text, so those mentions link too.
 const ALIASES = { "alettas-pesto-sauce": ["Pesto Sauce"], "neopolitan-sauce": ["Neopolitan Sauce", "Neapolitan"] };
 

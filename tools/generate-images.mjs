@@ -32,6 +32,17 @@ const DISHES = {
   "fish-cakes": "homemade South African fish cakes: six flattened, round pan-fried hake fish cakes with a golden-brown " +
     "breadcrumb crust, slightly irregular hand-shaped edges, tiny flecks of carrot and onion visible where one is broken open; " +
     "served with a few thick-cut chips, a simple green salad and a small bowl of chrain (a finely grated, moist, deep magenta beetroot-and-horseradish relish with a fine texture, not chunky)",
+  "roz-s-minute-cake": "a simple homemade vanilla butter cake baked in a ring tin (a round tube pan with a hole in the " +
+    "middle), turned out whole onto a white plate: a plain golden-brown crust, slightly domed and a little cracked on top, " +
+    "no icing; one slice cut and lying beside it so the soft, pale yellow, fine crumb shows",
+  "roz-s-butternut-roast-vegetables": "a white ceramic oven dish full of well-roasted, colourful home-roasted " +
+    "vegetables and nothing else beside the dish: chunks of deep orange butternut and pumpkin, bright orange sweet potato, " +
+    "carrots and golden halved baby potatoes, all properly roasted with deeply browned, caramelised, slightly charred edges, " +
+    "glossy with olive oil and flecked with herbs and vegetable spice, with a few roasted mielie (corn on the cob) chunks " +
+    "with charred kernels tucked in among them; rich, vivid, varied colours",
+  "lorraine-s-cheese-cake": "a homemade South African baked cheesecake on a white platter, out of its springform tin: a " +
+    "thin crushed Marie biscuit crust around the base and side, a smooth, creamy, pale filling with a lightly golden top and " +
+    "a slight crack, no topping; one slice cut and lifted onto a small plate beside it so the dense, creamy texture shows",
   "lemon-meringue": "a homemade South African lemon meringue tart in a round glass pie dish: a crushed Marie biscuit crust, " +
     "a pale yellow condensed-milk lemon filling, topped with soft swirled meringue with lightly browned peaks; one slice cut " +
     "out and lifted onto a small plate beside it so the three layers show",
