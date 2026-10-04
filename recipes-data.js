@@ -465,7 +465,7 @@ const MOCK = {
     },
     "sheila": {
       "name": "Sheila",
-      "relation": "Sheila Seberini, the publisher of this Recipe App",
+      "relation": "Sheila Seberini",
       "bio": null,
       "photo": "images/people/sheila.jpg"
     },
