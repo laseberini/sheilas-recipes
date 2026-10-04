@@ -135,7 +135,7 @@ function openLightbox(src, alt) {
 
 document.addEventListener("click", (e) => {
   const page = e.target.closest("[data-fill=pages] img, [data-fill=dish] img");
-  if (page) openLightbox(page.src, page.alt);
+  if (page) openLightbox(page.dataset.full || page.src, page.alt);
 });
 
 function methodItems(lines, R) {
@@ -218,7 +218,7 @@ function renderRecipe(R, key) {
   // Her handwritten page(s), small at the end of the recipe; tap to see full screen.
   set("pages", (el) => {
     el.hidden = !R.pages.length;
-    el.innerHTML = R.pages.map((p, i) => `<img src="${withV(p)}" alt="The handwritten recipe page${R.pages.length > 1 ? ` (${i + 1} of ${R.pages.length})` : ""}">`).join("") +
+    el.innerHTML = R.pages.map((p, i) => `<img src="${withV(R.pageThumbs?.[i] || p)}" data-full="${withV(p)}" alt="The handwritten recipe page${R.pages.length > 1 ? ` (${i + 1} of ${R.pages.length})` : ""}">`).join("") +
       `<figcaption>${R.pages.length > 1 ? "The handwritten pages" : "The handwritten page"} · tap to see</figcaption>`;
   });
   cookKey = key;
@@ -435,7 +435,7 @@ function fillMockup() {
 const recipeLinks = (entries, currentKey, showWho = true) => entries.map(([rid, r]) => {
   const here = rid === currentKey;
   const who = showWho && r.person && MOCK.people?.[r.person];
-  return `<a href="#recipe-${rid}"${here ? ' aria-current="page"' : ""}>${r.photo ? `<img src="${withV(r.photo)}" alt="" loading="lazy">` : ""}` +
+  return `<a href="#recipe-${rid}"${here ? ' aria-current="page"' : ""}>${r.photo ? `<img src="${withV(r.thumb || r.photo)}" alt="" loading="lazy">` : ""}` +
     `<span>${esc(r.title)}${who ? `<small>From ${esc(who.name)}</small>` : ""}</span><b aria-hidden="true">${here ? "You're here" : "→"}</b></a>`;
 }).join("");
 const byTitle = ([, a], [, b]) => a.title.localeCompare(b.title);
@@ -574,7 +574,7 @@ const memCard = (m, about = "") => `<div class="mem-card"><blockquote>${esc(m.te
 const memHomeCard = (m) => {
   const R = RECIPES[m.recipe];
   return `<div class="mem-card mem-home-card">
-  <a class="mem-dish" href="#recipe-${m.recipe}">${R.photo ? `<img src="${withV(R.photo)}" alt="">` : ""}<span>${esc(R.title)}</span><b aria-hidden="true">→</b></a>
+  <a class="mem-dish" href="#recipe-${m.recipe}">${R.photo ? `<img src="${withV(R.thumb || R.photo)}" alt="">` : ""}<span>${esc(R.title)}</span><b aria-hidden="true">→</b></a>
   <blockquote>${esc(m.text)}</blockquote>
   <div class="mem-who">${esc(m.name)}<small>${esc(memWhen(m.at))}</small></div></div>`;
 };

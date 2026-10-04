@@ -11,7 +11,11 @@ const RECIPES = {
     "pages": [
       "images/pages/p170308.jpg"
     ],
+    "pageThumbs": [
+      "images/thumbs/pages/p170308.jpg"
+    ],
     "photo": "images/dishes/fish-cakes.jpg",
+    "thumb": "images/thumbs/dishes/fish-cakes.jpg",
     "photoReal": false,
     "uses": [],
     "ingredients": [
@@ -42,7 +46,11 @@ const RECIPES = {
     "pages": [
       "images/pages/p170345.jpg"
     ],
+    "pageThumbs": [
+      "images/thumbs/pages/p170345.jpg"
+    ],
     "photo": "images/dishes/caponata.jpg",
+    "thumb": "images/thumbs/dishes/caponata.jpg",
     "photoReal": false,
     "uses": [],
     "ingredients": [
@@ -77,7 +85,11 @@ const RECIPES = {
     "pages": [
       "images/pages/p170443.jpg"
     ],
+    "pageThumbs": [
+      "images/thumbs/pages/p170443.jpg"
+    ],
     "photo": "images/dishes/nonna-s-butter-bean-potato-salad.jpg",
+    "thumb": "images/thumbs/dishes/nonna-s-butter-bean-potato-salad.jpg",
     "photoReal": false,
     "uses": [],
     "ingredients": [
@@ -108,7 +120,11 @@ const RECIPES = {
     "pages": [
       "images/pages/p170451.jpg"
     ],
+    "pageThumbs": [
+      "images/thumbs/pages/p170451.jpg"
+    ],
     "photo": "images/dishes/nonna-s-artichoke-chicken.jpg",
+    "thumb": "images/thumbs/dishes/nonna-s-artichoke-chicken.jpg",
     "photoReal": true,
     "uses": [],
     "ingredients": [
@@ -143,7 +159,11 @@ const RECIPES = {
     "pages": [
       "images/pages/p170458.jpg"
     ],
+    "pageThumbs": [
+      "images/thumbs/pages/p170458.jpg"
+    ],
     "photo": "images/dishes/cape-bobotie.jpg",
+    "thumb": "images/thumbs/dishes/cape-bobotie.jpg",
     "photoReal": false,
     "uses": [],
     "ingredients": [
@@ -186,7 +206,11 @@ const RECIPES = {
     "pages": [
       "images/pages/p170505.jpg"
     ],
+    "pageThumbs": [
+      "images/thumbs/pages/p170505.jpg"
+    ],
     "photo": "images/dishes/brisket-in-coke.jpg",
+    "thumb": "images/thumbs/dishes/brisket-in-coke.jpg",
     "photoReal": false,
     "uses": [],
     "ingredients": [
@@ -214,7 +238,11 @@ const RECIPES = {
     "pages": [
       "images/pages/p170513.jpg"
     ],
+    "pageThumbs": [
+      "images/thumbs/pages/p170513.jpg"
+    ],
     "photo": "images/dishes/pulpetti.jpg",
+    "thumb": "images/thumbs/dishes/pulpetti.jpg",
     "photoReal": false,
     "uses": [],
     "ingredients": [
@@ -247,7 +275,11 @@ const RECIPES = {
     "pages": [
       "images/pages/p170520.jpg"
     ],
+    "pageThumbs": [
+      "images/thumbs/pages/p170520.jpg"
+    ],
     "photo": "images/dishes/minestroni-soup.jpg",
+    "thumb": "images/thumbs/dishes/minestroni-soup.jpg",
     "photoReal": false,
     "uses": [],
     "ingredients": [
@@ -292,7 +324,11 @@ const RECIPES = {
     "pages": [
       "images/pages/p170556.jpg"
     ],
+    "pageThumbs": [
+      "images/thumbs/pages/p170556.jpg"
+    ],
     "photo": "images/dishes/easy-no-meat-lasagne-quite-a-big-dish.jpg",
+    "thumb": "images/thumbs/dishes/easy-no-meat-lasagne-quite-a-big-dish.jpg",
     "photoReal": false,
     "uses": [],
     "ingredients": [
@@ -337,7 +373,11 @@ const RECIPES = {
     "pages": [
       "images/pages/p170604.jpg"
     ],
+    "pageThumbs": [
+      "images/thumbs/pages/p170604.jpg"
+    ],
     "photo": "images/dishes/gnocchi.jpg",
+    "thumb": "images/thumbs/dishes/gnocchi.jpg",
     "photoReal": false,
     "uses": [],
     "ingredients": [
@@ -371,7 +411,11 @@ const RECIPES = {
     "pages": [
       "images/pages/p-chicken-ala-familia.jpg"
     ],
+    "pageThumbs": [
+      "images/thumbs/pages/p-chicken-ala-familia.jpg"
+    ],
     "photo": "images/dishes/chicken-ala-familia.jpg",
+    "thumb": "images/thumbs/dishes/chicken-ala-familia.jpg",
     "photoReal": false,
     "uses": [],
     "ingredients": [
