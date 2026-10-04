@@ -2,7 +2,7 @@
 // 18 checked recipes.
 const RECIPES = {
   "fish-cakes": {
-    "title": "Fish Cakes",
+    "title": "Simy's Fish Cakes",
     "from": "Simy",
     "date": "4/09",
     "serves": null,
@@ -76,7 +76,7 @@ const RECIPES = {
     ]
   },
   "nonna-s-butter-bean-potato-salad": {
-    "title": "Butter Bean & Potato Salad",
+    "title": "Nonna's Butter Bean & Potato Salad",
     "from": "Nonna",
     "date": null,
     "serves": null,
@@ -111,7 +111,7 @@ const RECIPES = {
     ]
   },
   "nonna-s-artichoke-chicken": {
-    "title": "Artichoke & Chicken",
+    "title": "Nonna's Artichoke & Chicken",
     "from": "Nonna",
     "date": null,
     "serves": null,
@@ -150,7 +150,7 @@ const RECIPES = {
     ]
   },
   "cape-bobotie": {
-    "title": "Cape Bobotie",
+    "title": "Sheila's Cape Bobotie",
     "from": "Sheila",
     "date": null,
     "serves": "6-8",
@@ -197,7 +197,7 @@ const RECIPES = {
     "notes": []
   },
   "brisket-in-coke": {
-    "title": "Brisket in Coke",
+    "title": "Granny Naomi's Brisket in Coke",
     "from": "Granny Naomi",
     "date": null,
     "serves": null,
@@ -229,7 +229,7 @@ const RECIPES = {
     "notes": []
   },
   "pulpetti": {
-    "title": "Polpette",
+    "title": "Nonna's Polpette",
     "from": "Nonna",
     "date": null,
     "serves": null,
@@ -266,7 +266,7 @@ const RECIPES = {
     "notes": []
   },
   "minestroni-soup": {
-    "title": "Minestrone Soup",
+    "title": "Sheila's Minestrone Soup",
     "from": "Sheila",
     "date": null,
     "serves": "6-8",
@@ -315,7 +315,7 @@ const RECIPES = {
     ]
   },
   "easy-no-meat-lasagne-quite-a-big-dish": {
-    "title": "Easy 'No Meat' Lasagne",
+    "title": "Sheila's Easy 'No Meat' Lasagne",
     "from": "Sheila",
     "date": null,
     "serves": null,
@@ -364,7 +364,7 @@ const RECIPES = {
     ]
   },
   "gnocchi": {
-    "title": "Gnocchi",
+    "title": "Sheila's Gnocchi",
     "from": "Sheila",
     "date": null,
     "serves": null,
@@ -402,7 +402,7 @@ const RECIPES = {
     ]
   },
   "chicken-ala-familia": {
-    "title": "Chicken à la Familia",
+    "title": "The Goldberg girls' Chicken à la Familia",
     "from": "The Goldberg girls",
     "date": null,
     "serves": null,
@@ -565,7 +565,7 @@ const RECIPES = {
     ]
   },
   "luana-s-peperoni-verdi-ripieni": {
-    "title": "Peperoni Verdi Ripieni",
+    "title": "Nonna's Peperoni Verdi Ripieni",
     "from": "Nonna",
     "date": null,
     "serves": null,
@@ -603,7 +603,7 @@ const RECIPES = {
     ]
   },
   "luana-s-coniglio-al-forno": {
-    "title": "Coniglio al Forno",
+    "title": "Nonna's Coniglio al Forno",
     "from": "Nonna",
     "date": null,
     "serves": null,
@@ -636,12 +636,12 @@ const RECIPES = {
     ],
     "notes": [
       "Italian roast rabbit.",
-      "Serve with Fagiolini e Patate al Pomodoro (green beans & potatoes in tomato), or simple roast potatoes & a green salad. Crusty bread to mop up.",
+      "Serve with Nonna's Fagiolini e Patate al Pomodoro (green beans & potatoes in tomato), or simple roast potatoes & a green salad. Crusty bread to mop up.",
       "Old Italian trick: add a few pitted black olives & a spoon of capers to the pan for extra flavour."
     ]
   },
   "luana-s-fagiolini-e-patate-al-pomodoro": {
-    "title": "Fagiolini e Patate al Pomodoro",
+    "title": "Nonna's Fagiolini e Patate al Pomodoro",
     "from": "Nonna",
     "date": null,
     "serves": null,
@@ -678,7 +678,7 @@ const RECIPES = {
     ]
   },
   "nonna-s-italian-green-beans-potatoes": {
-    "title": "Italian Green Beans & Potatoes",
+    "title": "Nonna's Italian Green Beans & Potatoes",
     "from": "Nonna",
     "date": null,
     "serves": null,
@@ -773,14 +773,14 @@ const MOCK = {
     {
       "name": "Meat, Chicken & Fish",
       "ids": [
-        "nonna-s-artichoke-chicken",
         "brisket-in-coke",
-        "cape-bobotie",
-        "chicken-ala-familia",
+        "nonna-s-artichoke-chicken",
         "luana-s-coniglio-al-forno",
-        "fish-cakes",
         "luana-s-peperoni-verdi-ripieni",
-        "pulpetti"
+        "pulpetti",
+        "cape-bobotie",
+        "fish-cakes",
+        "chicken-ala-familia"
       ]
     },
     {
