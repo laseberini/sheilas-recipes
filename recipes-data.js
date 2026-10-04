@@ -34,7 +34,8 @@ const RECIPES = {
     ],
     "notes": [
       "Serve with chips/salad, whatever & chrain."
-    ]
+    ],
+    "sortName": "Fish Cakes"
   },
   "caponata": {
     "title": "Aletta's Wonderful Sicilian Caponata",
@@ -73,7 +74,8 @@ const RECIPES = {
     ],
     "notes": [
       "This is a wonderful Sicilian cold dish which you can keep in a bottle in the fridge. You can serve with antipasto, or eat with some wonderful bread, cheese & wine or on its own!!"
-    ]
+    ],
+    "sortName": "Wonderful Sicilian Caponata"
   },
   "nonna-s-butter-bean-potato-salad": {
     "title": "Nonna's Butter Bean & Potato Salad",
@@ -108,7 +110,8 @@ const RECIPES = {
     ],
     "notes": [
       "Delicious."
-    ]
+    ],
+    "sortName": "Butter Bean & Potato Salad"
   },
   "nonna-s-artichoke-chicken": {
     "title": "Nonna's Artichoke & Chicken",
@@ -147,7 +150,8 @@ const RECIPES = {
     ],
     "notes": [
       "It looks wonderful in the dish - different colours & textures - with bits of crumbs from the mixture. Serve hot with a delicious salad and some warm bread/rolls."
-    ]
+    ],
+    "sortName": "Artichoke & Chicken"
   },
   "cape-bobotie": {
     "title": "Sheila's Cape Bobotie",
@@ -194,7 +198,8 @@ const RECIPES = {
       "Whisk milk & egg together & pour gently over mince mixture.",
       "Bake at 180 for approx 45 minutes or until topping set & golden."
     ],
-    "notes": []
+    "notes": [],
+    "sortName": "Cape Bobotie"
   },
   "brisket-in-coke": {
     "title": "Granny Naomi's Brisket in Coke",
@@ -226,7 +231,8 @@ const RECIPES = {
       "Pour over the above mixture and bake 170c for 3 hours covered, and then 1 hour uncovered.",
       "Baste frequently."
     ],
-    "notes": []
+    "notes": [],
+    "sortName": "Brisket in Coke"
   },
   "pulpetti": {
     "title": "Nonna's Polpette",
@@ -263,7 +269,8 @@ const RECIPES = {
       "Roll in flour.",
       "Fry slowly in oil & butter."
     ],
-    "notes": []
+    "notes": [],
+    "sortName": "Polpette"
   },
   "minestroni-soup": {
     "title": "Sheila's Minestrone Soup",
@@ -312,7 +319,8 @@ const RECIPES = {
     ],
     "notes": [
       "Serve with grated pecorino cheese."
-    ]
+    ],
+    "sortName": "Minestrone Soup"
   },
   "easy-no-meat-lasagne-quite-a-big-dish": {
     "title": "Sheila's Easy 'No Meat' Lasagne",
@@ -361,7 +369,8 @@ const RECIPES = {
     "notes": [
       "To make a smaller lasagne, use 250gms lasagne & 1/2 the quantities for the white sauce.",
       "Enjoy, it's lovely!"
-    ]
+    ],
+    "sortName": "Easy 'No Meat' Lasagne"
   },
   "gnocchi": {
     "title": "Sheila's Gnocchi",
@@ -399,7 +408,8 @@ const RECIPES = {
     "notes": [
       "Gnocchi (or you can buy frozen, just as good!)",
       "Absolutely delicious"
-    ]
+    ],
+    "sortName": "Gnocchi"
   },
   "chicken-ala-familia": {
     "title": "The Goldberg girls' Chicken à la Familia",
@@ -445,7 +455,8 @@ const RECIPES = {
     ],
     "notes": [
       "Serve with rice & salad."
-    ]
+    ],
+    "sortName": "Chicken à la Familia"
   },
   "roz-s-minute-cake": {
     "title": "Roz's Minute Cake",
@@ -479,7 +490,8 @@ const RECIPES = {
     "notes": [
       "Apple Minute Cake: cut 1 large apple into 16 segments & push into the batter all round the edge of the cake. Cover the cake with cinnamon & sugar.",
       "Marble Minute Cake: remove ⅓ of the batter & blend with 1 tablespoon cocoa mixed with a little extra milk & sugar. Pour the white batter into the tin, then drop spoonfuls of cocoa batter over it & streak it slightly."
-    ]
+    ],
+    "sortName": "Minute Cake"
   },
   "roz-s-butternut-roast-vegetables": {
     "title": "Roz's Butternut & Roast Vegetables",
@@ -519,7 +531,8 @@ const RECIPES = {
     "notes": [
       "We buy and use a multitude of herbs and spices and add them to create taste changes.",
       "Only use extra virgin olive oil for salad, never for cooking. For cooking: ordinary olive oil, canola & coconut oil."
-    ]
+    ],
+    "sortName": "Butternut & Roast Vegetables"
   },
   "lorraine-s-cheese-cake": {
     "title": "Lorraine's Cheese Cake",
@@ -562,7 +575,8 @@ const RECIPES = {
     ],
     "notes": [
       "This freezes very well. Wrap well in Glad Wrap."
-    ]
+    ],
+    "sortName": "Cheese Cake"
   },
   "luana-s-peperoni-verdi-ripieni": {
     "title": "Nonna's Peperoni Verdi Ripieni",
@@ -600,7 +614,8 @@ const RECIPES = {
       "Want it saucier? Pour all the sauce over & around.",
       "No rice? Use soaked bread - very Italian nonna style.",
       "Add a cube of mozzarella inside each for a cheesy centre."
-    ]
+    ],
+    "sortName": "Peperoni Verdi Ripieni"
   },
   "luana-s-coniglio-al-forno": {
     "title": "Nonna's Coniglio al Forno",
@@ -638,7 +653,8 @@ const RECIPES = {
       "Italian roast rabbit.",
       "Serve with Nonna's Fagiolini e Patate al Pomodoro (green beans & potatoes in tomato), or simple roast potatoes & a green salad. Crusty bread to mop up.",
       "Old Italian trick: add a few pitted black olives & a spoon of capers to the pan for extra flavour."
-    ]
+    ],
+    "sortName": "Coniglio al Forno"
   },
   "luana-s-fagiolini-e-patate-al-pomodoro": {
     "title": "Nonna's Fagiolini e Patate al Pomodoro",
@@ -675,7 +691,8 @@ const RECIPES = {
       "Green beans & potatoes in tomato. It's cheap, easy & goes great with polpette.",
       "Serve as is with bread, or as a side to meat. Even better the next day.",
       "One of Nonna's favourite dishes..."
-    ]
+    ],
+    "sortName": "Fagiolini e Patate al Pomodoro"
   },
   "nonna-s-italian-green-beans-potatoes": {
     "title": "Nonna's Italian Green Beans & Potatoes",
@@ -706,7 +723,8 @@ const RECIPES = {
     ],
     "notes": [
       "Fagiolini e Patate all'Aglio e Olio - green beans & potatoes with garlic & olive oil."
-    ]
+    ],
+    "sortName": "Italian Green Beans & Potatoes"
   }
 };
 
@@ -765,22 +783,22 @@ const MOCK = {
     {
       "name": "Soups & Starters",
       "ids": [
-        "caponata",
         "nonna-s-butter-bean-potato-salad",
-        "minestroni-soup"
+        "minestroni-soup",
+        "caponata"
       ]
     },
     {
       "name": "Meat, Chicken & Fish",
       "ids": [
-        "brisket-in-coke",
         "nonna-s-artichoke-chicken",
-        "luana-s-coniglio-al-forno",
-        "luana-s-peperoni-verdi-ripieni",
-        "pulpetti",
+        "brisket-in-coke",
         "cape-bobotie",
+        "chicken-ala-familia",
+        "luana-s-coniglio-al-forno",
         "fish-cakes",
-        "chicken-ala-familia"
+        "luana-s-peperoni-verdi-ripieni",
+        "pulpetti"
       ]
     },
     {
@@ -793,9 +811,9 @@ const MOCK = {
     {
       "name": "Vegetables & Sides",
       "ids": [
+        "roz-s-butternut-roast-vegetables",
         "luana-s-fagiolini-e-patate-al-pomodoro",
-        "nonna-s-italian-green-beans-potatoes",
-        "roz-s-butternut-roast-vegetables"
+        "nonna-s-italian-green-beans-potatoes"
       ]
     },
     {

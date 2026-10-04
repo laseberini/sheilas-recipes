@@ -77,7 +77,15 @@ for (const p of data.people || []) {
 }
 for (const r of Object.values(recipes)) if (r.person && !people[r.person]) r.person = null;
 
-const byTitle = (a, b) => recipes[a].title.localeCompare(recipes[b].title);
+// Lists sort by the dish, not the person: "Nonna's Polpette" goes under P.
+const possessiveOf = (n) => (/s$/i.test(n) ? `${n}'` : `${n}'s`);
+for (const r of Object.values(recipes)) {
+  const p = r.person && people[r.person];
+  const names = p ? [p.name, p.name.replace(/^the\s+/i, "").split(/\s+/)[0]] : [];
+  const prefix = names.map((n) => `${possessiveOf(n)} `).find((pre) => r.title.startsWith(pre));
+  if (prefix) r.sortName = r.title.slice(prefix.length);
+}
+const byTitle = (a, b) => (recipes[a].sortName || recipes[a].title).localeCompare(recipes[b].sortName || recipes[b].title);
 const MOCK = {
   people,
   categories: data.categories

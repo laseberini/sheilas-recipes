@@ -420,9 +420,10 @@ function fillMockup() {
 }
 
 // A list of recipes as links, each with its dish photo; the one being read is marked "You're here".
-const recipeLinks = (entries, currentKey, showWho = true) => entries.map(([rid, r]) => {
+// (Whose recipe isn't repeated under each dish: their name starts the title.)
+const recipeLinks = (entries, currentKey) => entries.map(([rid, r]) => {
   const here = rid === currentKey;
-  const who = showWho && r.person && MOCK.people?.[r.person];
+  const who = null;
   return `<a href="#recipe-${rid}"${here ? ' aria-current="page"' : ""}>${r.photo ? `<img src="${withV(r.thumb || r.photo)}" alt="" loading="lazy">` : ""}` +
     `<span>${esc(r.title)}${who || memCount(rid) ? `<small>${who ? `<span class="who">From ${esc(who.name)}</span>` : ""}${memBadge(rid)}</small>` : ""}</span><b aria-hidden="true">${here ? "You're here" : "→"}</b></a>`;
 }).join("");
@@ -446,7 +447,8 @@ function setMemBadges() {
     small.insertAdjacentHTML("beforeend", badge);
   });
 }
-const byTitle = ([, a], [, b]) => a.title.localeCompare(b.title);
+// By dish name: "Nonna's Polpette" sorts under P (sortName comes from build-site).
+const byTitle = ([, a], [, b]) => (a.sortName || a.title).localeCompare(b.sortName || b.title);
 
 // "From Nonna" tab: photo, who they are to Sheila, a few lines, and their other recipes.
 const personInitials = (name) => name.split(/\s+/).filter((w) => !/^the$/i.test(w)).map((w) => w[0]).join("").slice(0, 2).toUpperCase();
@@ -458,7 +460,7 @@ function personHTML(id, currentKey) {
       <div>${p.relation ? `<div class="kicker">${esc(p.relation)}</div>` : ""}<h2>${esc(p.name)}</h2></div>
     </div>
     <div class="person-bio">${(p.bio || "").split(/\n+/).filter(Boolean).map((t) => `<p>${esc(t)}</p>`).join("")}</div>
-    ${others.length ? `<h3 class="person-rh">More from ${esc(p.name)}</h3><div class="person-recipes">${recipeLinks(others, null, false)}</div>` : ""}`;
+    ${others.length ? `<h3 class="person-rh">More from ${esc(p.name)}</h3><div class="person-recipes">${recipeLinks(others, null)}</div>` : ""}`;
 }
 
 // Category sheet: the recipes in this category, so you can hop to another without going back to the list.
@@ -775,7 +777,7 @@ function setupMemories() {
       store.set("memPending", [...store.get("memPending", []), { recipe: id, name: name.trim(), at: Date.now() }]);
       const sheet = form.closest("[data-mem-sheet]");
       const first = name.trim().split(/\s+/)[0];
-      sheet.querySelector("[data-fill=memf-name]").textContent = first ? `, ${first}` : "";
+      sheet.querySelector("[data-fill=memf-name]").textContent = `${first ? `, ${first}` : ""}.`;
       sheet.querySelector("[data-memf-ask]").hidden = true;
       sheet.querySelector("[data-memf-done]").hidden = false;
       sheet.querySelector(".story-panel").scrollTo(0, 0);

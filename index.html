@@ -1,10 +1,10 @@
 <!doctype html>
-<html lang="en" data-version="0.59" data-built="2026-10-04 19:47">
+<html lang="en" data-version="0.60" data-built="2026-10-04 19:57">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Sheila's Recipes</title>
-<link rel="manifest" href="manifest.webmanifest?v=0.59">
+<link rel="manifest" href="manifest.webmanifest?v=0.60">
 <link rel="icon" type="image/png" sizes="32x32" href="images/icons/sheila-32.png">
 <link rel="apple-touch-icon" href="images/icons/sheila-180.png">
 <meta name="apple-mobile-web-app-title" content="Sheila's Recipes">
@@ -17,8 +17,8 @@
 <meta property="og:type" content="website">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,400;1,9..144,600&family=Work+Sans:wght@400;500;600&display=swap" rel="stylesheet">
-<script src="recipes-data.js?v=0.59"></script>
-<script src="shared.js?v=0.59"></script>
+<script src="recipes-data.js?v=0.60"></script>
+<script src="shared.js?v=0.60"></script>
 <style>
   :root {
     --link-accent: #1d3f7a;
@@ -440,9 +440,8 @@
     <!-- Shown once a memory is sent, so nobody thinks it didn't work. -->
     <div class="memf-done" data-memf-done hidden>
       <div class="memf-heart" aria-hidden="true">💛</div>
-      <h2>Thank you<span data-fill="memf-name"></span>!</h2>
-      <p>Your memory has been sent.</p>
-      <p>Sheila and the family read every memory before it goes on the site, so it won't show straight away. It'll appear here <b>within a day or so</b>.</p>
+      <h2>Thank you for adding your memory<span data-fill="memf-name"></span></h2>
+      <p>It will appear on the site in a few hours' time.</p>
       <button type="button" class="story-done" data-memf-close>Close</button>
     </div>
   </article>
@@ -480,7 +479,7 @@
   </div>
   <section class="mem wrap" id="memories" data-mem-section hidden>
     <div class="mem-head"><h2>Memories</h2></div>
-    <p class="mem-pending" data-mem-pending hidden>Thank you for your memory! Sheila and the family are reading it - it'll appear here within a day or so.</p>
+    <p class="mem-pending" data-mem-pending hidden>Thank you for adding your memory. It will appear on the site in a few hours' time.</p>
     <div class="mem-carousel">
       <div class="mem-list" data-fill="memories" tabindex="0" aria-label="Memories of this dish - use the arrow keys to move"></div>
       <button type="button" class="mem-arrow prev" data-mem-prev aria-label="Previous memory">‹</button>
