@@ -211,6 +211,13 @@ function renderRecipe(R, key) {
     el.innerHTML = person ? `<span class="by-face">${person.photo ? `<img src="${withV(person.photo)}" alt="">` : PERSON_ICON}</span><span class="by-text"><b>From ${esc(person.name)} ›</b></span>` : "";
     el.onclick = () => openPerson(R.person, key);
   });
+  set("wa-share", (el) => {
+    const url = `${location.origin}${location.pathname}#recipe-${key}`;
+    const poss = (n) => (/s$/i.test(n) ? `${n}'` : `${n}'s`);
+    const who = !person ? "" : R.person === "sheila" ? "Sheila's own recipe, from " : `${poss(person.name)} recipe, from `;
+    const text = `Thought you'd love this 💛\n\n*${R.title}*\n${who ? who : "From "}Sheila's Recipes, our family recipe book.\n\n${url}`;
+    el.href = `https://wa.me/?text=${encodeURIComponent(text)}`;
+  });
   set("ingredients", (el) => (el.innerHTML = R.ingredients
     .map((i) => (i.trim().endsWith(":") ? `<li class="sub">${esc(i)}</li>` : `<li>${linkify(i, R)}</li>`)).join("")));
   set("related", (el) => {
@@ -403,8 +410,28 @@ const recipeLinks = (entries, currentKey, showWho = true) => entries.map(([rid, 
   const here = rid === currentKey;
   const who = showWho && r.person && MOCK.people?.[r.person];
   return `<a href="#recipe-${rid}"${here ? ' aria-current="page"' : ""}>${r.photo ? `<img src="${withV(r.thumb || r.photo)}" alt="" loading="lazy">` : ""}` +
-    `<span>${esc(r.title)}${who ? `<small>From ${esc(who.name)}</small>` : ""}</span><b aria-hidden="true">${here ? "You're here" : "→"}</b></a>`;
+    `<span>${esc(r.title)}${who || memCount(rid) ? `<small>${who ? `<span class="who">From ${esc(who.name)}</span>` : ""}${memBadge(rid)}</small>` : ""}</span><b aria-hidden="true">${here ? "You're here" : "→"}</b></a>`;
 }).join("");
+// A small lemon "speech bubble + count" on recipes that have memories.
+const memCount = (rid) => (typeof memories === "undefined" ? 0 : memories.filter((m) => m.recipe === rid).length);
+const memBadge = (rid) => {
+  const n = memCount(rid);
+  return n ? `<em class="mem-n" title="${n} ${n === 1 ? "memory" : "memories"}"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 3h14a3 3 0 0 1 3 3v9a3 3 0 0 1-3 3h-8l-5 4v-4H5a3 3 0 0 1-3-3V6a3 3 0 0 1 3-3z"/></svg>${n}<span class="vh"> ${n === 1 ? "memory" : "memories"}</span></em>` : "";
+};
+// ...and rows already on screen get it once the memories arrive.
+function setMemBadges() {
+  document.querySelectorAll(".person-recipes a[href^='#recipe-']").forEach((a) => {
+    const rid = a.getAttribute("href").slice("#recipe-".length);
+    const span = a.querySelector(":scope > span");
+    if (!span) return;
+    span.querySelector(".mem-n")?.remove();
+    const badge = memBadge(rid);
+    if (!badge) return;
+    let small = span.querySelector("small");
+    if (!small) { small = document.createElement("small"); span.appendChild(small); }
+    small.insertAdjacentHTML("beforeend", badge);
+  });
+}
 const byTitle = ([, a], [, b]) => a.title.localeCompare(b.title);
 
 // "From Nonna" tab: photo, who they are to Sheila, a few lines, and their other recipes.
@@ -558,6 +585,7 @@ const memHomeCard = (m) => {
 const memRecipeId = () => (location.hash.match(/^#recipe-([\w-]+)$/) || [])[1];
 
 function drawMemories() {
+  setMemBadges();
   const id = memRecipeId();
   const mine = memories.filter((m) => m.recipe === id);
   document.querySelectorAll("[data-fill=memories]").forEach((el) => {

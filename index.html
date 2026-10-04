@@ -1,20 +1,24 @@
 <!doctype html>
-<html lang="en" data-version="0.49" data-built="2026-10-04 18:06">
+<html lang="en" data-version="0.50" data-built="2026-10-04 18:11">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Sheila's Recipes</title>
-<link rel="manifest" href="manifest.webmanifest?v=0.49">
+<link rel="manifest" href="manifest.webmanifest?v=0.50">
 <link rel="icon" type="image/png" sizes="32x32" href="images/icons/sheila-32.png">
 <link rel="apple-touch-icon" href="images/icons/sheila-180.png">
 <meta name="apple-mobile-web-app-title" content="Sheila's Recipes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="theme-color" content="#1d3f7a">
+<meta property="og:title" content="Sheila's Recipes">
+<meta property="og:description" content="The recipes that fed our family, in her own hand.">
+<meta property="og:image" content="https://laseberini.github.io/sheilas-recipes/images/thumbs/sheila.jpg">
+<meta property="og:type" content="website">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,400;1,9..144,600&family=Work+Sans:wght@400;500;600&display=swap" rel="stylesheet">
-<script src="recipes-data.js?v=0.49"></script>
-<script src="shared.js?v=0.49"></script>
+<script src="recipes-data.js?v=0.50"></script>
+<script src="shared.js?v=0.50"></script>
 <style>
   :root {
     --link-accent: #1d3f7a;
@@ -298,6 +302,19 @@
     background: linear-gradient(to top, rgba(12,20,38,.9) 0%, rgba(12,20,38,.55) 32%, rgba(12,20,38,.05) 62%, rgba(12,20,38,.35) 100%); }
   .r-hero.has-hero h1 { position: relative; z-index: 2; }
   .r-hero.has-hero h1 { color: #fff; margin: 0 0 14px; text-shadow: 0 2px 20px rgba(0,0,0,.35); }
+  /* Share this recipe on WhatsApp: a green button at the bottom right of the photo. */
+  .wa-share { display: inline-grid; place-items: center; width: 48px; height: 48px; border-radius: 50%; background: #25d366; color: #fff;
+    box-shadow: 0 4px 14px rgba(0,0,0,.25); margin-top: 14px; }
+  .wa-share svg { width: 28px; height: 28px; fill: currentColor; }
+  .wa-share:focus-visible { outline: 2px solid var(--lemon); outline-offset: 3px; }
+  .r-hero.has-hero .wa-share { position: absolute; right: 16px; bottom: 26px; z-index: 3; margin: 0; }
+  @media (min-width: 801px) { .r-hero.has-hero .wa-share { right: 24px; bottom: 44px; } }
+  /* Memories badge on list rows. */
+  .mem-n { display: inline-flex; align-items: center; gap: 4px; padding: 1px 8px 1px 6px; border-radius: 99px; background: var(--lemon);
+    color: var(--cobalt); font: 600 12px/1.5 "Work Sans"; font-style: normal; vertical-align: 1px; }
+  .who + .mem-n { margin-left: 8px; }
+  .mem-n svg { width: 12px; height: 12px; fill: currentColor; }
+  .vh { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
   .r-hero.has-hero .back { position: absolute; top: 16px; left: 16px; z-index: 3; background: rgba(255,255,255,.92); color: var(--cobalt);
     padding: 8px 14px; border-radius: 99px; font-size: 14px; box-shadow: 0 4px 14px rgba(0,0,0,.18); }
   /* Under the photo: Serves · Written as plain text, then the category and memories as big, easy buttons. */
@@ -419,6 +436,7 @@
         <a class="back" href="#recipes">← All recipes</a>
         <h1 data-fill="title"></h1>
         <button type="button" class="byline" data-fill="byline" hidden></button>
+        <a class="wa-share" data-fill="wa-share" href="#" target="_blank" rel="noopener" aria-label="Share this recipe on WhatsApp" title="Share on WhatsApp"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.2A9.8 9.8 0 0 0 3.6 17l-1.4 4.9 5-1.3A9.8 9.8 0 1 0 12 2.2zm0 17.9c-1.5 0-2.9-.4-4.1-1.1l-.3-.2-3 .8.8-2.9-.2-.3A8.1 8.1 0 1 1 12 20.1zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8s-.4-.1-.6.1l-.8 1c-.1.2-.3.2-.5.1a6.6 6.6 0 0 1-3.3-2.9c-.3-.4.2-.4.7-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5c-.2 0-.5.1-.7.3s-.9.9-.9 2.2.9 2.5 1 2.7c.1.2 1.8 2.8 4.4 3.9 1.6.7 2.3.8 3.1.6.5-.1 1.5-.6 1.7-1.2.2-.6.2-1.1.2-1.2-.1-.1-.3-.2-.5-.3z"/></svg></a>
       </div>
       <div class="dish-ph" data-fill="dish"></div>
     </div>
