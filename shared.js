@@ -212,7 +212,8 @@ function renderRecipe(R, key) {
     el.onclick = () => openPerson(R.person, key);
   });
   set("wa-share", (el) => {
-    const url = `${location.origin}${location.pathname}#recipe-${key}`;
+    // Its own little page (r/<id>.html, made by build-site), so the link preview shows this dish's photo.
+    const url = new URL(`r/${key}.html`, location.href).href;
     const poss = (n) => (/s$/i.test(n) ? `${n}'` : `${n}'s`);
     const who = !person ? "" : R.person === "sheila" ? "Sheila's own recipe, from " : `${poss(person.name)} recipe, from `;
     const text = `Thought you'd love this 💛\n\n*${R.title}*\n${who ? who : "From "}Sheila's Recipes, our family recipe book.\n\n${url}`;
