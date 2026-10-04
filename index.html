@@ -1,10 +1,10 @@
 <!doctype html>
-<html lang="en" data-version="0.41" data-built="2026-10-04 07:27">
+<html lang="en" data-version="0.42" data-built="2026-10-04 07:34">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Sheila's Recipes</title>
-<link rel="manifest" href="manifest.webmanifest?v=0.41">
+<link rel="manifest" href="manifest.webmanifest?v=0.42">
 <link rel="icon" type="image/png" sizes="32x32" href="images/icons/sheila-32.png">
 <link rel="apple-touch-icon" href="images/icons/sheila-180.png">
 <meta name="apple-mobile-web-app-title" content="Sheila's Recipes">
@@ -13,8 +13,8 @@
 <meta name="theme-color" content="#1d3f7a">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,400;1,9..144,600&family=Work+Sans:wght@400;500;600&display=swap" rel="stylesheet">
-<script src="recipes-data.js?v=0.41"></script>
-<script src="shared.js?v=0.41"></script>
+<script src="recipes-data.js?v=0.42"></script>
+<script src="shared.js?v=0.42"></script>
 <style>
   :root {
     --link-accent: #1d3f7a;
@@ -207,7 +207,7 @@
   .mem-form textarea { min-height: 120px; resize: vertical; }
   .mem-form button { justify-self: start; border: 0; background: var(--cobalt); color: #fff; font: 600 16px "Work Sans"; padding: 13px 24px; border-radius: 99px; cursor: pointer; }
   .mem-form button:disabled { opacity: .6; cursor: wait; }
-  .mem-form .fine { font-size: 13px; color: var(--muted); margin: 0; }
+  .mem-form .memf-note { font: italic 17px/1.4 Fraunces, serif; color: var(--cobalt); margin: 2px 0 4px; }
   .mem-form .mem-msg { margin: 0; font-weight: 600; color: var(--olive); }
   .mem-form .mem-msg.err { color: var(--terracotta); }
   .mem-form .hp { position: absolute; left: -9999px; width: 1px; height: 1px; opacity: 0; }
@@ -381,9 +381,9 @@
       <input name="name" required maxlength="60" placeholder="Your name" aria-label="Your name" autocomplete="name">
       <textarea name="text" required maxlength="1500" placeholder="Your memory of this dish…" aria-label="Your memory"></textarea>
       <input class="hp" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">
+      <p class="memf-note">Sheila and the family read every memory before it goes up.</p>
       <button type="submit">Share memory</button>
       <p class="mem-msg" hidden></p>
-      <p class="fine">The family reads every memory before it appears on the site.</p>
     </form>
   </article>
 </div>

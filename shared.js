@@ -83,6 +83,14 @@ function openLightbox(src, alt) {
 
   const pts = new Map();
   let prev = null, moved = false, lastTap = 0;
+  const onImg = (e) => {
+    const r = img.getBoundingClientRect();
+    return e.clientX >= r.left && e.clientX <= r.right && e.clientY >= r.top && e.clientY <= r.bottom;
+  };
+  // Close on the tap's click, not on lifting the finger: closing earlier lets the click land on
+  // the photo underneath, which opens the viewer again.
+  let closeOnClick = false;
+  box.addEventListener("click", () => { if (closeOnClick) close(); });
   const two = () => {
     const [a, b] = [...pts.values()];
     return { d: Math.hypot(a.x - b.x, a.y - b.y), mx: (a.x + b.x) / 2, my: (a.y + b.y) / 2 };
@@ -118,7 +126,10 @@ function openLightbox(src, alt) {
     if (pts.size === 1) prev = [...pts.values()][0];
     if (pts.size || moved) return;
     // A tap: outside the photo closes; a double-tap on it toggles zoom.
-    if (e.target !== img) { if (s === 1) close(); return; }
+    if (!onImg(e)) {
+      if (s === 1) { closeOnClick = true; setTimeout(() => box.isConnected && close(), 500); }
+      return;
+    }
     const now = Date.now();
     if (now - lastTap < 320) {
       if (s > 1) { s = 1; apply(true); } else zoomAt(2.5, e.clientX, e.clientY, true);
@@ -672,6 +683,9 @@ function openMemoryForm() {
   if (!sheet) return;
   sheet.querySelector("[data-fill=memf-dish]").textContent = RECIPES[memRecipeId()]?.title || "";
   sheet.querySelectorAll(".mem-msg").forEach((m) => (m.hidden = true));
+  // Their name from last time (kept on this phone only).
+  const name = sheet.querySelector("[name=name]");
+  if (name && !name.value) name.value = store.get("memName", "");
   openSheet(sheet);
 }
 
@@ -707,7 +721,10 @@ function setupMemories() {
       }) });
       const d = await res.json();
       if (!d.ok) throw new Error(d.error);
+      store.set("memName", form.name.value.trim() || null);
+      const name = form.name.value;
       form.reset();
+      form.name.value = name;
       say("Thank you! Your memory will appear here once the family has read it.");
       setTimeout(closeSheet, 2600);
     } catch (err) {
