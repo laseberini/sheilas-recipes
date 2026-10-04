@@ -229,7 +229,7 @@ const RECIPES = {
     "notes": []
   },
   "pulpetti": {
-    "title": "Pulpetti",
+    "title": "Polpette",
     "from": "Nonna",
     "date": null,
     "serves": null,
