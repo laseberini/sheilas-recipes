@@ -565,12 +565,12 @@ const RECIPES = {
     ]
   },
   "luana-s-peperoni-verdi-ripieni": {
-    "title": "Luana's Peperoni Verdi Ripieni",
-    "from": "Luana",
+    "title": "Nonna's Peperoni Verdi Ripieni",
+    "from": "Nonna",
     "date": null,
     "serves": null,
     "category": "Meat, Chicken & Fish",
-    "person": "luana",
+    "person": "nonna",
     "pages": [],
     "pageThumbs": [],
     "photo": "images/dishes/luana-s-peperoni-verdi-ripieni.jpg",
@@ -603,12 +603,12 @@ const RECIPES = {
     ]
   },
   "luana-s-coniglio-al-forno": {
-    "title": "Luana's Coniglio al Forno",
-    "from": "Luana",
+    "title": "Nonna's Coniglio al Forno",
+    "from": "Nonna",
     "date": null,
     "serves": null,
     "category": "Meat, Chicken & Fish",
-    "person": "luana",
+    "person": "nonna",
     "pages": [],
     "pageThumbs": [],
     "photo": "images/dishes/luana-s-coniglio-al-forno.jpg",
@@ -636,17 +636,17 @@ const RECIPES = {
     ],
     "notes": [
       "Italian roast rabbit.",
-      "Serve with Luana's Fagiolini e Patate al Pomodoro (green beans & potatoes in tomato), or simple roast potatoes & a green salad. Crusty bread to mop up.",
+      "Serve with Nonna's Fagiolini e Patate al Pomodoro (green beans & potatoes in tomato), or simple roast potatoes & a green salad. Crusty bread to mop up.",
       "Old Italian trick: add a few pitted black olives & a spoon of capers to the pan for extra flavour."
     ]
   },
   "luana-s-fagiolini-e-patate-al-pomodoro": {
-    "title": "Luana's Fagiolini e Patate al Pomodoro",
-    "from": "Luana",
+    "title": "Nonna's Fagiolini e Patate al Pomodoro",
+    "from": "Nonna",
     "date": null,
     "serves": null,
     "category": "Vegetables & Sides",
-    "person": "luana",
+    "person": "nonna",
     "pages": [],
     "pageThumbs": [],
     "photo": "images/dishes/luana-s-fagiolini-e-patate-al-pomodoro.jpg",
@@ -728,12 +728,6 @@ const MOCK = {
       "relation": "Sheila's sister",
       "bio": "Lorraine hosted many Friday night dinners at her lovely home in Waverly and now Melrose. She made many delicious dishes but the most famous and internationally renowned is her cheese-cake.",
       "photo": "images/people/lorraine.jpg"
-    },
-    "luana": {
-      "name": "Luana",
-      "relation": "Sheila's sister-in-law",
-      "bio": null,
-      "photo": null
     }
   },
   "categories": [
@@ -752,9 +746,9 @@ const MOCK = {
         "cape-bobotie",
         "chicken-ala-familia",
         "fish-cakes",
+        "nonna-s-artichoke-chicken",
         "luana-s-coniglio-al-forno",
         "luana-s-peperoni-verdi-ripieni",
-        "nonna-s-artichoke-chicken",
         "pulpetti"
       ]
     },
