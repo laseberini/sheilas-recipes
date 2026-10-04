@@ -76,7 +76,7 @@ const RECIPES = {
     ]
   },
   "nonna-s-butter-bean-potato-salad": {
-    "title": "Nonna's Butter Bean & Potato Salad",
+    "title": "Butter Bean & Potato Salad",
     "from": "Nonna",
     "date": null,
     "serves": null,
@@ -111,7 +111,7 @@ const RECIPES = {
     ]
   },
   "nonna-s-artichoke-chicken": {
-    "title": "Nonna's Artichoke & Chicken",
+    "title": "Artichoke & Chicken",
     "from": "Nonna",
     "date": null,
     "serves": null,
@@ -565,7 +565,7 @@ const RECIPES = {
     ]
   },
   "luana-s-peperoni-verdi-ripieni": {
-    "title": "Nonna's Peperoni Verdi Ripieni",
+    "title": "Peperoni Verdi Ripieni",
     "from": "Nonna",
     "date": null,
     "serves": null,
@@ -603,7 +603,7 @@ const RECIPES = {
     ]
   },
   "luana-s-coniglio-al-forno": {
-    "title": "Nonna's Coniglio al Forno",
+    "title": "Coniglio al Forno",
     "from": "Nonna",
     "date": null,
     "serves": null,
@@ -636,12 +636,12 @@ const RECIPES = {
     ],
     "notes": [
       "Italian roast rabbit.",
-      "Serve with Nonna's Fagiolini e Patate al Pomodoro (green beans & potatoes in tomato), or simple roast potatoes & a green salad. Crusty bread to mop up.",
+      "Serve with Fagiolini e Patate al Pomodoro (green beans & potatoes in tomato), or simple roast potatoes & a green salad. Crusty bread to mop up.",
       "Old Italian trick: add a few pitted black olives & a spoon of capers to the pan for extra flavour."
     ]
   },
   "luana-s-fagiolini-e-patate-al-pomodoro": {
-    "title": "Nonna's Fagiolini e Patate al Pomodoro",
+    "title": "Fagiolini e Patate al Pomodoro",
     "from": "Nonna",
     "date": null,
     "serves": null,
@@ -678,7 +678,7 @@ const RECIPES = {
     ]
   },
   "nonna-s-italian-green-beans-potatoes": {
-    "title": "Nonna's Italian Green Beans & Potatoes",
+    "title": "Italian Green Beans & Potatoes",
     "from": "Nonna",
     "date": null,
     "serves": null,
@@ -766,19 +766,19 @@ const MOCK = {
       "name": "Soups & Starters",
       "ids": [
         "caponata",
-        "minestroni-soup",
-        "nonna-s-butter-bean-potato-salad"
+        "nonna-s-butter-bean-potato-salad",
+        "minestroni-soup"
       ]
     },
     {
       "name": "Meat, Chicken & Fish",
       "ids": [
+        "nonna-s-artichoke-chicken",
         "brisket-in-coke",
         "cape-bobotie",
         "chicken-ala-familia",
-        "fish-cakes",
-        "nonna-s-artichoke-chicken",
         "luana-s-coniglio-al-forno",
+        "fish-cakes",
         "luana-s-peperoni-verdi-ripieni",
         "pulpetti"
       ]
