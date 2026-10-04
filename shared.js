@@ -208,7 +208,7 @@ function renderRecipe(R, key) {
   const person = R.person && MOCK.people?.[R.person];
   set("byline", (el) => {
     el.hidden = !person;
-    el.innerHTML = person ? `<span class="by-face">${person.photo ? `<img src="${withV(person.photo)}" alt="">` : PERSON_ICON}</span><span class="by-text"><b>From ${esc(person.name)} ›</b>${person.relation ? `<small>${esc(person.relation)}</small>` : ""}</span>` : "";
+    el.innerHTML = person ? `<span class="by-face">${person.photo ? `<img src="${withV(person.photo)}" alt="">` : PERSON_ICON}</span><span class="by-text"><b>From ${esc(person.name)} ›</b></span>` : "";
     el.onclick = () => openPerson(R.person, key);
   });
   set("ingredients", (el) => (el.innerHTML = R.ingredients
