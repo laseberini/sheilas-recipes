@@ -1,10 +1,10 @@
 <!doctype html>
-<html lang="en" data-version="0.51" data-built="2026-10-04 18:24">
+<html lang="en" data-version="0.52" data-built="2026-10-04 18:31">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Sheila's Recipes</title>
-<link rel="manifest" href="manifest.webmanifest?v=0.51">
+<link rel="manifest" href="manifest.webmanifest?v=0.52">
 <link rel="icon" type="image/png" sizes="32x32" href="images/icons/sheila-32.png">
 <link rel="apple-touch-icon" href="images/icons/sheila-180.png">
 <meta name="apple-mobile-web-app-title" content="Sheila's Recipes">
@@ -17,8 +17,8 @@
 <meta property="og:type" content="website">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,400;1,9..144,600&family=Work+Sans:wght@400;500;600&display=swap" rel="stylesheet">
-<script src="recipes-data.js?v=0.51"></script>
-<script src="shared.js?v=0.51"></script>
+<script src="recipes-data.js?v=0.52"></script>
+<script src="shared.js?v=0.52"></script>
 <style>
   :root {
     --link-accent: #1d3f7a;
@@ -309,6 +309,10 @@
   .wa-share:focus-visible { outline: 2px solid var(--lemon); outline-offset: 3px; }
   .r-hero.has-hero .wa-share { position: absolute; right: 16px; bottom: 26px; z-index: 3; margin: 0; }
   @media (min-width: 801px) { .r-hero.has-hero .wa-share { right: 24px; bottom: 44px; } }
+  .toast { position: fixed; left: 50%; bottom: 24px; transform: translateX(-50%); z-index: 3000; max-width: min(92vw, 520px); display: flex; gap: 14px;
+    align-items: center; background: var(--cobalt); color: #fff; padding: 14px 20px; border-radius: 14px; box-shadow: 0 10px 30px rgba(0,0,0,.3);
+    font: 500 15px/1.4 "Work Sans"; animation: storyFade .2s ease-out; }
+  .toast a { color: var(--lemon); font-weight: 600; white-space: nowrap; }
   /* Memories badge on list rows. */
   .mem-n { display: inline-flex; align-items: center; gap: 4px; padding: 1px 8px 1px 6px; border-radius: 99px; background: var(--lemon);
     color: var(--cobalt); font: 600 12px/1.5 "Work Sans"; font-style: normal; vertical-align: 1px; }

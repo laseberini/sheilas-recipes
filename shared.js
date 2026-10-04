@@ -218,6 +218,19 @@ function renderRecipe(R, key) {
     const who = !person ? "" : R.person === "sheila" ? "Sheila's own recipe, from " : `${poss(person.name)} recipe, from `;
     const text = `Thought you'd love this 💛\n\n*${R.title}*\n${who ? who : "From "}Sheila's Recipes, our family recipe book.\n\n${url}`;
     el.href = `https://wa.me/?text=${encodeURIComponent(text)}`;
+    // Phones open WhatsApp with the message ready to send to anyone. WhatsApp Web can't take a message
+    // that way, so on a computer copy it, open WhatsApp Web and say to paste it into a chat.
+    el.onclick = async (e) => {
+      if (isPhone()) return;
+      e.preventDefault();
+      let copied = false;
+      try { await navigator.clipboard.writeText(text); copied = true; } catch {}
+      const tab = window.open("https://web.whatsapp.com/", "_blank", "noopener");
+      toast(copied
+        ? "Message copied. In WhatsApp, open a chat and press Ctrl+V to paste it."
+        : "Couldn't copy the message - on a phone the WhatsApp button sends it straight away.",
+        !tab && copied ? '<a href="https://web.whatsapp.com/" target="_blank" rel="noopener">Open WhatsApp Web</a>' : "");
+    };
   });
   set("ingredients", (el) => (el.innerHTML = R.ingredients
     .map((i) => (i.trim().endsWith(":") ? `<li class="sub">${esc(i)}</li>` : `<li>${linkify(i, R)}</li>`)).join("")));
@@ -465,6 +478,17 @@ function openCategory(name, currentKey) {
   openSheet(sheet);
 }
 const PERSON_ICON = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c1.2-4.2 4.3-6 8-6s6.8 1.8 8 6"/></svg>';
+const isPhone = () => /Android|iPhone|iPad|iPod/i.test(navigator.userAgent) || (navigator.maxTouchPoints > 1 && /Macintosh/.test(navigator.userAgent));
+// A short message at the bottom of the screen that goes away by itself.
+function toast(text, extraHTML = "") {
+  document.querySelector(".toast")?.remove();
+  const t = document.createElement("div");
+  t.className = "toast";
+  t.setAttribute("role", "status");
+  t.innerHTML = `<span>${esc(text)}</span>${extraHTML}`;
+  document.body.appendChild(t);
+  setTimeout(() => t.remove(), 9000);
+}
 function openPerson(id, currentKey) {
   const sheet = document.querySelector("[data-person-sheet]");
   if (!sheet || !MOCK.people?.[id]) return;
