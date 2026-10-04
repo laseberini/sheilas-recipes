@@ -1,0 +1,504 @@
+<!doctype html>
+<html lang="en" data-version="0.43" data-built="2026-10-04 07:42">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sheila's Recipes (mockup: author on the photo)</title>
+<link rel="manifest" href="manifest.webmanifest?v=0.43">
+<link rel="icon" type="image/png" sizes="32x32" href="images/icons/sheila-32.png">
+<link rel="apple-touch-icon" href="images/icons/sheila-180.png">
+<meta name="apple-mobile-web-app-title" content="Sheila's Recipes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#1d3f7a">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,400;1,9..144,600&family=Work+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="recipes-data.js?v=0.43"></script>
+<script src="shared.js?v=0.43"></script>
+<style>
+  :root {
+    --link-accent: #1d3f7a;
+    --cobalt: #1d3f7a;
+    --cobalt-2: #2c5aa8;
+    --terracotta: #c25a2c;
+    --lemon: #f1c64b;
+    --olive: #6c7a3b;
+    --cream: #fbf6ee;
+    --sand: #f2e8d8;
+    --ink: #22262e;
+    --muted: #5a5953;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--cream); color: var(--ink); font: 17px/1.65 "Work Sans", system-ui, sans-serif; }
+  a { color: inherit; }
+  h1, h2, h3 { font-family: Fraunces, Georgia, serif; font-weight: 600; margin: 0; }
+  .wrap { max-width: 1160px; margin: 0 auto; padding: 0 24px; }
+
+
+  /* Majolica tile strip */
+  .tiles {
+    height: 44px;
+    background-color: var(--cobalt);
+    background-image:
+      radial-gradient(circle at 50% 50%, var(--lemon) 0 4px, transparent 5px),
+      radial-gradient(circle at 50% 50%, transparent 0 12px, #fff 13px 15px, transparent 16px),
+      conic-gradient(from 45deg, #fff 0 25%, transparent 0 50%, #fff 0 75%, transparent 0);
+    background-size: 44px 44px, 44px 44px, 22px 22px;
+    background-position: 0 0, 0 0, 0 0;
+    opacity: .95;
+  }
+
+  .hero { background: var(--cobalt); color: var(--cream); }
+  .hero .wrap { display: grid; grid-template-columns: 1.1fr 1fr; gap: 56px; align-items: center; padding: 64px 24px 72px; }
+  .kicker { text-transform: uppercase; letter-spacing: .16em; font-size: 13px; font-weight: 600; color: var(--lemon); }
+  .hero h1 { font-size: clamp(46px, 6.4vw, 82px); line-height: 1; margin: 14px 0 22px; letter-spacing: -.015em; }
+  .hero h1 em { font-weight: 400; color: var(--lemon); }
+  .hero p { font-size: 19px; max-width: 30em; opacity: .9; margin: 0; }
+  .hero-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 28px; }
+  .hero .btn { display: inline-block; background: var(--lemon); color: var(--cobalt); padding: 14px 24px; border-radius: 99px; text-decoration: none; font-weight: 600; border: 2px solid var(--lemon); }
+  .hero .btn.ghost { background: transparent; color: var(--cream); border-color: rgba(251,246,238,.55); }
+  .hero .btn.ghost:hover { border-color: var(--cream); }
+  .arch { border-radius: 999px 999px 18px 18px; overflow: hidden; aspect-ratio: 4/5; border: 8px solid var(--cream); box-shadow: 0 30px 60px rgba(0,0,0,.25); max-width: 440px; justify-self: center; width: 100%; }
+  .arch img { width: 100%; height: 100%; object-fit: cover; object-position: center 22%; display: block; }
+
+  /* My story: a reading panel over the page (a bottom sheet on phones). */
+  .story { position: fixed; inset: 0; z-index: 1500; background: rgba(18,24,38,.55); display: flex; align-items: center; justify-content: center; padding: 24px; animation: storyFade .2s ease-out; }
+  .story-panel { position: relative; background: var(--cream); border-radius: 22px; max-width: 680px; width: 100%; max-height: calc(100vh - 48px); overflow-y: auto;
+    padding: 40px 44px 32px; box-shadow: 0 30px 80px rgba(0,0,0,.3); border-top: 8px solid var(--terracotta); animation: storyUp .28s ease-out; overscroll-behavior: contain; }
+  .story .kicker { color: var(--terracotta); }
+  .story h2 { font-size: clamp(32px, 5vw, 44px); color: var(--cobalt); margin: 6px 0 18px; }
+  .story-text { font: italic 400 clamp(18px, 2.2vw, 21px)/1.6 Fraunces, serif; color: var(--ink); }
+  .story-text p { margin: 0 0 .8em; }
+  .story-text p:first-child::before { content: "“"; color: var(--terracotta); font: 600 1.6em/0 Fraunces, serif; vertical-align: -.3em; margin-right: 2px; }
+  .story-text p:last-child::after { content: "”"; color: var(--terracotta); }
+  .story-foot { display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; margin-top: 18px; padding-top: 16px; border-top: 1px solid var(--sand); }
+  .story-foot cite { font: 600 14px "Work Sans"; letter-spacing: .14em; text-transform: uppercase; color: var(--terracotta); font-style: normal; }
+  .story-note { font: 600 15px "Work Sans"; color: var(--cobalt); background: #fff; border: 2px solid var(--sand); border-radius: 99px; padding: 10px 18px; cursor: pointer; }
+  .story-close { position: sticky; top: 10px; float: right; z-index: 3; margin: -26px -30px 0 12px; width: 42px; height: 42px; border-radius: 50%; display: grid; place-items: center; box-shadow: 0 2px 8px rgba(0,0,0,.08);
+    background: var(--sand); color: var(--cobalt); text-decoration: none; font: 300 28px/1 system-ui, sans-serif; }
+  .story-done { display: block; width: 100%; margin-top: 22px; border: 0; border-radius: 99px; padding: 14px; background: var(--cobalt); color: #fff; font: 600 17px "Work Sans"; cursor: pointer; }
+  @keyframes storyFade { from { opacity: 0; } }
+  @keyframes storyUp { from { transform: translateY(24px); opacity: 0; } }
+  /* Memories belong to the recipe: not shown on the "From …" tab. */
+  [data-recipe][data-tab="person"] .mem { display: none !important; }
+  /* Whose recipe panel */
+  /* "From Nonna" tab: who the recipe comes from. */
+  .person-pane { max-width: 760px; margin: 0 auto; padding-bottom: var(--section); }
+  .person-top { display: flex; align-items: center; gap: 18px; margin: 0 0 16px; }
+  .person-photo img, .person-photo .initials { width: 92px; height: 92px; border-radius: 50%; object-fit: cover; display: block; border: 4px solid #fff; box-shadow: 0 6px 18px rgba(29,63,122,.15); }
+  .person-photo img { cursor: zoom-in; }
+  .person-photo .initials { display: grid; place-items: center; background: var(--sand); color: var(--cobalt); font: 600 32px Fraunces, serif; }
+  .person-pane .kicker { color: var(--olive); }
+  .person-pane h2 { font-size: clamp(28px, 4.6vw, 40px); color: var(--cobalt); margin: 2px 0 0; line-height: 1.1; }
+  .person-bio { font-size: 17px; line-height: 1.65; }
+  .person-bio p { margin: 0 0 .8em; }
+  .person-rh { font: 600 13px "Work Sans"; letter-spacing: .14em; text-transform: uppercase; color: var(--terracotta); margin: 18px 0 8px; padding-top: 16px; border-top: 1px solid var(--sand); }
+  .person-recipes a { display: flex; align-items: center; gap: 12px; padding: 8px 0; text-decoration: none; color: var(--cobalt); font: 600 18px Fraunces, serif; }
+  .person-recipes a + a { border-top: 1px solid var(--sand); }
+  .person-recipes img { width: 46px; height: 46px; border-radius: 50%; object-fit: cover; flex: none; }
+  .person-recipes a b { margin-left: auto; color: var(--terracotta); }
+  .person-recipes small { display: block; font: 500 13px "Work Sans"; color: var(--muted); }
+  .person-recipes a[aria-current] { color: var(--muted); pointer-events: none; }
+  .person-recipes a[aria-current] b { font: 600 12px "Work Sans"; color: var(--olive); letter-spacing: .04em; text-transform: uppercase; }
+  /* Category list sheet */
+  .cat-panel { border-top-color: var(--cobalt); }
+  .cat-panel .kicker { color: var(--terracotta); }
+  .cat-panel h2 { font-size: clamp(28px, 4.6vw, 40px); color: var(--cobalt); margin: 4px 40px 12px 0; }
+  .catm-all { display: inline-block; margin-top: 16px; color: var(--terracotta); font-weight: 600; }
+  /* Her handwritten page(s), small, at the end of the recipe. */
+  .her-pages { margin: 28px 0 0; display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
+  .her-pages img { width: 84px; height: 112px; object-fit: cover; border-radius: 6px; border: 4px solid #fff; box-shadow: 0 8px 20px rgba(0,0,0,.14); }
+  .her-pages figcaption { font: italic 17px Fraunces, serif; color: var(--muted); }
+  /* "From Nonna" on a recipe opens the panel. */
+  .meta .tap { cursor: pointer; }
+  .meta .tap::after { content: " ›"; font-weight: 700; }
+  .r-hero:not(.has-hero) .meta .tap { box-shadow: inset 0 0 0 1.5px var(--cobalt-2); }
+  @media (max-width: 640px) {
+    .story { padding: 0; align-items: flex-end; }
+    .story-panel { border-radius: 22px 22px 0 0; max-height: 92vh; padding: 32px 22px 28px; }
+    .story-close { margin: -20px -10px 0 12px; }
+  }
+  .ph { display: inline-block; font: 600 11px system-ui; letter-spacing: .08em; text-transform: uppercase; background: var(--sand); color: var(--muted); padding: 4px 8px; border-radius: 4px; margin-bottom: 18px; }
+
+  :root { --section: 60px; }
+  #recipes { padding-top: var(--section); }
+  .menu-head { display: flex; justify-content: space-between; align-items: end; gap: 16px 20px; margin-bottom: 24px; flex-wrap: wrap; }
+  .menu-head h2, .mem-head h2 { font-size: clamp(32px, 4.4vw, 44px); line-height: 1.05; color: var(--cobalt); }
+  .search { flex: 0 1 340px; padding: 13px 18px; border-radius: 99px; border: 2px solid var(--sand); background: #fff; font: inherit; }
+
+  .cats { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(320px, 100%), 1fr)); gap: 20px; align-items: start; padding-bottom: var(--section); }
+  .cat { background: #fff; border-radius: 18px; overflow: hidden; box-shadow: 0 1px 0 var(--sand), 0 12px 30px rgba(29,63,122,.07); }
+  /* Soft pastel washes of the four Mediterranean colours, with darker lettering. */
+  .cat-name { font-size: 25px; padding: 20px 24px 16px; color: #9a4522; background: #f2e0d5; display: flex; justify-content: space-between; align-items: center; }
+  .cat:nth-child(4n+2) .cat-name { background: #e6e9d6; color: #4f5a24; }
+  .cat:nth-child(4n+3) .cat-name { background: #e1e8f3; color: var(--cobalt); }
+  .cat:nth-child(4n+4) .cat-name { background: #f7eecd; color: #7a5b05; }
+  .cat-count { font: 600 14px "Work Sans"; background: rgba(0,0,0,.06); border-radius: 99px; padding: 3px 10px; }
+
+  .cat-list { list-style: none; margin: 0; padding: 10px 24px 18px; }
+  .cat-list li { border-bottom: 1px solid var(--sand); }
+  .cat-list li:last-child { border: 0; }
+  /* Each recipe: dish photo, name, who it's from, and an arrow (same rows as the category sheet). */
+  .cat-list a { padding: 10px 0; }
+  .cat-list a:hover b { transform: translateX(3px); }
+  .cat-list a b { transition: transform .15s; }
+
+  /* Recipe */
+  .r-hero { background: var(--sand); }
+  .r-hero .wrap { display: grid; grid-template-columns: 1.2fr 1fr; gap: 48px; align-items: center; padding: 40px 24px 56px; }
+  .back { color: var(--terracotta); text-decoration: none; font-weight: 600; }
+  .r-hero h1 { font-size: clamp(34px, 9vw, 96px); line-height: 1; overflow-wrap: break-word; color: var(--cobalt); margin: 18px 0 18px; }
+  .meta { display: flex; gap: 10px; flex-wrap: wrap; }
+  .meta span { background: #fff; border-radius: 99px; padding: 6px 14px; font-size: 14px; font-weight: 500; }
+  .dish-ph {
+    border-radius: 999px 999px 18px 18px; aspect-ratio: 1/1; width: 100%; max-width: 380px; justify-self: center;
+    background: radial-gradient(circle at 50% 40%, #fff 0 35%, #f6ead6 36%); border: 8px solid #fff;
+    display: grid; place-items: center; color: var(--muted); font: italic 18px Fraunces, serif; text-align: center;
+  }
+
+  .switch { position: relative; display: grid; grid-template-columns: repeat(2, 1fr); background: #fff; border-radius: 99px; padding: 5px; max-width: 560px; margin: -28px auto 40px; box-shadow: 0 10px 30px rgba(29,63,122,.12); }
+  .switch::before { content: ""; position: absolute; top: 5px; bottom: 5px; left: 5px; width: calc((100% - 10px) / 2); border-radius: 99px; background: var(--cobalt); transform: translateX(calc(var(--pos, 1) * 100%)); transition: transform .25s; }
+  .switch button { position: relative; border: 0; background: none; font: 600 15px "Work Sans"; padding: 12px 8px; color: var(--cobalt); cursor: pointer; }
+  .switch button.on { color: #fff; }
+
+  .recipe-body { display: grid; grid-template-columns: 1fr 1.6fr; gap: 48px; padding-bottom: 36px; }
+  .ing-box { background: #fff; border-radius: 18px; padding: 28px; border-top: 6px solid var(--terracotta); align-self: start; position: sticky; top: 20px; }
+  .ing-box h3, .method-box h3 { font-size: 28px; color: var(--cobalt); margin-bottom: 14px; }
+  .ing { list-style: none; padding: 0; margin: 0; }
+  .ing li { display: flex; gap: 12px; padding: 9px 0; border-bottom: 1px solid var(--sand); }
+  .ing li::before { content: ""; flex: none; width: 18px; height: 18px; border: 2px solid var(--terracotta); border-radius: 50%; margin-top: 4px; }
+  .method { list-style: none; padding: 0; margin: 0; counter-reset: s; }
+  .method li { counter-increment: s; display: grid; grid-template-columns: 52px 1fr; gap: 14px; padding: 0 0 22px; font-size: 18px; }
+  .method li::before { content: counter(s); width: 44px; height: 44px; border-radius: 50%; background: var(--lemon); color: var(--cobalt); display: grid; place-items: center; font: 600 20px Fraunces; }
+  /* Cooking help: screen-on switch, tick-off ingredients and steps, the next step highlighted. */
+  .box-head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; margin-bottom: 14px; }
+  .box-head h3 { margin: 0 !important; }
+  .tap-hint { font: italic 400 15px Fraunces, serif; color: var(--muted); margin-left: 6px; white-space: nowrap; }
+  .cook-clear { border: 0; background: none; padding: 4px 0; color: var(--terracotta); font: 600 15px "Work Sans"; text-decoration: underline; cursor: pointer; }
+  .ing li:not(.sub), .method li:not(.sub) { cursor: pointer; -webkit-tap-highlight-color: transparent; }
+  .ing li::before { display: grid; place-items: center; font: 700 13px/1 system-ui, sans-serif; color: #fff; }
+  .ing li.done::before { content: "✓"; background: var(--terracotta); }
+  .ing li.done { color: var(--muted); text-decoration: line-through; text-decoration-thickness: 1px; }
+  .method li.done::before { content: "✓"; background: #e6e9d6; color: var(--olive); }
+  .method li.done > span { color: var(--muted); }
+  .method li.next > span { background: #fdf3cf; box-shadow: 0 0 0 8px #fdf3cf; border-radius: 4px; }
+  .notes { background: var(--cobalt); color: var(--cream); padding: 20px 24px; border-radius: 18px; font: italic 20px Fraunces, serif; }
+  .notes p { margin: 0; }
+
+
+  /* Memories: shared by family and friends, shown once the family approves them. */
+  .mem { padding-top: 8px; padding-bottom: var(--section); } /* top/bottom only: .wrap supplies the side margins */
+  .mem-head { text-align: center; margin-bottom: 22px; }
+  .mem-head p { margin: 6px auto 0; max-width: 34em; color: var(--muted); }
+  .mem-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 18px; margin-bottom: 28px; }
+  .mem-card { background: #fff; border-radius: 18px; padding: 22px 24px 18px; box-shadow: 0 1px 0 var(--sand), 0 12px 30px rgba(29,63,122,.07); position: relative; }
+  .mem-card::before { content: "“"; position: absolute; top: 4px; left: 16px; font: 600 54px/1 Fraunces, serif; color: var(--lemon); }
+  .mem-card::after { content: "”"; position: absolute; right: 18px; bottom: -14px; font: 600 54px/1 Fraunces, serif; color: var(--lemon); }
+  .mem-card { padding-bottom: 26px; }
+  .mem-card blockquote { margin: 18px 0 14px; font: italic 19px/1.5 Fraunces, serif; color: var(--ink); white-space: pre-line; overflow-wrap: anywhere; }
+  .mem-who { font: 600 13px "Work Sans"; letter-spacing: .12em; text-transform: uppercase; color: var(--terracotta); }
+  .mem-who small { display: block; margin-top: 2px; font-weight: 500; letter-spacing: 0; text-transform: none; color: var(--muted); }
+  .mem-who small a { color: var(--cobalt); font-weight: 600; }
+  .mem-empty { grid-column: 1 / -1; text-align: center; color: var(--muted); font: italic 19px Fraunces, serif; padding: 0; margin: 0; }
+  .mem-form { background: var(--sand); border-radius: 18px; padding: 24px; max-width: 640px; margin: 0 auto; display: grid; gap: 12px; }
+  .mem-form h3 { font-size: 24px; color: var(--cobalt); }
+  .mem-form input, .mem-form textarea { width: 100%; border: 2px solid #fff; border-radius: 12px; padding: 12px 14px; font: inherit; background: #fff; }
+  .mem-form input:focus, .mem-form textarea:focus { outline: none; border-color: var(--cobalt-2); }
+  .mem-form textarea { min-height: 120px; resize: vertical; }
+  .mem-form button { justify-self: start; border: 0; background: var(--cobalt); color: #fff; font: 600 16px "Work Sans"; padding: 13px 24px; border-radius: 99px; cursor: pointer; }
+  .mem-form button:disabled { opacity: .6; cursor: wait; }
+  .mem-form .memf-note { font: italic 17px/1.4 Fraunces, serif; color: var(--cobalt); margin: 2px 0 4px; }
+  .mem-form .mem-msg { margin: 0; font-weight: 600; color: var(--olive); }
+  .mem-form .mem-msg.err { color: var(--terracotta); }
+  .mem-form .hp { position: absolute; left: -9999px; width: 1px; height: 1px; opacity: 0; }
+  .meta a.mem-chip { background: var(--lemon); color: var(--cobalt); border-radius: 99px; padding: 6px 14px; font-size: 14px; font-weight: 600; text-decoration: none; }
+  .home-mem { background: var(--sand); padding: var(--section) 0; }
+  /* Home: memories as a swipeable carousel, one card tall, the next one peeking in. */
+  .mem-carousel .mem-list { position: relative; display: flex; gap: 16px; margin: 0 auto; max-width: 760px; padding: 4px 6% 20px; overflow-x: auto;
+    scroll-snap-type: x mandatory; scrollbar-width: none; overscroll-behavior-x: contain; }
+  .mem-carousel .mem-list::-webkit-scrollbar { display: none; }
+  .mem-carousel .mem-card { flex: 0 0 min(88%, 620px); scroll-snap-align: center; }
+  .home-mem .mem-card blockquote { display: -webkit-box; -webkit-line-clamp: 6; -webkit-box-orient: vertical; overflow: hidden; }
+  .home-mem .mem-card.open blockquote { display: block; -webkit-line-clamp: unset; overflow: visible; }
+  .mem-more { border: 0; background: none; padding: 4px 0; margin: -6px 0 10px; font: 600 15px "Work Sans"; color: var(--terracotta); cursor: pointer; }
+  /* The dish leads each home card; the opening quote mark moves inline beneath it. */
+  .mem-home-card::before { content: none; }
+  .mem-home-card blockquote { margin-top: 14px; }
+  .mem-home-card blockquote::before { content: "“"; font: 600 46px/0 Fraunces, serif; color: var(--lemon); vertical-align: -.38em; margin-right: 4px; }
+  .mem-dish { display: flex; align-items: center; gap: 12px; padding-bottom: 14px; border-bottom: 1px solid var(--sand); text-decoration: none; color: var(--cobalt); }
+  .mem-dish img { flex: none; width: 52px; height: 52px; border-radius: 50%; object-fit: cover; border: 3px solid var(--sand); }
+  .mem-dish span { flex: 1; font: 600 clamp(17px, 4.6vw, 21px)/1.2 Fraunces, serif; }
+  .mem-dish b { flex: none; color: var(--terracotta); font-size: 20px; transition: transform .15s; }
+  .mem-dish:hover b { transform: translateX(3px); }
+  /* On a computer: ‹ › buttons beside the cards, and the cards can be dragged with the mouse. */
+  .mem-carousel { position: relative; max-width: 760px; margin: 0 auto; }
+  .mem-carousel .mem-list:focus { outline: none; }
+  .mem-carousel .mem-list:focus-visible { outline: 2px solid var(--cobalt-2); outline-offset: 4px; border-radius: 18px; }
+  .mem-carousel .mem-list.dragging { scroll-snap-type: none; cursor: grabbing; user-select: none; }
+  .mem-carousel .mem-list.dragging a { pointer-events: none; }
+  .mem-arrow { display: none; }
+  @media (hover: hover) and (pointer: fine) and (min-width: 900px) {
+    .mem-carousel .mem-list { cursor: grab; }
+    .mem-arrow { display: grid; place-items: center; position: absolute; top: calc(50% - 30px); width: 46px; height: 46px; padding: 0 0 4px;
+      border: 0; border-radius: 50%; background: #fff; color: var(--cobalt); font: 400 34px/1 Fraunces, serif; cursor: pointer;
+      box-shadow: 0 6px 18px rgba(29,63,122,.18); transition: transform .15s, opacity .2s; z-index: 1; }
+    .mem-arrow:hover { transform: scale(1.08); }
+    .mem-arrow.prev { left: -64px; }
+    .mem-arrow.next { right: -64px; }
+    .mem-arrow:disabled { opacity: 0; pointer-events: none; }
+  }
+  /* Wide screens: one whole memory at a time (no cut-off neighbour), arrows outside the card. */
+  @media (min-width: 900px) {
+    .mem-carousel .mem-list { padding-inline: 2px; gap: 24px; }
+    .mem-carousel .mem-card { flex-basis: 100%; }
+  }
+  /* Recipe page: each memory card is as tall as its own story; "+ Add a memory" opens the form. */
+  .mem .mem-carousel .mem-list { align-items: flex-start; }
+  .mem-carousel .mem-empty { flex: 1; text-align: center; padding: 4px 0 0; }
+  .mem-add-row { text-align: center; margin-top: 14px; }
+  .mem-add { border: 0; background: var(--cobalt); color: #fff; font: 600 16px "Work Sans"; padding: 12px 24px; border-radius: 99px; cursor: pointer; }
+  .mem-panel { border-top-color: var(--lemon); }
+  .mem-panel .kicker { color: var(--terracotta); margin-right: 44px; }
+  .mem-panel h2 { margin: 4px 44px 6px 0; }
+  .memf-intro { margin: 0 0 16px; color: var(--muted); }
+  .mem-panel .mem-form { background: none; padding: 0; max-width: none; }
+  .mem-panel .mem-form input, .mem-panel .mem-form textarea { border-color: var(--sand); }
+  .mem-dots { display: flex; justify-content: center; margin-top: -4px; }
+  .mem-dots button { width: 22px; height: 30px; padding: 0; border: 0; background: none; cursor: pointer; display: grid; place-items: center; transition: width .2s; }
+  .mem-dots button::before { content: ""; width: 9px; height: 9px; border-radius: 99px; background: rgba(29,63,122,.25); transition: width .2s, background .2s; }
+  .mem-dots button.on { width: 38px; }
+  .mem-dots button.on::before { width: 24px; background: var(--cobalt); }
+
+  footer { background: var(--cobalt); color: var(--cream); text-align: center; padding: 30px; font: italic 18px Fraunces; }
+
+  @media (max-width: 800px) {
+    .hero .wrap, .r-hero .wrap, .recipe-body { grid-template-columns: 1fr; gap: 32px; }
+    :root { --section: 40px; }
+    .hero .wrap { padding: 36px 20px 44px; gap: 28px; }
+    .hero h1 { margin: 10px 0 16px; }
+    .hero p { font-size: 17px; }
+    .hero-actions { margin-top: 22px; }
+    .arch { max-width: 260px; }
+    .tiles { height: 28px; background-size: 28px 28px, 28px 28px, 14px 14px; }
+    .mem .mem-head, .home-mem .mem-head { margin-bottom: 16px; }
+    .ing-box { position: static; }
+    .switch button { font-size: 13px; }
+    .dish-ph { max-width: 260px; }
+  }
+  /* Recipe header: the dish photo full width, title and pills on top (when there's a photo). */
+  .r-hero.has-hero { position: relative; isolation: isolate; display: flex; align-items: flex-end; min-height: min(68vh, 580px); background: var(--cobalt); color: #fff; overflow: hidden; }
+  .r-hero.has-hero .wrap { display: block; width: 100%; padding: 0 24px 66px; }
+  .r-hero.has-hero .wrap > div { position: static; }
+  .r-hero.has-hero .dish-ph { position: absolute; inset: 0; max-width: none; width: 100%; aspect-ratio: auto; border: 0; border-radius: 0; box-shadow: none; z-index: 0; }
+  .r-hero.has-hero .dish-ph img { object-position: center 55%; }
+  .r-hero.has-hero::after { content: ""; position: absolute; inset: 0; z-index: 1; pointer-events: none;
+    background: linear-gradient(to top, rgba(12,20,38,.9) 0%, rgba(12,20,38,.55) 32%, rgba(12,20,38,.05) 62%, rgba(12,20,38,.35) 100%); }
+  .r-hero.has-hero h1, .r-hero.has-hero .meta { position: relative; z-index: 2; }
+  .r-hero.has-hero h1 { color: #fff; margin: 0 0 14px; text-shadow: 0 2px 20px rgba(0,0,0,.35); }
+  .r-hero.has-hero .back { position: absolute; top: 16px; left: 16px; z-index: 3; background: rgba(255,255,255,.92); color: var(--cobalt);
+    padding: 8px 14px; border-radius: 99px; font-size: 14px; box-shadow: 0 4px 14px rgba(0,0,0,.18); }
+  .r-hero.has-hero .meta span { background: rgba(255,255,255,.16); color: #fff; border: 1px solid rgba(255,255,255,.35);
+    -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); }
+  .r-hero.has-hero .meta span.tap { background: rgba(255,255,255,.94); color: var(--cobalt); border-color: transparent; font-weight: 600; }
+  @media (min-width: 801px) { .r-hero.has-hero .wrap { padding-bottom: 80px; } .r-hero.has-hero .back { top: 24px; left: 24px; } }
+  .switch { z-index: 2; }
+  .r-hero.has-hero h1 { font-size: clamp(34px, 7vw, 80px); }
+  .r-bar { position: fixed; top: 0; left: 0; right: 0; z-index: 900; display: flex; align-items: center; gap: 6px; height: 54px; padding: 0 12px 0 6px;
+    background: rgba(29,63,122,.97); color: var(--cream); box-shadow: 0 4px 16px rgba(0,0,0,.18); animation: barIn .2s ease-out; }
+  .r-bar-back { flex: none; width: 46px; height: 46px; display: grid; place-items: center; color: var(--cream); text-decoration: none; font: 400 26px/1 system-ui, sans-serif; border-radius: 50%; }
+  .r-bar-back:hover { background: rgba(255,255,255,.12); }
+  .r-bar-title { flex: 1; min-width: 0; font: 600 19px Fraunces, serif; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; padding-right: 44px; }
+  @keyframes barIn { from { transform: translateY(-100%); } }
+  /* End of a recipe: where to next. */
+  .recipe-end { display: flex; flex-wrap: wrap; gap: 12px; padding: 4px 0 var(--section); }
+  .recipe-end a, .recipe-end button { flex: 1 1 260px; display: flex; align-items: center; justify-content: space-between; gap: 12px; text-align: left;
+    padding: 16px 20px; border-radius: 16px; background: #fff; border: 0; box-shadow: 0 1px 0 var(--sand), 0 10px 26px rgba(29,63,122,.08);
+    color: var(--cobalt); text-decoration: none; font: 600 18px Fraunces, serif; cursor: pointer; }
+  .recipe-end small { display: block; font: 600 12px "Work Sans"; letter-spacing: .12em; text-transform: uppercase; color: var(--terracotta); margin-bottom: 2px; }
+  .recipe-end b { color: var(--terracotta); flex: none; }
+</style>
+</head>
+<body>
+
+<div data-screen="home">
+  <section class="hero">
+    <div class="wrap">
+      <div>
+        <div class="kicker">Family recipes · since forever</div>
+        <h1>A table set by <em>Sheila</em></h1>
+        <p>Nonna's sauces, Granny Naomi's brisket, Mom's minestrone. The recipes that fed our family, in her own hand.</p>
+        <div class="hero-actions"><a class="btn" href="#recipes">Open the recipes</a><a class="btn ghost" href="#story">My story</a></div>
+      </div>
+      <div class="arch"><img src="images/thumbs/sheila.jpg" alt="Sheila in her kitchen holding a dish of artichokes and potatoes"></div>
+    </div>
+  </section>
+  <div class="tiles"></div>
+  <section class="home-mem" data-mem-home hidden>
+    <div class="wrap">
+      <div class="mem-head"><h2>Memories</h2><p>Stories from around Sheila's table. Open any recipe to add yours.</p></div>
+      <div class="mem-carousel">
+        <div class="mem-list" data-fill="home-memories" tabindex="0" aria-label="Memories - use the arrow keys to move"></div>
+        <button type="button" class="mem-arrow prev" data-mem-prev aria-label="Previous memory">‹</button>
+        <button type="button" class="mem-arrow next" data-mem-next aria-label="Next memory">›</button>
+      </div>
+      <div class="mem-dots" data-fill="mem-dots"></div>
+    </div>
+  </section>
+  <section class="wrap" id="recipes">
+    <div class="menu-head"><h2>The recipes</h2><input class="search" type="search" data-search placeholder="Search: brinjal, cake, Nonna…" aria-label="Search recipes"></div>
+    <div class="cats" data-fill="categories"></div>
+  </section>
+  <div class="tiles"></div>
+  <footer>Made with love for Sheila's family</footer>
+</div>
+
+<!-- Her story, opened from "My story" (#story); closes with ×, Esc, the back button or a tap outside. -->
+<div class="story" data-story hidden>
+  <article class="story-panel" role="dialog" aria-modal="true" aria-labelledby="story-title">
+    <a class="story-close" href="#" data-story-close aria-label="Close">×</a>
+    <div class="kicker">In her own words</div>
+    <h2 id="story-title">My story</h2>
+    <div class="story-text" data-fill="story"></div>
+    <div class="story-foot"><cite>Sheila</cite><button type="button" class="story-note" data-story-note>See her handwritten note</button></div>
+    <button type="button" class="story-done" data-story-close>Close</button>
+  </article>
+</div>
+
+<!-- The recipes in a category, opened by tapping the category pill on a recipe. Same panel style as "My story". -->
+<div class="story" data-sheet data-cat-sheet hidden>
+  <article class="story-panel cat-panel" role="dialog" aria-modal="true" aria-labelledby="catm-title">
+    <a class="story-close" href="#" data-sheet-close aria-label="Close">×</a>
+    <div class="kicker">More in this category</div>
+    <h2 id="catm-title" data-fill="catm-title"></h2>
+    <div class="person-recipes" data-fill="catm-list"></div>
+    <a class="catm-all" href="#recipes" data-sheet-all>See all the recipes</a>
+  </article>
+</div>
+
+<!-- Share a memory of the recipe being read. -->
+<div class="story" data-sheet data-mem-sheet hidden>
+  <article class="story-panel mem-panel" role="dialog" aria-modal="true" aria-labelledby="memf-title">
+    <a class="story-close" href="#" data-sheet-close aria-label="Close">×</a>
+    <div class="kicker" data-fill="memf-dish"></div>
+    <h2 id="memf-title">Share a memory</h2>
+    <p class="memf-intro">Cooked this with Sheila? Eaten it at her table? Tell us about it.</p>
+    <form class="mem-form" data-mem-form>
+      <input name="name" required maxlength="60" placeholder="Your name" aria-label="Your name" autocomplete="name">
+      <textarea name="text" required maxlength="1500" placeholder="Your memory of this dish…" aria-label="Your memory"></textarea>
+      <input class="hp" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">
+      <p class="memf-note">Sheila and the family read every memory before it goes up.</p>
+      <button type="submit">Share memory</button>
+      <p class="mem-msg" hidden></p>
+    </form>
+  </article>
+</div>
+
+<div data-screen="recipe" data-recipe hidden>
+  <!-- Appears once the photo has scrolled away, so there's always a way back. -->
+  <div class="r-bar" data-rbar hidden><a class="r-bar-back" href="#recipes" aria-label="Back to all recipes">←</a><span class="r-bar-title" data-fill="title"></span></div>
+  <section class="r-hero">
+    <div class="wrap">
+      <div>
+        <a class="back" href="#recipes">← All recipes</a>
+        <h1 data-fill="title"></h1>
+        <button type="button" class="byline" data-byline hidden></button>
+        <div class="meta"><span data-fill="cat"></span><span data-fill="date" data-prefix="Written "></span><span data-fill="serves" data-prefix="Serves "></span><a class="mem-chip" href="#memories" data-fill="mem-chip" hidden></a></div>
+      </div>
+      <div class="dish-ph" data-fill="dish"></div>
+    </div>
+  </section>
+  <div class="wrap">
+    <div class="switch" data-views>
+      <button data-view="recipe">The recipe</button>
+      <button data-view="person" data-fill="person-tab"></button>
+    </div>
+    <div data-pane="recipe">
+      <div class="recipe-body">
+        <div class="ing-box"><div class="box-head"><h3>Ingredients <small class="tap-hint">tap as you go</small></h3><button type="button" class="cook-clear" data-clear-ticks hidden>Clear</button></div><ul class="ing" data-fill="ingredients"></ul></div>
+        <div class="method-box"><h3>Method</h3><ol class="method" data-fill="method"></ol><div class="notes" data-fill="notes"></div>
+          <figure class="her-pages" data-fill="pages"></figure></div>
+      </div>
+      <nav class="recipe-end" data-fill="recipe-end" aria-label="More recipes"></nav>
+    </div>
+    <!-- Whose recipe: their photo, who they are to Sheila, a few lines and their other recipes. -->
+    <div data-pane="person" class="person-pane" data-fill="person-pane"></div>
+  </div>
+  <section class="mem wrap" id="memories" data-mem-section hidden>
+    <div class="mem-head"><h2>Memories</h2></div>
+    <div class="mem-carousel">
+      <div class="mem-list" data-fill="memories" tabindex="0" aria-label="Memories of this dish - use the arrow keys to move"></div>
+      <button type="button" class="mem-arrow prev" data-mem-prev aria-label="Previous memory">‹</button>
+      <button type="button" class="mem-arrow next" data-mem-next aria-label="Next memory">›</button>
+    </div>
+    <div class="mem-dots" data-fill="mem-dots"></div>
+    <div class="mem-add-row"><button type="button" class="mem-add" data-mem-add>+ Add a memory</button></div>
+  </section>
+  <div class="tiles"></div>
+  <footer>Made with love for Sheila's family</footer>
+</div>
+<div class="story" data-sheet data-person-sheet hidden>
+  <article class="story-panel" role="dialog" aria-modal="true" aria-label="Whose recipe">
+    <a class="story-close" href="#" data-sheet-close aria-label="Close">×</a>
+    <div class="person-pane person-sheet" data-fill="personm"></div>
+  </article>
+</div>
+<div class="mock-tag">Mockup</div>
+<style>
+  /* No tabs: the recipe is the page. */
+  [data-recipe] [data-views], [data-recipe] [data-pane=person] { display: none !important; }
+  [data-recipe] [data-pane=recipe] { display: block !important; }
+  .r-hero.has-hero .wrap { padding-bottom: 28px; }
+  @media (min-width: 801px) { .r-hero.has-hero .wrap { padding-bottom: 44px; } }
+  .recipe-body { margin-top: 28px; }
+
+  /* Whose recipe: face + name under the title. */
+  .byline { display: flex; align-items: center; gap: 12px; margin: -2px 0 16px; padding: 0; border: 0; background: none; font: inherit; color: var(--cobalt);
+    text-align: left; cursor: pointer; max-width: 100%; }
+  .byline .by-face { flex: none; width: 46px; height: 46px; border-radius: 50%; overflow: hidden; border: 2px solid #fff; box-shadow: 0 3px 10px rgba(0,0,0,.25);
+    background: var(--sand); display: grid; place-items: center; }
+  .byline .by-face img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .byline .by-face svg { width: 26px; height: 26px; color: var(--cobalt); }
+  .byline .by-text { min-width: 0; display: grid; }
+  .byline b { font: 600 18px Fraunces, serif; line-height: 1.2; }
+  .byline b i { font-style: normal; font-weight: 600; }
+  .byline small { font: 500 13px "Work Sans"; opacity: .8; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .r-hero.has-hero .byline { color: #fff; position: relative; z-index: 2; text-shadow: 0 1px 8px rgba(0,0,0,.4); }
+  .byline:focus-visible { outline: 2px solid var(--lemon); outline-offset: 4px; border-radius: 99px; }
+
+  .person-sheet { padding-bottom: 0; }
+  .person-sheet .person-top { margin-right: 40px; }
+  .mock-tag { position: fixed; left: 50%; bottom: 10px; transform: translateX(-50%); z-index: 50; background: var(--terracotta); color: #fff;
+    font: 600 12px "Work Sans"; letter-spacing: .12em; text-transform: uppercase; padding: 5px 12px; border-radius: 99px; pointer-events: none; opacity: .9; }
+</style>
+<script>
+  // Face (or an icon) + "From <name>" under the title; tapping it opens who they are in a pop-up.
+  const PERSON_ICON = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c1.2-4.2 4.3-6 8-6s6.8 1.8 8 6"/></svg>';
+  const realRender = renderRecipe;
+  renderRecipe = function (R, key) {
+    realRender(R, key);
+    const p = R.person && MOCK.people?.[R.person];
+    document.querySelectorAll("[data-byline]").forEach((b) => {
+      b.hidden = !p;
+      if (!p) return;
+      b.innerHTML = `<span class="by-face">${p.photo ? `<img src="${withV(p.photo)}" alt="">` : PERSON_ICON}</span>` +
+        `<span class="by-text"><b>From <i>${esc(p.name)}</i> ›</b>${p.relation ? `<small>${esc(p.relation)}</small>` : ""}</span>`;
+      b.onclick = () => {
+        const sheet = document.querySelector("[data-person-sheet]");
+        const box = sheet.querySelector("[data-fill=personm]");
+        box.innerHTML = personHTML(R.person, key);
+        const img = box.querySelector(".person-photo img");
+        if (img) img.onclick = () => openLightbox(img.src, p.name);
+        openSheet(sheet);
+      };
+    });
+    // Swiping can't flip to the (hidden) second tab.
+    const scope = document.querySelector("[data-recipe]");
+    if (scope) scope.dataset.tab = "recipe";
+  };
+  new MutationObserver(() => {
+    const scope = document.querySelector("[data-recipe]");
+    if (scope && scope.dataset.tab === "person") scope.querySelector("[data-view=recipe]")?.click();
+  }).observe(document.querySelector("[data-recipe]"), { attributes: true, attributeFilter: ["data-tab"] });
+</script>
+</body>
+</html>
