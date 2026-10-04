@@ -201,7 +201,7 @@ function renderRecipe(R, key) {
   for (const key of ["date", "serves"]) {
     set(key, (el) => {
       el.hidden = !R[key];
-      el.textContent = R[key] ? (el.dataset.prefix || "") + R[key] : "";
+      el.textContent = R[key] ? (el.dataset.prefix || "") + (key === "date" ? niceDate(R[key]) : R[key]) : "";
     });
   }
   // Second tab: "From Nonna" - who the recipe comes from. Nobody known, no tabs.
@@ -256,6 +256,14 @@ function renderRecipe(R, key) {
       : "";
   });
 }
+
+// Her dates are month/year ("4/09"), which reads as a day; spell it out ("April 2009").
+const niceDate = (d) => {
+  const m = d.match(/^(\d{1,2})\/(\d{2}|\d{4})$/);
+  if (!m || +m[1] < 1 || +m[1] > 12) return d;
+  const year = m[2].length === 2 ? 2000 + +m[2] - (+m[2] > 40 ? 100 : 0) : +m[2];
+  return new Date(year, m[1] - 1).toLocaleDateString("en-ZA", { month: "long", year: "numeric" });
+};
 
 function fillMockup() {
   // Her story, in full, for the "My story" panel.
@@ -326,7 +334,8 @@ function fillMockup() {
       const dy = e.changedTouches[0].clientY - t0.y;
       const quick = Date.now() - t0.t < 700;
       t0 = null;
-      if (!quick || Math.abs(dx) < 60 || Math.abs(dx) < Math.abs(dy) * 1.5) return;
+      // Only a long, clearly sideways swipe, so a brush of the screen while cooking doesn't flip the tab.
+      if (!quick || Math.abs(dx) < Math.max(120, innerWidth * 0.35) || Math.abs(dx) < Math.abs(dy) * 2.5) return;
       const next = ORDER[ORDER.indexOf(current) + (dx < 0 ? 1 : -1)];
       if (next) show(next, true);
     }, { passive: true });
@@ -618,8 +627,28 @@ function drawMemories() {
   document.querySelectorAll("[data-fill=home-memories]").forEach((el) => {
     el.innerHTML = recent.map(memHomeCard).join("");
     bindCarousel(el, recent.length);
+    addReadMore(el);
   });
   holdPlace();
+}
+
+// Home cards cut a memory off at 6 lines; those that are cut get "Read more" to open the card.
+function addReadMore(el) {
+  const check = () => el.querySelectorAll(".mem-card").forEach((card) => {
+    const q = card.querySelector("blockquote");
+    if (card.querySelector(".mem-more") || q.scrollHeight <= q.clientHeight + 2) return;
+    const b = document.createElement("button");
+    b.type = "button";
+    b.className = "mem-more";
+    b.textContent = "Read more";
+    b.onclick = () => {
+      const open = card.classList.toggle("open");
+      b.textContent = open ? "Show less" : "Read more";
+    };
+    q.after(b);
+  });
+  check();
+  document.fonts?.ready.then(check);
 }
 
 // Swipeable row of memory cards (home page and recipe page): swipe, tap a dot; on a computer

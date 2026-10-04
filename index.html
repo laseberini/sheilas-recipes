@@ -1,10 +1,10 @@
 <!doctype html>
-<html lang="en" data-version="0.42" data-built="2026-10-04 07:34">
+<html lang="en" data-version="0.43" data-built="2026-10-04 07:42">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Sheila's Recipes</title>
-<link rel="manifest" href="manifest.webmanifest?v=0.42">
+<link rel="manifest" href="manifest.webmanifest?v=0.43">
 <link rel="icon" type="image/png" sizes="32x32" href="images/icons/sheila-32.png">
 <link rel="apple-touch-icon" href="images/icons/sheila-180.png">
 <meta name="apple-mobile-web-app-title" content="Sheila's Recipes">
@@ -13,8 +13,8 @@
 <meta name="theme-color" content="#1d3f7a">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,400;1,9..144,600&family=Work+Sans:wght@400;500;600&display=swap" rel="stylesheet">
-<script src="recipes-data.js?v=0.42"></script>
-<script src="shared.js?v=0.42"></script>
+<script src="recipes-data.js?v=0.43"></script>
+<script src="shared.js?v=0.43"></script>
 <style>
   :root {
     --link-accent: #1d3f7a;
@@ -26,7 +26,7 @@
     --cream: #fbf6ee;
     --sand: #f2e8d8;
     --ink: #22262e;
-    --muted: #6b6a66;
+    --muted: #5a5953;
   }
   * { box-sizing: border-box; }
   body { margin: 0; background: var(--cream); color: var(--ink); font: 17px/1.65 "Work Sans", system-ui, sans-serif; }
@@ -219,6 +219,8 @@
   .mem-carousel .mem-list::-webkit-scrollbar { display: none; }
   .mem-carousel .mem-card { flex: 0 0 min(88%, 620px); scroll-snap-align: center; }
   .home-mem .mem-card blockquote { display: -webkit-box; -webkit-line-clamp: 6; -webkit-box-orient: vertical; overflow: hidden; }
+  .home-mem .mem-card.open blockquote { display: block; -webkit-line-clamp: unset; overflow: visible; }
+  .mem-more { border: 0; background: none; padding: 4px 0; margin: -6px 0 10px; font: 600 15px "Work Sans"; color: var(--terracotta); cursor: pointer; }
   /* The dish leads each home card; the opening quote mark moves inline beneath it. */
   .mem-home-card::before { content: none; }
   .mem-home-card blockquote { margin-top: 14px; }
@@ -261,9 +263,11 @@
   .memf-intro { margin: 0 0 16px; color: var(--muted); }
   .mem-panel .mem-form { background: none; padding: 0; max-width: none; }
   .mem-panel .mem-form input, .mem-panel .mem-form textarea { border-color: var(--sand); }
-  .mem-dots { display: flex; justify-content: center; gap: 8px; margin-top: 4px; }
-  .mem-dots button { width: 9px; height: 9px; padding: 0; border: 0; border-radius: 99px; background: rgba(29,63,122,.25); cursor: pointer; transition: width .2s, background .2s; }
-  .mem-dots button.on { width: 24px; background: var(--cobalt); }
+  .mem-dots { display: flex; justify-content: center; margin-top: -4px; }
+  .mem-dots button { width: 22px; height: 30px; padding: 0; border: 0; background: none; cursor: pointer; display: grid; place-items: center; transition: width .2s; }
+  .mem-dots button::before { content: ""; width: 9px; height: 9px; border-radius: 99px; background: rgba(29,63,122,.25); transition: width .2s, background .2s; }
+  .mem-dots button.on { width: 38px; }
+  .mem-dots button.on::before { width: 24px; background: var(--cobalt); }
 
   footer { background: var(--cobalt); color: var(--cream); text-align: center; padding: 30px; font: italic 18px Fraunces; }
 
@@ -295,6 +299,7 @@
     padding: 8px 14px; border-radius: 99px; font-size: 14px; box-shadow: 0 4px 14px rgba(0,0,0,.18); }
   .r-hero.has-hero .meta span { background: rgba(255,255,255,.16); color: #fff; border: 1px solid rgba(255,255,255,.35);
     -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); }
+  .r-hero.has-hero .meta span.tap { background: rgba(255,255,255,.94); color: var(--cobalt); border-color: transparent; font-weight: 600; }
   @media (min-width: 801px) { .r-hero.has-hero .wrap { padding-bottom: 80px; } .r-hero.has-hero .back { top: 24px; left: 24px; } }
   .switch { z-index: 2; }
   .r-hero.has-hero h1 { font-size: clamp(34px, 7vw, 80px); }
@@ -321,7 +326,7 @@
       <div>
         <div class="kicker">Family recipes · since forever</div>
         <h1>A table set by <em>Sheila</em></h1>
-        <p>Nonna's sauces, Bronwyn's tarts, Mom's minestrone. The recipes that fed our family, in her own hand.</p>
+        <p>Nonna's sauces, Granny Naomi's brisket, Mom's minestrone. The recipes that fed our family, in her own hand.</p>
         <div class="hero-actions"><a class="btn" href="#recipes">Open the recipes</a><a class="btn ghost" href="#story">My story</a></div>
       </div>
       <div class="arch"><img src="images/thumbs/sheila.jpg" alt="Sheila in her kitchen holding a dish of artichokes and potatoes"></div>
