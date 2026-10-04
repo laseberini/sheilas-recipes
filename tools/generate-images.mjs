@@ -51,6 +51,10 @@ const DISHES = {
   "luana-s-fagiolini-e-patate-al-pomodoro": "Italian green beans and potatoes stewed in tomato (fagiolini e patate al " +
     "pomodoro) in a white serving bowl: tender whole green beans and soft cubes of potato in a rich, chunky red tomato " +
     "sauce, a drizzle of glossy olive oil on top, torn fresh basil leaves and a little grated parmesan; homely and rustic",
+  "nonna-s-italian-green-beans-potatoes": "Italian green beans and potatoes with garlic and olive oil (fagiolini e " +
+    "patate all'aglio e olio) in a white serving bowl: bright green whole green beans tossed with chunks of boiled potato " +
+    "that have been pan-fried in olive oil so their edges are lightly golden, thin slices of golden garlic, glossy with " +
+    "olive oil, flecked with chopped fresh parsley and black pepper, a lemon wedge on the side",
   "lorraine-s-cheese-cake": "a homemade South African baked cheesecake on a white platter, out of its springform tin: a " +
     "thin crushed Marie biscuit crust around the base and side, a smooth, creamy, pale filling with a lightly golden top and " +
     "a slight crack, no topping; one slice cut and lifted onto a small plate beside it so the dense, creamy texture shows",
@@ -134,6 +138,14 @@ STYLES["benchmark2-whitedish"] = STYLES.benchmark2.replace("Use a serving dish t
   "scalloped dish in the reference.", "Serve it in the white rectangular ceramic dish with the scalloped, curled edges " +
   "shown in the references (her own dish), same size and shape.");
 
+// A photo Laurence found of how a dish should look (never published): sent as a third reference for the food only.
+const FOOD_REFS = {
+  "nonna-s-italian-green-beans-potatoes": "Recipe images/Italian green beans and potato.jpeg",
+};
+const FOOD_REF_NOTE = "The THIRD reference photo shows roughly what this food looks like. Use it only as a guide to the food itself " +
+  "(the kind of beans and potatoes, how they are cut, the colours). Do not copy its bowl, cloth, board, herbs on the table, " +
+  "background, angle or composition: the setting, dish and camera must match the first two references.";
+
 const COMMON = "Photorealistic, appetising, realistic portions and textures, looks genuinely home-made rather than " +
   "restaurant-perfect. No people, no hands, no text, no labels, no logos, no watermark.";
 
@@ -211,11 +223,14 @@ async function review(key) {
       const prev = start[r.id];
       const round = (prev?.round || 0) + 1;
       const feedback = (prev?.history || []).filter((h) => h.status === "rejected" && h.comment).map((h) => `"${h.comment}"`);
+      const food = FOOD_REFS[r.id];
       const prompt = `A photograph of ${describe(r)}. ${STYLES.benchmark2} ${COMMON}` +
+        (food ? ` ${FOOD_REF_NOTE}` : "") +
         (feedback.length ? ` Sheila rejected earlier pictures of this dish. Make sure to fix every one of her comments: ${feedback.join("; ")}.` : "");
       try {
         const rel = `images/candidates/${r.id}-${round}.jpg`;
-        fs.writeFileSync(path.join(ROOT, rel), await generate(key, prompt, refs));
+        const all = food ? [...refs, fs.readFileSync(path.join(ROOT, food)).toString("base64")] : refs;
+        fs.writeFileSync(path.join(ROOT, rel), await generate(key, prompt, all));
         webSize(path.join(ROOT, rel));
         const photos = loadPhotos(); // re-read, so decisions made in the editor meanwhile are kept
         photos[r.id] = { ...(photos[r.id] || {}), source: "ai", status: "pending", candidate: rel, round, comment: "",
