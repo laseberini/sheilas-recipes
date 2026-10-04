@@ -40,6 +40,17 @@ const DISHES = {
     "carrots and golden halved baby potatoes, all properly roasted with deeply browned, caramelised, slightly charred edges, " +
     "glossy with olive oil and flecked with herbs and vegetable spice, with a few roasted mielie (corn on the cob) chunks " +
     "with charred kernels tucked in among them; rich, vivid, varied colours",
+  "luana-s-peperoni-verdi-ripieni": "Italian stuffed green peppers (peperoni verdi ripieni) baked in a white oven dish: " +
+    "four large green bell peppers standing upright with their tops cut off, soft and slightly blistered from the oven, " +
+    "each packed to the top with a beef mince and rice filling flecked with parsley, the tops golden with melted, browned " +
+    "parmesan; a rich red tomato sauce bubbling around the bottom of the dish, a few torn basil leaves",
+  "luana-s-coniglio-al-forno": "Italian roast rabbit (coniglio al forno) in a white roasting dish: jointed rabbit pieces " +
+    "roasted golden-brown and glistening, with cubed potatoes browned and crisp at the edges roasting in the pan juices, " +
+    "whole garlic cloves, sprigs of rosemary and a few sage leaves, a couple of lemon wedges; it looks like a rustic " +
+    "Italian roast of meat pieces on the bone (no whole animal, no head, nothing that looks like a pet)",
+  "luana-s-fagiolini-e-patate-al-pomodoro": "Italian green beans and potatoes stewed in tomato (fagiolini e patate al " +
+    "pomodoro) in a white serving bowl: tender whole green beans and soft cubes of potato in a rich, chunky red tomato " +
+    "sauce, a drizzle of glossy olive oil on top, torn fresh basil leaves and a little grated parmesan; homely and rustic",
   "lorraine-s-cheese-cake": "a homemade South African baked cheesecake on a white platter, out of its springform tin: a " +
     "thin crushed Marie biscuit crust around the base and side, a smooth, creamy, pale filling with a lightly golden top and " +
     "a slight crack, no topping; one slice cut and lifted onto a small plate beside it so the dense, creamy texture shows",
