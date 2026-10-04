@@ -1,10 +1,10 @@
 <!doctype html>
-<html lang="en" data-version="0.44" data-built="2026-10-04 08:16">
+<html lang="en" data-version="0.45" data-built="2026-10-04 08:50">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Sheila's Recipes</title>
-<link rel="manifest" href="manifest.webmanifest?v=0.44">
+<link rel="manifest" href="manifest.webmanifest?v=0.45">
 <link rel="icon" type="image/png" sizes="32x32" href="images/icons/sheila-32.png">
 <link rel="apple-touch-icon" href="images/icons/sheila-180.png">
 <meta name="apple-mobile-web-app-title" content="Sheila's Recipes">
@@ -13,8 +13,8 @@
 <meta name="theme-color" content="#1d3f7a">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,400;1,9..144,600&family=Work+Sans:wght@400;500;600&display=swap" rel="stylesheet">
-<script src="recipes-data.js?v=0.44"></script>
-<script src="shared.js?v=0.44"></script>
+<script src="recipes-data.js?v=0.45"></script>
+<script src="shared.js?v=0.45"></script>
 <style>
   :root {
     --link-accent: #1d3f7a;
@@ -80,13 +80,15 @@
   @keyframes storyFade { from { opacity: 0; } }
   @keyframes storyUp { from { transform: translateY(24px); opacity: 0; } }
   /* Whose recipe: a face + "From Nonna ›" under the title; tapping it opens who they are in a pop-up. */
-  .byline { display: flex; align-items: center; gap: 12px; margin: -2px 0 16px; padding: 0; border: 0; background: none; font: inherit; color: var(--cobalt);
+  .byline { display: flex; align-items: center; gap: 12px; margin: -2px 0 0; padding: 0; border: 0; background: none; font: inherit; color: var(--cobalt);
     text-align: left; cursor: pointer; max-width: 100%; position: relative; z-index: 2; }
   .byline .by-face { flex: none; width: 46px; height: 46px; border-radius: 50%; overflow: hidden; border: 2px solid #fff; box-shadow: 0 3px 10px rgba(0,0,0,.25);
     background: var(--sand); display: grid; place-items: center; }
   .byline .by-face img { width: 100%; height: 100%; object-fit: cover; display: block; }
   .byline .by-face svg { width: 26px; height: 26px; color: var(--cobalt); }
+  .byline .by-text { min-width: 0; display: grid; }
   .byline b { font: 600 18px/1.2 Fraunces, serif; }
+  .byline small { font: 500 14px "Work Sans"; opacity: .95; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .r-hero.has-hero .byline { color: #fff; text-shadow: 0 1px 8px rgba(0,0,0,.4); }
   .byline:focus-visible { outline: 2px solid var(--lemon); outline-offset: 4px; border-radius: 99px; }
   .person-pane { padding-bottom: 0; }
@@ -119,7 +121,6 @@
   /* "From Nonna" on a recipe opens the panel. */
   .meta .tap { cursor: pointer; }
   .meta .tap::after { content: " ›"; font-weight: 700; }
-  .r-hero:not(.has-hero) .meta .tap { box-shadow: inset 0 0 0 1.5px var(--cobalt-2); }
   @media (max-width: 640px) {
     .story { padding: 0; align-items: flex-end; }
     .story-panel { border-radius: 22px 22px 0 0; max-height: 92vh; padding: 32px 22px 28px; }
@@ -164,7 +165,7 @@
   }
 
 
-  .recipe-body { margin-top: 28px; }
+  .recipe-body { margin-top: 22px; }
   .recipe-body { display: grid; grid-template-columns: 1fr 1.6fr; gap: 48px; padding-bottom: 36px; }
   .ing-box { background: #fff; border-radius: 18px; padding: 28px; border-top: 6px solid var(--terracotta); align-self: start; position: sticky; top: 20px; }
   .ing-box h3, .method-box h3 { font-size: 28px; color: var(--cobalt); margin-bottom: 14px; }
@@ -296,14 +297,18 @@
   .r-hero.has-hero .dish-ph img { object-position: center 55%; }
   .r-hero.has-hero::after { content: ""; position: absolute; inset: 0; z-index: 1; pointer-events: none;
     background: linear-gradient(to top, rgba(12,20,38,.9) 0%, rgba(12,20,38,.55) 32%, rgba(12,20,38,.05) 62%, rgba(12,20,38,.35) 100%); }
-  .r-hero.has-hero h1, .r-hero.has-hero .meta { position: relative; z-index: 2; }
+  .r-hero.has-hero h1 { position: relative; z-index: 2; }
   .r-hero.has-hero h1 { color: #fff; margin: 0 0 14px; text-shadow: 0 2px 20px rgba(0,0,0,.35); }
   .r-hero.has-hero .back { position: absolute; top: 16px; left: 16px; z-index: 3; background: rgba(255,255,255,.92); color: var(--cobalt);
     padding: 8px 14px; border-radius: 99px; font-size: 14px; box-shadow: 0 4px 14px rgba(0,0,0,.18); }
-  .r-hero.has-hero .meta span { background: rgba(255,255,255,.16); color: #fff; border: 1px solid rgba(255,255,255,.35);
-    -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); }
-  /* Serves / Written are just facts: plain text, so only the category and memories look tappable. */
-  .r-hero.has-hero .meta span:not(.tap) { background: none; border: 0; padding-left: 4px; padding-right: 4px; -webkit-backdrop-filter: none; backdrop-filter: none; }
+  /* Under the photo: Serves · Written as plain text, then the category and memories as big, easy buttons. */
+  .r-under { padding-top: 18px; }
+  .r-facts { margin: 0 0 12px; font: 500 15px "Work Sans"; color: var(--muted); }
+  .r-facts:not(:has(span:not([hidden]))) { display: none; }
+  .r-facts span:not([hidden]) ~ span:not([hidden])::before { content: " · "; }
+  .r-under .meta span, .r-under .meta a.mem-chip { display: inline-flex; align-items: center; min-height: 44px; padding: 0 15px; font: 600 14px "Work Sans"; }
+  .r-under .meta .tap::after { white-space: pre; }
+  .r-under .meta span { background: #fff; color: var(--cobalt); box-shadow: inset 0 0 0 1.5px var(--cobalt); }
   .r-hero.has-hero .wrap { padding-bottom: 28px; }
   @media (min-width: 801px) { .r-hero.has-hero .wrap { padding-bottom: 44px; } .r-hero.has-hero .back { top: 24px; left: 24px; } }
   .r-hero.has-hero h1 { font-size: clamp(34px, 7vw, 80px); }
@@ -414,11 +419,15 @@
         <a class="back" href="#recipes">← All recipes</a>
         <h1 data-fill="title"></h1>
         <button type="button" class="byline" data-fill="byline" hidden></button>
-        <div class="meta"><span data-fill="cat"></span><span data-fill="date" data-prefix="Written "></span><span data-fill="serves" data-prefix="Serves "></span><a class="mem-chip" href="#memories" data-fill="mem-chip" hidden></a></div>
       </div>
       <div class="dish-ph" data-fill="dish"></div>
     </div>
   </section>
+  <!-- The facts and buttons sit on the cream under the photo, so the photo stays calm. -->
+  <div class="r-under wrap">
+    <p class="r-facts"><span data-fill="serves" data-prefix="Serves "></span><span data-fill="date" data-prefix="Written "></span></p>
+    <div class="meta"><span data-fill="cat"></span><a class="mem-chip" href="#memories" data-fill="mem-chip" hidden></a></div>
+  </div>
   <div class="wrap">
     <div class="rel" data-fill="related" hidden></div>
     <div>
