@@ -401,12 +401,16 @@
       <div>
         <a class="back" href="#recipes">← All recipes</a>
         <h1 data-fill="title"></h1>
-        <button type="button" class="byline" data-byline hidden></button>
+        <div class="byline-row"><button type="button" class="byline" data-byline hidden></button><a class="mem-chip by-chip" href="#memories" data-fill="mem-chip" hidden></a></div>
         <div class="meta"><span data-fill="cat"></span><span data-fill="date" data-prefix="Written "></span><span data-fill="serves" data-prefix="Serves "></span><a class="mem-chip" href="#memories" data-fill="mem-chip" hidden></a></div>
       </div>
       <div class="dish-ph" data-fill="dish"></div>
     </div>
   </section>
+  <div class="r-under wrap">
+    <p class="r-facts"><span class="r-cat" data-fill="cat"></span><span data-fill="serves" data-prefix="Serves "></span><span data-fill="date" data-prefix="Written "></span></p>
+    <div class="r-under-pills"><span data-fill="cat"></span><a class="mem-chip" href="#memories" data-fill="mem-chip" hidden></a></div>
+  </div>
   <div class="wrap">
     <div class="switch" data-views>
       <button data-view="recipe">The recipe</button>
@@ -442,7 +446,9 @@
     <div class="person-pane person-sheet" data-fill="personm"></div>
   </article>
 </div>
-<div class="mock-tag">Mockup</div>
+<div class="mock-bar" role="group" aria-label="Mockup versions"><span>Mockup</span>
+  <button type="button" data-variant="before">Before</button><button type="button" data-variant="a">A</button><button type="button" data-variant="b">B</button><button type="button" data-variant="c">C</button>
+</div>
 <style>
   /* No tabs: the recipe is the page. */
   [data-recipe] [data-views], [data-recipe] [data-pane=person] { display: none !important; }
@@ -452,8 +458,9 @@
   .recipe-body { margin-top: 28px; }
 
   /* Whose recipe: face + name under the title. */
-  .byline { display: flex; align-items: center; gap: 12px; margin: -2px 0 16px; padding: 0; border: 0; background: none; font: inherit; color: var(--cobalt);
-    text-align: left; cursor: pointer; max-width: 100%; }
+  .byline-row { display: flex; align-items: center; gap: 12px; margin: -2px 0 16px; position: relative; z-index: 2; }
+  .byline { display: flex; align-items: center; gap: 12px; padding: 0; border: 0; background: none; font: inherit; color: var(--cobalt);
+    text-align: left; cursor: pointer; min-width: 0; flex: 0 1 auto; }
   .byline .by-face { flex: none; width: 46px; height: 46px; border-radius: 50%; overflow: hidden; border: 2px solid #fff; box-shadow: 0 3px 10px rgba(0,0,0,.25);
     background: var(--sand); display: grid; place-items: center; }
   .byline .by-face img { width: 100%; height: 100%; object-fit: cover; display: block; }
@@ -462,13 +469,49 @@
   .byline b { font: 600 18px Fraunces, serif; line-height: 1.2; }
   .byline b i { font-style: normal; font-weight: 600; }
   .byline small { font: 500 13px "Work Sans"; opacity: .8; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-  .r-hero.has-hero .byline { color: #fff; position: relative; z-index: 2; text-shadow: 0 1px 8px rgba(0,0,0,.4); }
+  .r-hero.has-hero .byline { color: #fff; text-shadow: 0 1px 8px rgba(0,0,0,.4); }
   .byline:focus-visible { outline: 2px solid var(--lemon); outline-offset: 4px; border-radius: 99px; }
+  .by-chip { flex: none; margin-left: auto; background: var(--lemon); color: var(--cobalt); border-radius: 99px; padding: 8px 14px; font: 600 14px "Work Sans"; text-decoration: none; white-space: nowrap; }
+
+  /* Under the photo (A and C). */
+  .r-under { padding-top: 18px; }
+  .r-facts { margin: 0; font: 500 15px "Work Sans"; color: var(--muted); }
+  .r-facts span:not([hidden]) ~ span:not([hidden])::before { content: " · "; }
+  .r-under-pills { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 12px; }
+  .r-under-pills span, .r-under-pills .mem-chip { display: inline-flex; align-items: center; min-height: 44px; padding: 0 15px; border-radius: 99px; font: 600 14px "Work Sans"; text-decoration: none; }
+  .r-under-pills span { border: 1.5px solid var(--cobalt); color: var(--cobalt); background: #fff; cursor: pointer; }
+  .r-under-pills span::after { content: " ›"; white-space: pre; font-weight: 700; }
+  .r-under-pills .mem-chip { background: var(--lemon); color: var(--cobalt); }
+  .r-facts .r-cat { color: var(--cobalt); font-weight: 600; text-decoration: underline; text-underline-offset: 3px; cursor: pointer; }
+  .r-facts .r-cat::after { content: " ›"; }
+
+  /* Before: everything on the photo. */
+  [data-mock=before] .by-chip, [data-mock=before] .r-under { display: none !important; }
+  /* A: title + byline on the photo; the rest below. */
+  [data-mock=a] .r-hero .meta, [data-mock=a] .by-chip, [data-mock=a] .r-facts .r-cat { display: none !important; }
+  [data-mock=a] .r-facts span::before { content: none !important; }
+  [data-mock=a] .r-facts span:not(.r-cat):not([hidden]) ~ span:not([hidden])::before { content: " · " !important; }
+  [data-mock=a] .byline small { opacity: .95; font-size: 14px; }
+  [data-mock=a] .r-hero.has-hero .byline-row { margin-bottom: 0; }
+  [data-mock=a] .recipe-body { margin-top: 22px; }
+  /* B: all on the photo, trimmed. */
+  [data-mock=b] .r-under, [data-mock=b] .by-chip, [data-mock=b] .byline small { display: none !important; }
+  [data-mock=b] .r-hero.has-hero .meta span.tap { background: rgba(255,255,255,.16); color: #fff; border: 1px solid rgba(255,255,255,.35); font-weight: 500; }
+  [data-mock=b] .r-hero.has-hero .meta span:not(.tap) { background: none; border: 0; padding-left: 4px; padding-right: 4px; -webkit-backdrop-filter: none; backdrop-filter: none; }
+  /* C: memories beside the face; category + facts as a line below. */
+  [data-mock=c] .r-hero .meta, [data-mock=c] .r-under-pills { display: none !important; }
+  [data-mock=c] .r-hero.has-hero .byline-row { margin-bottom: 0; }
+  [data-mock=c] .recipe-body { margin-top: 22px; }
 
   .person-sheet { padding-bottom: 0; }
   .person-sheet .person-top { margin-right: 40px; }
-  .mock-tag { position: fixed; left: 50%; bottom: 10px; transform: translateX(-50%); z-index: 50; background: var(--terracotta); color: #fff;
-    font: 600 12px "Work Sans"; letter-spacing: .12em; text-transform: uppercase; padding: 5px 12px; border-radius: 99px; pointer-events: none; opacity: .9; }
+  .mock-bar { position: fixed; left: 50%; bottom: 12px; transform: translateX(-50%); z-index: 50; display: flex; align-items: center; gap: 4px;
+    background: var(--terracotta); color: #fff; padding: 5px 6px 5px 14px; border-radius: 99px; box-shadow: 0 6px 20px rgba(0,0,0,.25);
+    font: 600 12px "Work Sans"; letter-spacing: .1em; text-transform: uppercase; }
+  .mock-bar span { margin-right: 6px; }
+  .mock-bar button { border: 0; background: rgba(255,255,255,.18); color: #fff; font: 600 13px "Work Sans"; min-width: 40px; height: 34px; padding: 0 10px; border-radius: 99px; cursor: pointer; }
+  .mock-bar button.on { background: #fff; color: var(--terracotta); }
+  [data-sheet]:not([hidden]) ~ .mock-bar { display: none; }
 </style>
 <script>
   // Face (or an icon) + "From <name>" under the title; tapping it opens who they are in a pop-up.
@@ -491,14 +534,25 @@
         openSheet(sheet);
       };
     });
-    // Swiping can't flip to the (hidden) second tab.
     const scope = document.querySelector("[data-recipe]");
     if (scope) scope.dataset.tab = "recipe";
   };
+  // Swiping can't flip to the (hidden) second tab.
   new MutationObserver(() => {
     const scope = document.querySelector("[data-recipe]");
     if (scope && scope.dataset.tab === "person") scope.querySelector("[data-view=recipe]")?.click();
   }).observe(document.querySelector("[data-recipe]"), { attributes: true, attributeFilter: ["data-tab"] });
+
+  // Version switcher (remembered in the address as ?style=a, so a link opens the same one).
+  const setVariant = (v) => {
+    document.documentElement.dataset.mock = v;
+    document.querySelectorAll(".mock-bar [data-variant]").forEach((b) => b.classList.toggle("on", b.dataset.variant === v));
+    const url = new URL(location.href);
+    url.searchParams.set("style", v);
+    history.replaceState(history.state, "", url);
+  };
+  document.querySelectorAll(".mock-bar [data-variant]").forEach((b) => (b.onclick = () => setVariant(b.dataset.variant)));
+  setVariant(["before", "a", "b", "c"].includes(new URLSearchParams(location.search).get("style")) ? new URLSearchParams(location.search).get("style") : "a");
 </script>
 </body>
 </html>
