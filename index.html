@@ -1,10 +1,10 @@
 <!doctype html>
-<html lang="en" data-version="0.58" data-built="2026-10-04 19:34">
+<html lang="en" data-version="0.59" data-built="2026-10-04 19:47">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Sheila's Recipes</title>
-<link rel="manifest" href="manifest.webmanifest?v=0.58">
+<link rel="manifest" href="manifest.webmanifest?v=0.59">
 <link rel="icon" type="image/png" sizes="32x32" href="images/icons/sheila-32.png">
 <link rel="apple-touch-icon" href="images/icons/sheila-180.png">
 <meta name="apple-mobile-web-app-title" content="Sheila's Recipes">
@@ -17,8 +17,8 @@
 <meta property="og:type" content="website">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,400;1,9..144,600&family=Work+Sans:wght@400;500;600&display=swap" rel="stylesheet">
-<script src="recipes-data.js?v=0.58"></script>
-<script src="shared.js?v=0.58"></script>
+<script src="recipes-data.js?v=0.59"></script>
+<script src="shared.js?v=0.59"></script>
 <style>
   :root {
     --link-accent: #1d3f7a;
@@ -269,6 +269,13 @@
   .mem-panel .kicker { color: var(--terracotta); margin-right: 44px; }
   .mem-panel h2 { margin: 4px 44px 6px 0; }
   .memf-intro { margin: 0 0 16px; color: var(--muted); }
+  .memf-done { text-align: center; padding: 6px 0 4px; }
+  .memf-done h2 { margin: 6px 0 10px; }
+  .memf-done p { margin: 0 auto 10px; max-width: 30em; font-size: 17px; }
+  .memf-heart { font-size: 40px; line-height: 1; }
+  /* On the recipe, until it's approved: "your memory is with the family". */
+  .mem-pending { max-width: 620px; margin: 0 auto 18px; padding: 12px 18px; border-radius: 14px; background: #fff; border: 2px dashed var(--lemon);
+    text-align: center; font: italic 17px/1.45 Fraunces, serif; color: var(--cobalt); }
   .mem-panel .mem-form { background: none; padding: 0; max-width: none; }
   .mem-panel .mem-form input, .mem-panel .mem-form textarea { border-color: var(--sand); }
   .mem-dots { display: flex; justify-content: center; margin-top: -4px; }
@@ -418,6 +425,7 @@
   <article class="story-panel mem-panel" role="dialog" aria-modal="true" aria-labelledby="memf-title">
     <a class="story-close" href="#" data-sheet-close aria-label="Close">×</a>
     <div class="kicker" data-fill="memf-dish"></div>
+    <div data-memf-ask>
     <h2 id="memf-title">Share a memory</h2>
     <p class="memf-intro">Cooked this with Sheila? Eaten it at her table? Tell us about it.</p>
     <form class="mem-form" data-mem-form>
@@ -428,6 +436,15 @@
       <button type="submit">Share memory</button>
       <p class="mem-msg" hidden></p>
     </form>
+    </div>
+    <!-- Shown once a memory is sent, so nobody thinks it didn't work. -->
+    <div class="memf-done" data-memf-done hidden>
+      <div class="memf-heart" aria-hidden="true">💛</div>
+      <h2>Thank you<span data-fill="memf-name"></span>!</h2>
+      <p>Your memory has been sent.</p>
+      <p>Sheila and the family read every memory before it goes on the site, so it won't show straight away. It'll appear here <b>within a day or so</b>.</p>
+      <button type="button" class="story-done" data-memf-close>Close</button>
+    </div>
   </article>
 </div>
 
@@ -463,6 +480,7 @@
   </div>
   <section class="mem wrap" id="memories" data-mem-section hidden>
     <div class="mem-head"><h2>Memories</h2></div>
+    <p class="mem-pending" data-mem-pending hidden>Thank you for your memory! Sheila and the family are reading it - it'll appear here within a day or so.</p>
     <div class="mem-carousel">
       <div class="mem-list" data-fill="memories" tabindex="0" aria-label="Memories of this dish - use the arrow keys to move"></div>
       <button type="button" class="mem-arrow prev" data-mem-prev aria-label="Previous memory">‹</button>

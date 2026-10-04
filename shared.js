@@ -613,6 +613,11 @@ function drawMemories() {
   setMemBadges();
   const id = memRecipeId();
   const mine = memories.filter((m) => m.recipe === id);
+  // A memory sent from this phone that isn't up yet: say it's on its way (for up to 4 days).
+  const pending = store.get("memPending", []).filter((p) => Date.now() - p.at < 4 * 864e5 &&
+    !memories.some((m) => m.recipe === p.recipe && m.name.trim().toLowerCase() === p.name.toLowerCase() && Date.parse(m.at) >= p.at - 6e4));
+  store.set("memPending", pending.length ? pending : null);
+  document.querySelectorAll("[data-mem-pending]").forEach((el) => (el.hidden = !pending.some((p) => p.recipe === id)));
   document.querySelectorAll("[data-fill=memories]").forEach((el) => {
     el.innerHTML = mine.length ? mine.map((m) => memCard(m)).join("")
       : '<p class="mem-empty">No memories of this dish yet.</p>';
@@ -722,6 +727,8 @@ function openMemoryForm() {
   if (!sheet) return;
   sheet.querySelector("[data-fill=memf-dish]").textContent = RECIPES[memRecipeId()]?.title || "";
   sheet.querySelectorAll(".mem-msg").forEach((m) => (m.hidden = true));
+  sheet.querySelector("[data-memf-ask]").hidden = false;
+  sheet.querySelector("[data-memf-done]").hidden = true;
   // Their name from last time (kept on this phone only).
   const name = sheet.querySelector("[name=name]");
   if (name && !name.value) name.value = store.get("memName", "");
@@ -738,6 +745,7 @@ function setupMemories() {
     document.getElementById("memories").scrollIntoView({ behavior: "smooth" });
   }));
   document.querySelectorAll("[data-mem-add]").forEach((b) => (b.onclick = openMemoryForm));
+  document.querySelectorAll("[data-memf-close]").forEach((b) => (b.onclick = closeSheet));
   window.addEventListener("hashchange", drawMemories);
   drawMemories();
   fetch(MEMORIES_URL)
@@ -763,8 +771,15 @@ function setupMemories() {
       const name = form.name.value;
       form.reset();
       form.name.value = name;
-      say("Thank you! Your memory will appear here once the family has read it.");
-      setTimeout(closeSheet, 2600);
+      // Remember it's waiting, so the recipe can say so until it appears (this phone only).
+      store.set("memPending", [...store.get("memPending", []), { recipe: id, name: name.trim(), at: Date.now() }]);
+      const sheet = form.closest("[data-mem-sheet]");
+      const first = name.trim().split(/\s+/)[0];
+      sheet.querySelector("[data-fill=memf-name]").textContent = first ? `, ${first}` : "";
+      sheet.querySelector("[data-memf-ask]").hidden = true;
+      sheet.querySelector("[data-memf-done]").hidden = false;
+      sheet.querySelector(".story-panel").scrollTo(0, 0);
+      drawMemories();
     } catch (err) {
       say(err.message && !/fetch|JSON/i.test(err.message) ? err.message : "Sorry, that didn't send. Please try again.", true);
     } finally {
