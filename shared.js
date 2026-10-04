@@ -172,7 +172,7 @@ function linkify(text, R) {
   return out + esc(text.slice(last));
 }
 
-// "Uses …" / "Used in …" strip shown under the view switch.
+// "Uses …" / "Used in …" strip shown above the ingredients.
 function relatedStrip(key, R) {
   const link = (k) => `<a class="rec-link" href="#recipe-${k}">${esc(RECIPES[k].title)} →</a>`;
   const uses = (R.uses || []).map(link);
@@ -204,22 +204,18 @@ function renderRecipe(R, key) {
       el.textContent = R[key] ? (el.dataset.prefix || "") + (key === "date" ? niceDate(R[key]) : R[key]) : "";
     });
   }
-  // Second tab: "From Nonna" - who the recipe comes from. Nobody known, no tabs.
+  // Whose recipe: face (or an icon) + "From Nonna ›" under the title; tap for who they are.
   const person = R.person && MOCK.people?.[R.person];
-  set("person-tab", (el) => (el.textContent = person ? `From ${person.name}` : ""));
-  set("person-pane", (el) => {
-    el.innerHTML = person ? personHTML(R.person, key) : "";
-    const img = el.querySelector(".person-photo img");
-    if (img) img.onclick = () => openLightbox(img.src, person.name);
+  set("byline", (el) => {
+    el.hidden = !person;
+    el.innerHTML = person ? `<span class="by-face">${person.photo ? `<img src="${withV(person.photo)}" alt="">` : PERSON_ICON}</span><b>From ${esc(person.name)} ›</b>` : "";
+    el.onclick = () => openPerson(R.person, key);
   });
-  document.querySelectorAll("[data-views]").forEach((g) => (g.hidden = !person));
   set("ingredients", (el) => (el.innerHTML = R.ingredients
     .map((i) => (i.trim().endsWith(":") ? `<li class="sub">${esc(i)}</li>` : `<li>${linkify(i, R)}</li>`)).join("")));
-  document.querySelectorAll("[data-views]").forEach((group) => {
-    let strip = group.parentElement.querySelector(":scope > .rel");
-    if (!strip) { strip = document.createElement("div"); strip.className = "rel"; group.after(strip); }
-    strip.innerHTML = relatedStrip(key, R);
-    strip.hidden = !strip.innerHTML;
+  set("related", (el) => {
+    el.innerHTML = relatedStrip(key, R);
+    el.hidden = !el.innerHTML;
   });
   set("method", (el) => (el.innerHTML = methodItems(R.method, R)));
   set("notes", (el) => {
@@ -298,49 +294,6 @@ function fillMockup() {
     });
   });
 
-  // View switch: her page / the recipe (in the order the buttons appear).
-  const views = [];
-  document.querySelectorAll("[data-views]").forEach((group) => {
-    const ORDER = [...group.querySelectorAll("[data-view]")].map((b) => b.dataset.view);
-    const scope = group.closest("[data-recipe]") || document;
-    let current = null;
-    const show = (v, animate) => {
-      const dir = current === null ? 0 : Math.sign(ORDER.indexOf(v) - ORDER.indexOf(current));
-      current = v;
-      scope.dataset.tab = v; // e.g. Memories belong to the recipe, so they hide on the "From …" tab
-      group.querySelectorAll("[data-view]").forEach((b) => b.classList.toggle("on", b.dataset.view === v));
-      group.style.setProperty("--pos", ORDER.indexOf(v));
-      scope.querySelectorAll("[data-pane]").forEach((p) => {
-        p.hidden = p.dataset.pane !== v;
-        p.classList.remove("pane-from-right", "pane-from-left");
-        if (!p.hidden && animate && dir) {
-          void p.offsetWidth; // restart the animation
-          p.classList.add(dir > 0 ? "pane-from-right" : "pane-from-left");
-        }
-      });
-    };
-    group.querySelectorAll("[data-view]").forEach((b) => (b.onclick = () => show(b.dataset.view, true)));
-    views.push(show);
-
-    // Swipe left/right anywhere on the recipe to move between the views.
-    let t0 = null;
-    scope.addEventListener("touchstart", (e) => {
-      if (e.target.closest(".mem-carousel")) { t0 = null; return; } // swiping the memories, not the tabs
-      t0 = e.touches.length === 1 ? { x: e.touches[0].clientX, y: e.touches[0].clientY, t: Date.now() } : null;
-    }, { passive: true });
-    scope.addEventListener("touchend", (e) => {
-      if (!t0) return;
-      const dx = e.changedTouches[0].clientX - t0.x;
-      const dy = e.changedTouches[0].clientY - t0.y;
-      const quick = Date.now() - t0.t < 700;
-      t0 = null;
-      // Only a long, clearly sideways swipe, so a brush of the screen while cooking doesn't flip the tab.
-      if (!quick || Math.abs(dx) < Math.max(120, innerWidth * 0.35) || Math.abs(dx) < Math.abs(dy) * 2.5) return;
-      const next = ORDER[ORDER.indexOf(current) + (dx < 0 ? 1 : -1)];
-      if (next) show(next, true);
-    }, { passive: true });
-  });
-
   // Home ↔ recipe "pages": #recipe-fish-cakes. #recipes (the list) is not a recipe; an unknown or
   // not-yet-checked recipe shows the home page. Links from the early mockup still work.
   const OLD_KEYS = { fish: "fish-cakes", lemon: "lemon-mereingue", pesto: "alettas-pesto-sauce", linguine: "linguine-pesto" };
@@ -380,7 +333,6 @@ function fillMockup() {
     document.querySelectorAll("[data-screen]").forEach((s) => (s.hidden = s.dataset.screen !== (key ? "recipe" : "home")));
     if (key) {
       renderRecipe(RECIPES[key], key);
-      views.forEach((show) => show("recipe"));
     }
     if (fromRecipe && homeY !== null) return window.scrollTo(0, homeY);
     // Jump to a section on the home page (e.g. #recipes), otherwise start at the top.
@@ -424,12 +376,7 @@ function fillMockup() {
     .method li.sub { counter-increment: none !important; display: block !important; padding: 8px 0 6px !important; font-weight: 700; }
     .method li.sub::before { content: none !important; }
 
-    /* Swiping between Her page / The recipe slides the new view in. */
-    @keyframes paneFromRight { from { opacity: 0; transform: translateX(36px); } to { opacity: 1; transform: none; } }
-    @keyframes paneFromLeft { from { opacity: 0; transform: translateX(-36px); } to { opacity: 1; transform: none; } }
     [data-recipe] { overflow-x: clip; }
-    .pane-from-right { animation: paneFromRight .28s ease-out; }
-    .pane-from-left { animation: paneFromLeft .28s ease-out; }
 
     /* Original page: tap to open full screen, pinch / double-tap / scroll-wheel to zoom. */
     [data-fill=pages] img, [data-fill=dish] img { cursor: zoom-in; }
@@ -487,6 +434,16 @@ function openCategory(name, currentKey) {
   if (!sheet) return;
   sheet.querySelector("[data-fill=catm-title]").textContent = name;
   sheet.querySelector("[data-fill=catm-list]").innerHTML = recipeLinks(Object.entries(RECIPES).filter(([, r]) => r.category === name).sort(byTitle), currentKey);
+  openSheet(sheet);
+}
+const PERSON_ICON = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c1.2-4.2 4.3-6 8-6s6.8 1.8 8 6"/></svg>';
+function openPerson(id, currentKey) {
+  const sheet = document.querySelector("[data-person-sheet]");
+  if (!sheet || !MOCK.people?.[id]) return;
+  const box = sheet.querySelector("[data-fill=person-pane]");
+  box.innerHTML = personHTML(id, currentKey);
+  const img = box.querySelector(".person-photo img");
+  if (img) img.onclick = () => openLightbox(img.src, MOCK.people[id].name);
   openSheet(sheet);
 }
 function hideSheet() {
@@ -725,7 +682,6 @@ function setupMemories() {
   document.querySelectorAll("[data-fill=mem-chip]").forEach((a) => (a.onclick = (e) => {
     e.preventDefault();
     if (!memories.some((m) => m.recipe === memRecipeId())) return openMemoryForm();
-    if (document.querySelector("[data-recipe]")?.dataset.tab === "person") document.querySelector("[data-views] [data-view=recipe]")?.click();
     document.getElementById("memories").scrollIntoView({ behavior: "smooth" });
   }));
   document.querySelectorAll("[data-mem-add]").forEach((b) => (b.onclick = openMemoryForm));

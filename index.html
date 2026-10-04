@@ -1,10 +1,10 @@
 <!doctype html>
-<html lang="en" data-version="0.43" data-built="2026-10-04 07:42">
+<html lang="en" data-version="0.44" data-built="2026-10-04 08:16">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Sheila's Recipes</title>
-<link rel="manifest" href="manifest.webmanifest?v=0.43">
+<link rel="manifest" href="manifest.webmanifest?v=0.44">
 <link rel="icon" type="image/png" sizes="32x32" href="images/icons/sheila-32.png">
 <link rel="apple-touch-icon" href="images/icons/sheila-180.png">
 <meta name="apple-mobile-web-app-title" content="Sheila's Recipes">
@@ -13,8 +13,8 @@
 <meta name="theme-color" content="#1d3f7a">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,400;1,9..144,600&family=Work+Sans:wght@400;500;600&display=swap" rel="stylesheet">
-<script src="recipes-data.js?v=0.43"></script>
-<script src="shared.js?v=0.43"></script>
+<script src="recipes-data.js?v=0.44"></script>
+<script src="shared.js?v=0.44"></script>
 <style>
   :root {
     --link-accent: #1d3f7a;
@@ -79,11 +79,18 @@
   .story-done { display: block; width: 100%; margin-top: 22px; border: 0; border-radius: 99px; padding: 14px; background: var(--cobalt); color: #fff; font: 600 17px "Work Sans"; cursor: pointer; }
   @keyframes storyFade { from { opacity: 0; } }
   @keyframes storyUp { from { transform: translateY(24px); opacity: 0; } }
-  /* Memories belong to the recipe: not shown on the "From …" tab. */
-  [data-recipe][data-tab="person"] .mem { display: none !important; }
-  /* Whose recipe panel */
-  /* "From Nonna" tab: who the recipe comes from. */
-  .person-pane { max-width: 760px; margin: 0 auto; padding-bottom: var(--section); }
+  /* Whose recipe: a face + "From Nonna ›" under the title; tapping it opens who they are in a pop-up. */
+  .byline { display: flex; align-items: center; gap: 12px; margin: -2px 0 16px; padding: 0; border: 0; background: none; font: inherit; color: var(--cobalt);
+    text-align: left; cursor: pointer; max-width: 100%; position: relative; z-index: 2; }
+  .byline .by-face { flex: none; width: 46px; height: 46px; border-radius: 50%; overflow: hidden; border: 2px solid #fff; box-shadow: 0 3px 10px rgba(0,0,0,.25);
+    background: var(--sand); display: grid; place-items: center; }
+  .byline .by-face img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .byline .by-face svg { width: 26px; height: 26px; color: var(--cobalt); }
+  .byline b { font: 600 18px/1.2 Fraunces, serif; }
+  .r-hero.has-hero .byline { color: #fff; text-shadow: 0 1px 8px rgba(0,0,0,.4); }
+  .byline:focus-visible { outline: 2px solid var(--lemon); outline-offset: 4px; border-radius: 99px; }
+  .person-pane { padding-bottom: 0; }
+  .person-pane .person-top { margin-right: 40px; }
   .person-top { display: flex; align-items: center; gap: 18px; margin: 0 0 16px; }
   .person-photo img, .person-photo .initials { width: 92px; height: 92px; border-radius: 50%; object-fit: cover; display: block; border: 4px solid #fff; box-shadow: 0 6px 18px rgba(29,63,122,.15); }
   .person-photo img { cursor: zoom-in; }
@@ -156,11 +163,8 @@
     display: grid; place-items: center; color: var(--muted); font: italic 18px Fraunces, serif; text-align: center;
   }
 
-  .switch { position: relative; display: grid; grid-template-columns: repeat(2, 1fr); background: #fff; border-radius: 99px; padding: 5px; max-width: 560px; margin: -28px auto 40px; box-shadow: 0 10px 30px rgba(29,63,122,.12); }
-  .switch::before { content: ""; position: absolute; top: 5px; bottom: 5px; left: 5px; width: calc((100% - 10px) / 2); border-radius: 99px; background: var(--cobalt); transform: translateX(calc(var(--pos, 1) * 100%)); transition: transform .25s; }
-  .switch button { position: relative; border: 0; background: none; font: 600 15px "Work Sans"; padding: 12px 8px; color: var(--cobalt); cursor: pointer; }
-  .switch button.on { color: #fff; }
 
+  .recipe-body { margin-top: 28px; }
   .recipe-body { display: grid; grid-template-columns: 1fr 1.6fr; gap: 48px; padding-bottom: 36px; }
   .ing-box { background: #fff; border-radius: 18px; padding: 28px; border-top: 6px solid var(--terracotta); align-self: start; position: sticky; top: 20px; }
   .ing-box h3, .method-box h3 { font-size: 28px; color: var(--cobalt); margin-bottom: 14px; }
@@ -282,7 +286,6 @@
     .tiles { height: 28px; background-size: 28px 28px, 28px 28px, 14px 14px; }
     .mem .mem-head, .home-mem .mem-head { margin-bottom: 16px; }
     .ing-box { position: static; }
-    .switch button { font-size: 13px; }
     .dish-ph { max-width: 260px; }
   }
   /* Recipe header: the dish photo full width, title and pills on top (when there's a photo). */
@@ -299,9 +302,10 @@
     padding: 8px 14px; border-radius: 99px; font-size: 14px; box-shadow: 0 4px 14px rgba(0,0,0,.18); }
   .r-hero.has-hero .meta span { background: rgba(255,255,255,.16); color: #fff; border: 1px solid rgba(255,255,255,.35);
     -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); }
-  .r-hero.has-hero .meta span.tap { background: rgba(255,255,255,.94); color: var(--cobalt); border-color: transparent; font-weight: 600; }
-  @media (min-width: 801px) { .r-hero.has-hero .wrap { padding-bottom: 80px; } .r-hero.has-hero .back { top: 24px; left: 24px; } }
-  .switch { z-index: 2; }
+  /* Serves / Written are just facts: plain text, so only the category and memories look tappable. */
+  .r-hero.has-hero .meta span:not(.tap) { background: none; border: 0; padding-left: 4px; padding-right: 4px; -webkit-backdrop-filter: none; backdrop-filter: none; }
+  .r-hero.has-hero .wrap { padding-bottom: 28px; }
+  @media (min-width: 801px) { .r-hero.has-hero .wrap { padding-bottom: 44px; } .r-hero.has-hero .back { top: 24px; left: 24px; } }
   .r-hero.has-hero h1 { font-size: clamp(34px, 7vw, 80px); }
   .r-bar { position: fixed; top: 0; left: 0; right: 0; z-index: 900; display: flex; align-items: center; gap: 6px; height: 54px; padding: 0 12px 0 6px;
     background: rgba(29,63,122,.97); color: var(--cream); box-shadow: 0 4px 16px rgba(0,0,0,.18); animation: barIn .2s ease-out; }
@@ -365,6 +369,14 @@
 </div>
 
 <!-- The recipes in a category, opened by tapping the category pill on a recipe. Same panel style as "My story". -->
+<!-- Whose recipe: their photo, who they are to Sheila, a few lines and their other recipes. -->
+<div class="story" data-sheet data-person-sheet hidden>
+  <article class="story-panel" role="dialog" aria-modal="true" aria-label="Whose recipe">
+    <a class="story-close" href="#" data-sheet-close aria-label="Close">×</a>
+    <div class="person-pane" data-fill="person-pane"></div>
+  </article>
+</div>
+
 <div class="story" data-sheet data-cat-sheet hidden>
   <article class="story-panel cat-panel" role="dialog" aria-modal="true" aria-labelledby="catm-title">
     <a class="story-close" href="#" data-sheet-close aria-label="Close">×</a>
@@ -401,17 +413,15 @@
       <div>
         <a class="back" href="#recipes">← All recipes</a>
         <h1 data-fill="title"></h1>
+        <button type="button" class="byline" data-fill="byline" hidden></button>
         <div class="meta"><span data-fill="cat"></span><span data-fill="date" data-prefix="Written "></span><span data-fill="serves" data-prefix="Serves "></span><a class="mem-chip" href="#memories" data-fill="mem-chip" hidden></a></div>
       </div>
       <div class="dish-ph" data-fill="dish"></div>
     </div>
   </section>
   <div class="wrap">
-    <div class="switch" data-views>
-      <button data-view="recipe">The recipe</button>
-      <button data-view="person" data-fill="person-tab"></button>
-    </div>
-    <div data-pane="recipe">
+    <div class="rel" data-fill="related" hidden></div>
+    <div>
       <div class="recipe-body">
         <div class="ing-box"><div class="box-head"><h3>Ingredients <small class="tap-hint">tap as you go</small></h3><button type="button" class="cook-clear" data-clear-ticks hidden>Clear</button></div><ul class="ing" data-fill="ingredients"></ul></div>
         <div class="method-box"><h3>Method</h3><ol class="method" data-fill="method"></ol><div class="notes" data-fill="notes"></div>
@@ -419,8 +429,6 @@
       </div>
       <nav class="recipe-end" data-fill="recipe-end" aria-label="More recipes"></nav>
     </div>
-    <!-- Whose recipe: their photo, who they are to Sheila, a few lines and their other recipes. -->
-    <div data-pane="person" class="person-pane" data-fill="person-pane"></div>
   </div>
   <section class="mem wrap" id="memories" data-mem-section hidden>
     <div class="mem-head"><h2>Memories</h2></div>
