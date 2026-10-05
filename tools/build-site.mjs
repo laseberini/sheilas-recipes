@@ -16,7 +16,7 @@ const photos = JSON.parse(fs.readFileSync(path.join(ROOT, "data", "photos.json")
 // (Roz's Minute Cake - only her transcribed version goes on the site).
 const PRIVATE_PAGES = ["p170357", "p170405", "p-roz-minute-cake"];
 // Other names a recipe goes by in other recipes' text, so those mentions link too.
-const ALIASES = { "alettas-pesto-sauce": ["Pesto Sauce"], "neopolitan-sauce": ["Neopolitan Sauce", "Neapolitan"] };
+const ALIASES = { "alettas-pesto-sauce": ["Pesto Sauce"], "neopolitan-sauce": ["Napolitano Sauce", "Napolitano"] };
 
 const clean = (s) => String(s).replace(/\[\?\]|\[illegible\]/g, "").replace(/\s{2,}/g, " ").replace(/\s+([,.!])/g, "$1").trim();
 const lines = (a) => (a || []).map(clean).filter(Boolean);
