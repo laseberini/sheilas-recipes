@@ -553,7 +553,7 @@ const RECIPES = {
     "method": [
       "Cook penne.",
       "Layer penne smothered in Napolitano sauce.",
-      "Add Alleta's pesto sauce.",
+      "Add Aletta's pesto sauce.",
       "Add mellenzana.",
       "Add mozzarella.",
       "Keep layering, finish with mozzarella.",
@@ -584,7 +584,8 @@ const RECIPES = {
       "alettas-pesto-sauce"
     ],
     "ingredients": [
-      "Defrost Seberini's Napolitano Sauce & Aletta's Pesto Sauce",
+      "Defrost Napolitano sauce",
+      "Defrost Aletta's Pesto Sauce",
       "Box 500gm Lasagne (big) pre-cooked",
       "Grated cheese (Pecorino) + some grated Mozzarella",
       "White Sauce:",
@@ -603,7 +604,7 @@ const RECIPES = {
       "Don't let it get too thick.",
       "Lasagna Method",
       "Take lasagna Pyrex dish & line bottom with pre-cooked lasagna.",
-      "Cover lasagne with tomato sauce & on top of that Aletta's Pesto sauce.",
+      "Cover lasagne with Napolitano sauce & on top of that Aletta's Pesto sauce.",
       "Cover with white sauce.",
       "Cover with pecorino and mozzarella.",
       "Repeat the layers until you finish with white sauce & cheese.",
@@ -639,16 +640,16 @@ const RECIPES = {
       "Store bought Gnocchi",
       "± 1/4 lb butter",
       "± 3/4 cup grated pecorino cheese",
-      "Napolitano tomato sauce"
+      "Make Napolitano sauce"
     ],
     "method": [
-      "Tomato sauce - use Seberini's Napolitano sauce.",
+      "Make Napolitano sauce.",
       "Method",
       "Throw slices of gnocchi into salted boiling water. They rise to the top, remove with strainer, drain & place in serving dish.",
       "Heat butter till brown.",
       "a. Sprinkle cheese over gnocchi.",
       "b. Then pour hot butter over gnocchi.",
-      "c. Lastly pour over hot, home-made fresh tomato sauce.",
+      "c. Lastly pour over hot, home-made fresh Napolitano sauce.",
       "Serve immediately!"
     ],
     "notes": [
@@ -858,7 +859,7 @@ const RECIPES = {
       "Olive oil",
       "100g parmesan/pecorino cheese",
       "2 large mozzarella",
-      "400g freshly made tomato sauce [see Sheila's Napolitano sauce]",
+      "400g freshly made Napolitano sauce",
       "4 tablespoons chopped fresh basil",
       "Salt & pepper"
     ],
