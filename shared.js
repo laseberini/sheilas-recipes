@@ -1,10 +1,14 @@
 // Shared content + behaviour for the look-and-feel mockups.
 // Each mockup supplies its own layout and CSS; this fills in the same real content everywhere.
 
-// Version (set on <html data-version> by tools/bump-version.mjs). Asset URLs carry it so a new
-// release never mixes with files a phone has kept from an older one.
+// Version (set on <html data-version> by tools/bump-version.mjs). Images carry their own fingerprint
+// (ASSET_V, from tools/build-site.mjs), so they are only fetched again when they change; anything
+// without one carries the release version, so a new release never mixes with older files.
 const VERSION = document.documentElement.dataset.version || "dev";
-const withV = (url) => `${url}${url.includes("?") ? "&" : "?"}v=${VERSION}`;
+const withV = (url) => {
+  const h = typeof ASSET_V !== "undefined" && ASSET_V[url];
+  return `${url}${url.includes("?") ? "&" : "?"}${h ? `h=${h}` : `v=${VERSION}`}`;
+};
 
 // Cache buster: GitHub Pages lets browsers keep a page for ~10 minutes. Ask the server which
 // version is live (bypassing the cache); if this page is older, reload once with the live version
