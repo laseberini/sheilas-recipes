@@ -1110,7 +1110,7 @@ const RECIPES = {
     "sortName": "Lamington Squares"
   },
   "cheese-fridge-cake": {
-    "title": "Lorraine's Cheese Fridge Cake",
+    "title": "Lorraine's Fridge Cheese Cake",
     "from": "Lorraine",
     "date": null,
     "serves": null,
@@ -1147,7 +1147,7 @@ const RECIPES = {
     "notes": [
       "If juice of cherries too thin, thicken with a little Bisto"
     ],
-    "sortName": "Cheese Fridge Cake"
+    "sortName": "Fridge Cheese Cake"
   },
   "brandy-tart": {
     "title": "Sheila's Brandy Tart",
@@ -1486,7 +1486,7 @@ const RECIPES = {
     "sortName": "Butternut & Roast Vegetables"
   },
   "lorraine-s-cheese-cake": {
-    "title": "Lorraine's Cheese Cake",
+    "title": "Lorraine's Baked Cheese Cake",
     "from": "Lorraine",
     "date": null,
     "serves": null,
@@ -1527,7 +1527,7 @@ const RECIPES = {
     "notes": [
       "This freezes very well. Wrap well in Glad Wrap."
     ],
-    "sortName": "Cheese Cake"
+    "sortName": "Baked Cheese Cake"
   },
   "luana-s-peperoni-verdi-ripieni": {
     "title": "Nonna's Peperoni Verdi Ripieni",
@@ -1821,8 +1821,8 @@ const MOCK = {
       "name": "Desserts",
       "ids": [
         "apple-youngberry-crumble",
-        "brandy-tart",
         "lorraine-s-cheese-cake",
+        "brandy-tart",
         "cheese-fridge-cake",
         "lemon-mereingue",
         "winter-pudding",
