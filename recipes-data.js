@@ -1110,12 +1110,12 @@ const RECIPES = {
     "sortName": "Lamington Squares"
   },
   "cheese-fridge-cake": {
-    "title": "Sheila's Cheese Fridge Cake",
-    "from": "Sheila",
+    "title": "Lorraine's Cheese Fridge Cake",
+    "from": "Lorraine",
     "date": null,
     "serves": null,
     "category": "Desserts",
-    "person": "sheila",
+    "person": "lorraine",
     "pages": [
       "images/pages/p170720.jpg"
     ],
